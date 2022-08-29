@@ -5,3 +5,15 @@ $colour: #666;
 body {
   background-color: $colour;
 }
+
+.navbar{
+  height: 6rem;
+}
+
+#carouselExampleCaptions{
+  height: 88vh;
+}
+
+.carousel-inner, .carousel-item, .carousel-item .img{
+  height: 100%;
+}
