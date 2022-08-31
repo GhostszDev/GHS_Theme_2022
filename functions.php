@@ -1,9 +1,20 @@
 <?php
 
+//Theme Functions
+
 function _themename_assets() {
 	wp_enqueue_style( '_themename-stylesheet', get_template_directory_uri() . '/dist/css/bundle.css', array(), '1.0.0', 'all' );
-	wp_enqueue_script( '_themename-bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js', array('jquery'), '5.2.0', true );
+	wp_enqueue_script( 'media-upload');
+    wp_enqueue_media();
+    wp_enqueue_script( '_themename-bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js', array('jquery'), '5.2.0', true );
 	wp_enqueue_script( '_themename-scripts', get_template_directory_uri() . '/dist/js/bundle.js', array('jquery'), '1.0.0', true );
+}
+
+function _themename_admin_assets() {
+	wp_enqueue_style( '_themename-admin-stylesheet', get_template_directory_uri() . '/dist/css/admin.css', array(), '1.0.0', 'all' );
+	wp_enqueue_script( 'media-upload');
+    wp_enqueue_media();
+    wp_enqueue_script( '_themename-admin-scripts', get_template_directory_uri() . '/dist/js/admin.js', array('jquery'), '1.0.0', true );
 }
 
 function _themename_after_theme(){}
@@ -66,6 +77,10 @@ function _themename_theme_setup(){
 	add_theme_support('post-thumbnails');
 
 }
+
+
+
+//Theme Frontend
 
 function _themename_nav_bar(){ ?>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
@@ -164,19 +179,61 @@ function _themename_hero_banner(){ ?>
         </button>
     </div>
 
-<?php
+	<?php
 }
 
+
+
+// Admin Settings
 function _themename_admin_init(){
 	register_setting(
 		'hero-option-group',
 		'heroSize'
 	);
 
+    register_setting(
+		'hero-option-group',
+		'heroBanner',
+	    array(
+	        'type'         => 'array',
+	        'default'      => array(
+		        '1' => array(
+                    'img',
+                    'title',
+                    'body',
+                    'cta',
+                    'uri'
+                ),
+                '2' => array(
+                    'img',
+                    'title',
+                    'body',
+                    'cta',
+                    'uri'
+                ),
+                '3' => array(
+                    'img',
+                    'title',
+                    'body',
+                    'cta',
+                    'uri'
+                ),
+	        ),
+	        'show_in_rest' => array(
+		        'schema' => array(
+			        'type'  => 'object',
+			        'items' => array(
+				        'type' => 'string',
+			        ),
+		        ),
+	        ),
+	    )
+	);
+
 	add_settings_section(
 		'theme-index-options',
 		'Hero Settings',
-		'hero_options',
+		null,
 		'theme-options'
 	);
 
@@ -184,6 +241,14 @@ function _themename_admin_init(){
 		'hero-size',
 		'Hero Size',
 		'hero_size_callback',
+		'theme-options',
+		'theme-index-options'
+	);
+
+    add_settings_field(
+		'hero-banner-items',
+		'Hero Banner',
+		'hero_banner_items_callback',
 		'theme-options',
 		'theme-index-options'
 	);
@@ -201,14 +266,36 @@ function _themename_options_page(){ ?>
 
 <?php }
 
-function hero_options(){
-    echo 'Testing';
-}
-
 function hero_size_callback(){
+    $heroMaxSize = 3;
     $heroSize = get_option('heroSize');
     ?>
-    <input type="text" name="heroSize" placeholder="Text" value="<?php echo $heroSize ?>">
+<!--    <input type="text" name="heroSize" placeholder="Text" value="--><?php //echo $heroSize ?><!--">-->
+    <select name="heroSize">
+        <?php for($i = 1; $i <= $heroMaxSize; $i++): ?>
+            <option value="<?php echo $i; ?>" <?php selected( $heroSize, $i ); ?>><?php echo $i; ?></option>
+        <?php endfor; ?>
+    </select>
+<?php }
+
+function hero_banner_items_callback(){
+	$heroSize = get_option('heroSize');
+    $heroBanner = get_option('heroBanner');
+    ?>
+
+    <ul class="heroBanner_list">
+    <?php for($i = 1; $i <= $heroSize; $i++): ?>
+            <li class="heroBanner_listItem" >
+                <input type="button" class="button button-secondary" value="Upload Profile Picture" id="upload-button">
+                <input type="hidden" id="profile-picture" name="<?php echo $heroBanner[1]->img ?>" value="<?php echo $heroBanner[1]->img ?>" />
+                <input type="text" placeholder="Title">
+                <textarea placeholder="Text Body"></textarea>
+                <input type="text" placeholder="Call to Action">
+                <input type="url" placeholder="Url">
+            </li>
+    <?php endfor; ?>
+    </ul>
+
 <?php }
 
 function _themename_admin_page(){
@@ -224,6 +311,7 @@ function _themename_admin_page(){
 }
 
 add_action('wp_enqueue_scripts', '_themename_assets');
+add_action( 'admin_enqueue_scripts', '_themename_admin_assets' );
 add_action('after_setup_theme', '_themename_theme_setup');
 add_action('after_setup_theme', '_themename_after_theme');
 add_action('admin_init', '_themename_admin_init');

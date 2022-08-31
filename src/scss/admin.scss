@@ -1,0 +1,27 @@
+.heroBanner_list{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.heroBanner_list .heroBanner_img{
+  width: 100%;
+}
+
+.heroBanner_listItem{
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+}
+
+.heroBanner_listItem *{
+  margin-bottom: 1rem;
+}
+
+.heroBanner_listItem:last-child{
+  margin-bottom: 0;
+}
+
+.heroBanner_img_input{
+  //display: none;
+}
