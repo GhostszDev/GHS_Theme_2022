@@ -135,39 +135,29 @@ function _themename_nav_bar(){ ?>
 <?php
 }
 
-function _themename_hero_banner(){ ?>
+function _themename_hero_banner(){
+	$heroBanner = get_option('heroBanner');
+    $i = 0;
+    $k = 0;
+    ?>
 
     <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="false">
         <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <?php foreach ($heroBanner as $key => $value): ?>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="<?php echo $i; ?>" class="<?php if($i === 0): echo 'active'; endif; ?>" aria-current="<?php if($i === 0): echo 'true'; endif; ?>" aria-label="Slide <?php echo $i ?>"></button>
+            <?php $i++; endforeach; ?>
         </div>
         <div class="carousel-inner">
-            <div class="carousel-item active">
-                <svg class="img bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="800" height="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: First slide" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"></rect><text x="50%" y="50%" fill="#555" dy=".3em">First slide</text></svg>
+	        <?php foreach ($heroBanner as $key => $value): ?>
+                <div class="carousel-item <?php if($k === 0): echo 'active'; endif; ?>">
+                    <img class="d-block w-100" src="<?php echo esc_url(wp_get_attachment_image_src($value['img'])[0]) ?>" alt="">
 
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>First slide label</h5>
-                    <p>Some representative placeholder content for the first slide.</p>
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5><?php echo $value['title'] ?></h5>
+                        <p><?php echo $value['body'] ?></p>
+                    </div>
                 </div>
-            </div>
-            <div class="carousel-item">
-                <svg class="img bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="800" height="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Second slide" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#666"></rect><text x="50%" y="50%" fill="#444" dy=".3em">Second slide</text></svg>
-
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Second slide label</h5>
-                    <p>Some representative placeholder content for the second slide.</p>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <svg class="img bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="800" height="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Third slide" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#555"></rect><text x="50%" y="50%" fill="#333" dy=".3em">Third slide</text></svg>
-
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Third slide label</h5>
-                    <p>Some representative placeholder content for the third slide.</p>
-                </div>
-            </div>
+            <?php $k++; endforeach; ?>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -193,42 +183,15 @@ function _themename_admin_init(){
 
     register_setting(
 		'hero-option-group',
-		'heroBanner',
-	    array(
-	        'type'         => 'array',
-	        'default'      => array(
-		        '1' => array(
-                    'img',
-                    'title',
-                    'body',
-                    'cta',
-                    'uri'
-                ),
-                '2' => array(
-                    'img',
-                    'title',
-                    'body',
-                    'cta',
-                    'uri'
-                ),
-                '3' => array(
-                    'img',
-                    'title',
-                    'body',
-                    'cta',
-                    'uri'
-                ),
-	        ),
-	        'show_in_rest' => array(
-		        'schema' => array(
-			        'type'  => 'object',
-			        'items' => array(
-				        'type' => 'string',
-			        ),
-		        ),
-	        ),
-	    )
+		'heroBanner'
 	);
+
+	if(get_option('heroBanner')):
+		$heroBanner = get_option('heroBanner');
+	else:
+		$heroBanner = array();
+        update_option('heroBanner', $heroBanner);
+	endif;
 
 	add_settings_section(
 		'theme-index-options',
@@ -281,17 +244,18 @@ function hero_size_callback(){
 function hero_banner_items_callback(){
 	$heroSize = get_option('heroSize');
     $heroBanner = get_option('heroBanner');
+    var_dump($heroBanner);
     ?>
 
     <ul class="heroBanner_list">
     <?php for($i = 1; $i <= $heroSize; $i++): ?>
             <li class="heroBanner_listItem" >
-                <input type="button" class="button button-secondary" value="Upload Profile Picture" id="upload-button">
-                <input type="hidden" id="profile-picture" name="<?php echo $heroBanner[1]->img ?>" value="<?php echo $heroBanner[1]->img ?>" />
-                <input type="text" placeholder="Title">
-                <textarea placeholder="Text Body"></textarea>
-                <input type="text" placeholder="Call to Action">
-                <input type="url" placeholder="Url">
+                <input type="button" class="button button-secondary" value="Upload Profile Picture" id="upload-button_<?php echo $i ?>" onClick="mediaUpload(this.id)">
+                <input type="hidden" id="profile-picture_<?php echo $i; ?>" name="heroBanner[hero_<?php echo $i; ?>][img]" value="<?php echo $heroBanner['hero_'.$i]['img'] ?>" />
+                <input type="text" placeholder="Title" name="heroBanner[hero_<?php echo $i; ?>][title]" value="<?php echo $heroBanner['hero_'.$i]['title'] ?>">
+                <textarea placeholder="Text Body" name="heroBanner[hero_<?php echo $i; ?>][body]" ><?php echo $heroBanner['hero_'.$i]['body'] ?></textarea>
+                <input type="text" placeholder="Call to Action" name="heroBanner[hero_<?php echo $i; ?>][cta]" value="<?php echo $heroBanner['hero_'.$i]['cta'] ?>">
+                <input type="url" placeholder="Url" name="heroBanner[hero_<?php echo $i; ?>][url]" value="<?php echo $heroBanner['hero_'.$i]['url'] ?>">
             </li>
     <?php endfor; ?>
     </ul>

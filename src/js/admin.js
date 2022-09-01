@@ -2,7 +2,26 @@ jQuery(document).ready( function($){
 
     var mediaUploader;
 
-    $('#upload-button').on('click',function(e) {
+    if($('#upload-button_1').length > 0) {
+        $('#upload-button_1').on('click', function (e) {
+            mediaUpload(e, 1);
+        });
+    };
+
+    if($('#upload-button_2').length > 0) {
+        $('#upload-button_2').on('click', function (e) {
+            mediaUpload(e, 2);
+        });
+    };
+
+    if($('#upload-button_3').length > 0) {
+        $('#upload-button_3').on('click', function (e) {
+            mediaUpload(e, 3);
+        });
+    };
+
+
+    function mediaUpload(e, n){
         e.preventDefault();
         if( mediaUploader ){
             mediaUploader.open();
@@ -19,11 +38,12 @@ jQuery(document).ready( function($){
 
         mediaUploader.on('select', function(){
             var attachment = mediaUploader.state().get('selection').first().toJSON();
-            $('#profile-picture').val(attachment.url);
+            console.log(attachment);
+            $('#profile-picture_'+ n).val(attachment.id);
+            $('#profile-picture-preview_'+ n).css('background-image','url(' + attachment.url + ')');
         });
 
         mediaUploader.open();
-
-    });
+    };
 
 });
