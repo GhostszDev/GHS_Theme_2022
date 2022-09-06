@@ -150,7 +150,7 @@ function _themename_hero_banner(){
         <div class="carousel-inner">
 	        <?php foreach ($heroBanner as $key => $value): ?>
                 <div class="carousel-item <?php if($k === 0): echo 'active'; endif; ?>">
-                    <img class="d-block w-100" src="<?php echo esc_url(wp_get_attachment_image_src($value['img'])[0]) ?>" alt="">
+                    <img class="d-block w-100" src="<?php echo esc_url(wp_get_attachment_url($value['img']), 'full', false, '' ); ?>" alt="">
 
                     <div class="carousel-caption d-none d-md-block">
                         <h5><?php echo $value['title'] ?></h5>
@@ -170,6 +170,61 @@ function _themename_hero_banner(){
     </div>
 
 	<?php
+}
+
+function _themename_featured_posts(){
+
+    $args = [
+            'post_type' => 'post',
+            'post_status' => 'publish',
+            'posts_per_page' => 6
+    ];
+    $query = new WP_Query( $args );
+	$counter = 1; ?>
+
+    <h5 class="ghs_section_header mt-4">Latest News</h5>
+
+	<?php
+    if ( $query->have_posts() ):
+		while ( $query->have_posts() ) {
+			$query->the_post();
+
+            if($counter%3 == 1): ?> <div class="row mt-4"> <?php endif; ?>
+
+            <div class="col-12 col-lg-4 pb-4">
+                <div class="ghs_feat_post h-100 position-relative">
+                    <img class="ghs_feat_post_img w-100" src="<?php echo get_the_post_thumbnail_url(get_the_ID())?>" />
+                    <span class="ghs_feat_post_info btn btn-info btn-sm position-absolute"><?php echo strtoupper(get_post_type(get_the_ID())) ?></span>
+                    <div class="ghs_feat_post_text p-3">
+                        <h5 class="pb-3"><?php echo get_the_title() ?></h5>
+                        <p><?php echo get_the_excerpt() ?></p>
+                        <a href="<?php echo get_the_permalink(get_the_ID()) ?>" class="btn btn-primary btn-sm active mx-auto text-dark" role="button">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+            <?php
+            if($counter%3 == 0): ?> </div> <?php endif;
+
+            $counter++;
+		}
+
+    else:
+		// no posts found
+        echo '';
+	endif;
+	/* Restore original Post Data */
+	wp_reset_postdata();
+
+    ?>
+
+    <div class="row">
+        <div class="d-flex justify-content-center align-items-center pb-2 pt-2">
+            <a href="#" class="btn btn-primary btn-lg active mx-auto text-dark" role="button" aria-pressed="true">Read More</a>
+        </div>
+    </div>
+<?php
+	wp_reset_postdata();
 }
 
 
@@ -244,14 +299,17 @@ function hero_size_callback(){
 function hero_banner_items_callback(){
 	$heroSize = get_option('heroSize');
     $heroBanner = get_option('heroBanner');
-    var_dump($heroBanner);
     ?>
 
     <ul class="heroBanner_list">
     <?php for($i = 1; $i <= $heroSize; $i++): ?>
             <li class="heroBanner_listItem" >
-                <input type="button" class="button button-secondary" value="Upload Profile Picture" id="upload-button_<?php echo $i ?>" onClick="mediaUpload(this.id)">
-                <input type="hidden" id="profile-picture_<?php echo $i; ?>" name="heroBanner[hero_<?php echo $i; ?>][img]" value="<?php echo $heroBanner['hero_'.$i]['img'] ?>" />
+
+                <label for="profile-picture_<?php echo $i; ?>">
+                    <img class="heroBanner_img_<?php echo $i; ?>" src="<?php if(isset( $heroBanner['hero_'.$i]['img'] )): echo esc_url(wp_get_attachment_url($heroBanner['hero_'.$i]['img']), 'full', false, '' ); else: echo esc_url('https://placehold.jp/1920x1080.png'); endif; ?>" value="Upload Profile Picture" id="upload-button_<?php echo $i ?>" onClick="mediaUpload(this.id)"/>
+                </label>
+                <input id="profile-picture_<?php echo $i; ?>" name="heroBanner[hero_<?php echo $i; ?>][img]" value="<?php echo $heroBanner['hero_'.$i]['img'] ?>" />
+
                 <input type="text" placeholder="Title" name="heroBanner[hero_<?php echo $i; ?>][title]" value="<?php echo $heroBanner['hero_'.$i]['title'] ?>">
                 <textarea placeholder="Text Body" name="heroBanner[hero_<?php echo $i; ?>][body]" ><?php echo $heroBanner['hero_'.$i]['body'] ?></textarea>
                 <input type="text" placeholder="Call to Action" name="heroBanner[hero_<?php echo $i; ?>][cta]" value="<?php echo $heroBanner['hero_'.$i]['cta'] ?>">

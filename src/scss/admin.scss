@@ -4,7 +4,9 @@
   justify-content: space-around;
 }
 
-.heroBanner_list .heroBanner_img{
+.heroBanner_list .heroBanner_img_1,
+.heroBanner_list .heroBanner_img_2,
+.heroBanner_list .heroBanner_img_3 {
   width: 100%;
 }
 
@@ -22,6 +24,8 @@
   margin-bottom: 0;
 }
 
-.heroBanner_img_input{
-  //display: none;
+.heroBanner_list #profile-picture_1,
+.heroBanner_list #profile-picture_2,
+.heroBanner_list #profile-picture_3{
+  display: none;
 }

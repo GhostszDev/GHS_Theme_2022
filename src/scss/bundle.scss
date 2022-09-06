@@ -1,13 +1,54 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css");
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@400;700&display=swap');
 
-$colour: #666;
+$colour: #1f1f1f;
+$secondColor: rgba(0,0,0);
+$primaryColor: #977fff;
+$primaryColorBorder: #8771df;
+$primaryColorHover: #8771df;
+$primaryColorBorderHover: #705eb9;
 
 body {
   background-color: $colour;
 }
 
+p, h1, h2, h3, h4, h5{
+  color: white;
+  font-family: 'Mulish', sans-serif;
+}
+
+h1, h2, h3, h4, h5, .badge, .btn{
+  font-weight: bold;
+  font-family: 'Roboto Slab', serif;
+}
+
+.badge{
+  background: $primaryColor;
+  border: $primaryColorBorder;
+}
+
+.btn{
+  background: $primaryColor !important;
+  border: $primaryColorBorder !important;
+}
+
+.badge:hover{
+  background: $primaryColorHover;
+  background: $primaryColorBorderHover;
+}
+
+.btn:hover:hover{
+  background: $primaryColorHover !important;
+  background: $primaryColorBorderHover !important;
+}
+
 .navbar{
   height: 6rem;
+}
+
+.navbar-dark{
+  background: $secondColor !important;
 }
 
 #carouselExampleCaptions{
@@ -16,4 +57,48 @@ body {
 
 .carousel-inner, .carousel-item, .carousel-item .img{
   height: 100%;
+}
+
+.carousel-item img{
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.carousel-caption {
+  right: 100%;
+  bottom: 50%;
+  background: #0c0c0c;
+}
+
+.carousel-caption h5{
+  font-size: 3.25rem;
+  font-weight: bold;
+  word-break: break-all;
+  word-wrap: break-word;
+  width: 25vw;
+}
+
+.carousel-caption p{
+  font-size: 2.25rem;
+  word-break: break-all;
+  word-wrap: break-word;
+  width: 25vw;
+}
+
+.ghs_full_width{
+  width: 100%;
+}
+
+.ghs_feat_post{
+  border: rgba(181, 181, 181, 0.69) 1px solid;
+}
+
+.ghs_feat_post_info{
+  top: 1rem;
+  right: 1rem;
+}
+
+.ghs_section_header{
+  font-size: 2em;
 }

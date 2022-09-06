@@ -40,10 +40,10 @@ jQuery(document).ready( function($){
             var attachment = mediaUploader.state().get('selection').first().toJSON();
             console.log(attachment);
             $('#profile-picture_'+ n).val(attachment.id);
-            $('#profile-picture-preview_'+ n).css('background-image','url(' + attachment.url + ')');
+            $('.heroBanner_img_'+ n).attr('src', attachment.url);
         });
 
         mediaUploader.open();
-    };
+    }
 
 });
