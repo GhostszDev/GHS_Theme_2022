@@ -14,7 +14,7 @@ function _themename_admin_assets() {
 	wp_enqueue_style( '_themename-admin-stylesheet', get_template_directory_uri() . '/dist/css/admin.css', array(), '1.0.0', 'all' );
 	wp_enqueue_script( 'media-upload');
     wp_enqueue_media();
-    wp_enqueue_script( '_themename-admin-scripts', get_template_directory_uri() . '/dist/js/admin.js', array('jquery'), '1.0.0', true );
+    wp_enqueue_script( '_themename-admin-scripts', get_template_directory_uri() . '/dist/js/admin.js', array('jquery'), '1.0.0', false );
 }
 
 function _themename_after_theme(){}
@@ -150,7 +150,7 @@ function _themename_hero_banner(){
         <div class="carousel-inner">
 	        <?php foreach ($heroBanner as $key => $value): ?>
                 <div class="carousel-item <?php if($k === 0): echo 'active'; endif; ?>">
-                    <img class="d-block w-100" src="<?php echo esc_url(wp_get_attachment_url($value['img']), 'full', false, '' ); ?>" alt="">
+                    <img class="d-block img-fluid" src="<?php echo esc_url(wp_get_attachment_url($value['img']), 'full', false, '' ); ?>" alt="">
 
                     <div class="carousel-caption d-none d-md-block">
                         <h5><?php echo $value['title'] ?></h5>
@@ -306,7 +306,16 @@ function hero_banner_items_callback(){
             <li class="heroBanner_listItem" >
 
                 <label for="profile-picture_<?php echo $i; ?>">
-                    <img class="heroBanner_img_<?php echo $i; ?>" src="<?php if(isset( $heroBanner['hero_'.$i]['img'] )): echo esc_url(wp_get_attachment_url($heroBanner['hero_'.$i]['img']), 'full', false, '' ); else: echo esc_url('https://placehold.jp/1920x1080.png'); endif; ?>" value="Upload Profile Picture" id="upload-button_<?php echo $i ?>" onClick="mediaUpload(this.id)"/>
+                   <img class="heroBanner_img_<?php echo $i; ?>" src="<?php
+                    if(isset( $heroBanner['hero_'.$i]['img'] )):
+                        if(wp_http_validate_url(esc_url(wp_get_attachment_url($heroBanner['hero_'.$i]['img']), 'full', false, '' ))):
+                            echo esc_url(wp_get_attachment_url($heroBanner['hero_'.$i]['img']), 'full', false, '' );
+                        else:
+                            echo esc_url('https://placehold.jp/1920x1080.png');
+                        endif;
+                    else:
+                        echo esc_url('https://placehold.jp/1920x1080.png');
+                    endif;?>" value="Upload Profile Picture" id="upload-button_<?php echo $i ?>" />
                 </label>
                 <input id="profile-picture_<?php echo $i; ?>" name="heroBanner[hero_<?php echo $i; ?>][img]" value="<?php echo $heroBanner['hero_'.$i]['img'] ?>" />
 

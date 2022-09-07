@@ -1,6 +1,7 @@
 import webpack from 'webpack-stream';
 import gulp from 'gulp';
 import yargs from 'yargs';
+import babel from 'gulp-babel';
 const PRODUCTION = yargs.argv.prod;
 import dartSass from 'sass';
 import gulpSass from 'gulp-sass';
@@ -80,6 +81,7 @@ export const scripts = () => {
                 jquery: 'jQuery'
             },
         }))
+        .pipe(babel())
         .pipe(gulp.dest('dist/js'));
 }
 

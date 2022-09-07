@@ -2,33 +2,20 @@ jQuery(document).ready( function($){
 
     var mediaUploader;
 
-    if($('#upload-button_1').length > 0) {
-        $('#upload-button_1').on('click', function (e) {
-            mediaUpload(e, 1);
-        });
-    };
+    function mediaUpload(e){
+        let capture = e.currentTarget.parentElement.nextElementSibling;
 
-    if($('#upload-button_2').length > 0) {
-        $('#upload-button_2').on('click', function (e) {
-            mediaUpload(e, 2);
-        });
-    };
-
-    if($('#upload-button_3').length > 0) {
-        $('#upload-button_3').on('click', function (e) {
-            mediaUpload(e, 3);
-        });
-    };
-
-
-    function mediaUpload(e, n){
         e.preventDefault();
         if( mediaUploader ){
+            mediaUploader.id = e.target;
+            mediaUploader.capture = capture;
             mediaUploader.open();
             return;
         }
 
         mediaUploader = wp.media.frames.file_frame = wp.media({
+            id: e.target,
+            capture: capture,
             title: 'Choose a Profile Picture',
             button: {
                 text: 'Choose Picture'
@@ -38,12 +25,20 @@ jQuery(document).ready( function($){
 
         mediaUploader.on('select', function(){
             var attachment = mediaUploader.state().get('selection').first().toJSON();
-            console.log(attachment);
-            $('#profile-picture_'+ n).val(attachment.id);
-            $('.heroBanner_img_'+ n).attr('src', attachment.url);
+            if(mediaUploader.capture) {
+                $(mediaUploader.capture).val(attachment.id);
+            } else {
+                $(capture).val(attachment.id);
+            }
+            $(mediaUploader.id).attr('src', attachment.url);
         });
 
         mediaUploader.open();
     }
+
+   $('#upload-button_1, #upload-button_2, #upload-button_3').on('click', function (a) {
+       // console.log(a);
+       mediaUpload(a);
+    });
 
 });
