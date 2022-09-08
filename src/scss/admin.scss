@@ -1,4 +1,7 @@
-.heroBanner_list{
+@import url('https://cdn.lineicons.com/3.0/lineicons.css');
+
+.heroBanner_list,
+.featColumn_list{
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -7,17 +10,22 @@
 .heroBanner_list .heroBanner_img_1,
 .heroBanner_list .heroBanner_img_2,
 .heroBanner_list .heroBanner_img_3,
-.insight_img{
+.insight_img,
+.ghs_feat_column_select{
   width: 100%;
 }
 
-.heroBanner_listItem, .ghs_insight_wrapper{
+.heroBanner_listItem,
+.ghs_insight_wrapper,
+.ghs_feat_column{
   display: flex;
   flex-direction: column;
   width: 30%;
 }
 
-.heroBanner_listItem *, .ghs_insight_wrapper *{
+.heroBanner_listItem *,
+.ghs_insight_wrapper *,
+.ghs_feat_column *{
   margin-bottom: 1rem;
 }
 
@@ -28,10 +36,15 @@
 .heroBanner_list #profile-picture_1,
 .heroBanner_list #profile-picture_2,
 .heroBanner_list #profile-picture_3,
-.insight_bg{
+.insight_bg,
+.ghs_feat_column_icon{
   display: none;
 }
 
 .ghs_insight_wrapper{
   width: 50%;
+}
+
+.featColumn_list #ghs_icon{
+  font-size: 5em;
 }

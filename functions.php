@@ -248,6 +248,20 @@ function _themename_insight(){
     <?php
 }
 
+function _themename_feat_column_size(){
+    $featColumn = get_option('featColumnSize');
+    ?>
+
+    <?php
+}
+
+function _themename_feat_column(){
+    $featColumn = get_option('featColumn');
+    ?>
+
+    <?php
+}
+
 
 
 // Admin Settings
@@ -265,6 +279,16 @@ function _themename_admin_init(){
     register_setting(
 		'hero-option-group',
 		'insight'
+	);
+
+    register_setting(
+		'hero-option-group',
+		'featColumnSize'
+	);
+
+    register_setting(
+		'hero-option-group',
+		'featColumn'
 	);
 
 	if(get_option('heroBanner')):
@@ -301,6 +325,22 @@ function _themename_admin_init(){
 		'insight-items',
 		'Insight',
 		'hero_insight_callback',
+		'theme-options',
+		'theme-index-options'
+	);
+
+    add_settings_field(
+		'featColumnSize-items',
+		'Feat Columns Size',
+		'feat_columns_size_callback',
+		'theme-options',
+		'theme-index-options'
+	);
+
+    add_settings_field(
+		'featColumn-items',
+		'Feat Columns',
+		'feat_columns_callback',
 		'theme-options',
 		'theme-index-options'
 	);
@@ -385,6 +425,42 @@ function hero_insight_callback(){
         <input type="text"  name="insight[title]" value="<?php echo $insight['title'] ?>" placeholder="Main Title">
         <textarea placeholder="Text Body" name="insight[body]" ><?php echo $insight['body'] ?></textarea>
     </div>
+
+<?php }
+
+function feat_columns_size_callback(){
+    $featColumnMaxSize = 3;
+    $featColumn = get_option('featColumnSize');
+    ?>
+
+    <select name="featColumnSize">
+        <?php for($i = 1; $i <= $featColumnMaxSize; $i++): ?>
+            <option value="<?php echo $i; ?>" <?php selected( $featColumn, $i ); ?>><?php echo $i; ?></option>
+        <?php endfor; ?>
+    </select>
+<?php }
+
+function feat_columns_callback(){
+    $featColumnSize = get_option('featColumnSize');
+    $featColumn = get_option('featColumn');
+    ?>
+
+    <ul class="featColumn_list">
+        <?php for($i = 1; $i <= $featColumnSize; $i++): ?>
+            <li class="ghs_feat_column" >
+
+                <svg class="ghs_feat_column_preview" aria-hidden="true" focusable="false">
+                    <use
+                </svg>
+                <label for="featColumn[icon]">
+                    <select class="ghs_feat_column_select"></select>
+                </label>
+                <input value="" name="featColumn[icon]" type="text" class="ghs_feat_column_icon">
+                <input name="" value="">
+
+            </li>
+        <?php endfor; ?>
+    </ul>
 
 <?php }
 
