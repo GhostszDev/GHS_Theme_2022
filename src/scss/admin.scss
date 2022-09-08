@@ -11,13 +11,13 @@
   width: 100%;
 }
 
-.heroBanner_listItem{
+.heroBanner_listItem, .ghs_insight_wrapper{
   display: flex;
   flex-direction: column;
   width: 30%;
 }
 
-.heroBanner_listItem *{
+.heroBanner_listItem *, .ghs_insight_wrapper *{
   margin-bottom: 1rem;
 }
 
@@ -27,6 +27,11 @@
 
 .heroBanner_list #profile-picture_1,
 .heroBanner_list #profile-picture_2,
-.heroBanner_list #profile-picture_3{
+.heroBanner_list #profile-picture_3,
+.insight_bg{
   display: none;
+}
+
+.ghs_insight_wrapper{
+  width: 50%;
 }

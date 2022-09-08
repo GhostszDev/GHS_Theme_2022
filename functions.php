@@ -367,22 +367,24 @@ function hero_insight_callback(){
     $insight = get_option('insight');
     ?>
 
-    <label for="insight_bg">
-        <img class="insight_img" src="<?php
-        if(isset( $insight['img'] )):
-            if(wp_http_validate_url(esc_url(wp_get_attachment_url($insight['img']), 'full', false, '' ))):
-                echo esc_url(wp_get_attachment_url($insight['img']), 'full', false, '' );
+    <div class="ghs_insight_wrapper">
+        <label for="insight_bg">
+            <img class="insight_img" src="<?php
+            if(isset( $insight['img'] )):
+                if(wp_http_validate_url(esc_url(wp_get_attachment_url($insight['img']), 'full', false, '' ))):
+                    echo esc_url(wp_get_attachment_url($insight['img']), 'full', false, '' );
+                else:
+                    echo esc_url('https://placehold.jp/1920x1080.png');
+                endif;
             else:
                 echo esc_url('https://placehold.jp/1920x1080.png');
-            endif;
-        else:
-            echo esc_url('https://placehold.jp/1920x1080.png');
-        endif;?>" value="Upload Profile Picture" id="insight_submit" />
-    </label>
-    <input id="insight_bg" name="insight[img]" value="<?php echo $insight['img'] ?>" />
-    <input type="text"  name="insight[header]" value="<?php echo $insight['header'] ?>" placeholder="Header Title">
-    <input type="text"  name="insight[title]" value="<?php echo $insight['title'] ?>" placeholder="Main Title">
-    <textarea placeholder="Text Body" name="insight[body]" ><?php echo $insight['body'] ?></textarea>
+            endif;?>" value="Upload Profile Picture" id="insight_submit" />
+        </label>
+        <input id="insight_bg" class="insight_bg" name="insight[img]" value="<?php echo $insight['img'] ?>" />
+        <input type="text"  name="insight[header]" value="<?php echo $insight['header'] ?>" placeholder="Header Title">
+        <input type="text"  name="insight[title]" value="<?php echo $insight['title'] ?>" placeholder="Main Title">
+        <textarea placeholder="Text Body" name="insight[body]" ><?php echo $insight['body'] ?></textarea>
+    </div>
 
 <?php }
 
