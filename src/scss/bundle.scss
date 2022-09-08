@@ -59,10 +59,10 @@ h1, h2, h3, h4, h5, .badge, .btn{
   height: 100%;
 }
 
-.carousel-item img{
-  display: block;
-  width: 100%;
-  height: auto;
+.carousel-item{
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: cover !important;
 }
 
 .carousel-caption {
@@ -71,7 +71,7 @@ h1, h2, h3, h4, h5, .badge, .btn{
   background: #0c0c0c;
 }
 
-.carousel-caption h5{
+.carousel-caption h5, .ghs_insight_title{
   font-size: 3.25rem;
   font-weight: bold;
   word-break: break-all;
@@ -99,6 +99,26 @@ h1, h2, h3, h4, h5, .badge, .btn{
   right: 1rem;
 }
 
-.ghs_section_header{
+.ghs_section_header, .ghs_insight_header{
   font-size: 2em;
+}
+
+.ghs_insight{
+  min-height: 50vh;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: cover !important;
+  
+}
+
+.ghs_insight_title{
+  width: auto;
+}
+
+@media screen and (max-width: 1200px) {
+
+  .ghs_insight {
+    background: none !important;
+  }
+
 }

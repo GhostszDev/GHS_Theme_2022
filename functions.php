@@ -149,8 +149,8 @@ function _themename_hero_banner(){
         </div>
         <div class="carousel-inner">
 	        <?php foreach ($heroBanner as $key => $value): ?>
-                <div class="carousel-item <?php if($k === 0): echo 'active'; endif; ?>">
-                    <img class="d-block img-fluid" src="<?php echo esc_url(wp_get_attachment_url($value['img']), 'full', false, '' ); ?>" alt="">
+                <div class="carousel-item <?php if($k === 0): echo 'active'; endif; ?>" style="background: url(<?php echo esc_url(wp_get_attachment_url($value['img']), 'full', false, '' ); ?>)">
+<!--                    <img class="d-block img-fluid" src="--><?php //echo esc_url(wp_get_attachment_url($value['img']), 'full', false, '' ); ?><!--" alt="">-->
 
                     <div class="carousel-caption d-none d-md-block">
                         <h5><?php echo $value['title'] ?></h5>
@@ -182,7 +182,7 @@ function _themename_featured_posts(){
     $query = new WP_Query( $args );
 	$counter = 1; ?>
 
-    <h5 class="ghs_section_header mt-4">Latest News</h5>
+    <h4 class="ghs_section_header mt-4">Latest News</h4>
 
 	<?php
     if ( $query->have_posts() ):
@@ -227,6 +227,27 @@ function _themename_featured_posts(){
 	wp_reset_postdata();
 }
 
+function _themename_insight(){
+    $insight = get_option('insight');
+    ?>
+
+    <div class="w-100 mt-4 ghs_insight" style="background: url(<?php echo esc_url(wp_get_attachment_url($insight['img']), 'full', false, '' ); ?>)">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    <h4 class="ghs_insight_header pt-4"><?php echo $insight['header'] ?></h4>
+                    <h5 class="pt-3 ghs_insight_title"><?php echo $insight['title'] ?></h5>
+                    <p class="pt-3"><?php echo $insight['body'] ?></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <?php
+}
+
 
 
 // Admin Settings
@@ -239,6 +260,11 @@ function _themename_admin_init(){
     register_setting(
 		'hero-option-group',
 		'heroBanner'
+	);
+
+    register_setting(
+		'hero-option-group',
+		'insight'
 	);
 
 	if(get_option('heroBanner')):
@@ -267,6 +293,14 @@ function _themename_admin_init(){
 		'hero-banner-items',
 		'Hero Banner',
 		'hero_banner_items_callback',
+		'theme-options',
+		'theme-index-options'
+	);
+
+    add_settings_field(
+		'insight-items',
+		'Insight',
+		'hero_insight_callback',
 		'theme-options',
 		'theme-index-options'
 	);
@@ -326,6 +360,29 @@ function hero_banner_items_callback(){
             </li>
     <?php endfor; ?>
     </ul>
+
+<?php }
+
+function hero_insight_callback(){
+    $insight = get_option('insight');
+    ?>
+
+    <label for="insight_bg">
+        <img class="insight_img" src="<?php
+        if(isset( $insight['img'] )):
+            if(wp_http_validate_url(esc_url(wp_get_attachment_url($insight['img']), 'full', false, '' ))):
+                echo esc_url(wp_get_attachment_url($insight['img']), 'full', false, '' );
+            else:
+                echo esc_url('https://placehold.jp/1920x1080.png');
+            endif;
+        else:
+            echo esc_url('https://placehold.jp/1920x1080.png');
+        endif;?>" value="Upload Profile Picture" id="insight_submit" />
+    </label>
+    <input id="insight_bg" name="insight[img]" value="<?php echo $insight['img'] ?>" />
+    <input type="text"  name="insight[header]" value="<?php echo $insight['header'] ?>" placeholder="Header Title">
+    <input type="text"  name="insight[title]" value="<?php echo $insight['title'] ?>" placeholder="Main Title">
+    <textarea placeholder="Text Body" name="insight[body]" ><?php echo $insight['body'] ?></textarea>
 
 <?php }
 

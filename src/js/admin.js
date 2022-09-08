@@ -36,7 +36,7 @@ jQuery(document).ready( function($){
         mediaUploader.open();
     }
 
-   $('#upload-button_1, #upload-button_2, #upload-button_3').on('click', function (a) {
+   $('#upload-button_1, #upload-button_2, #upload-button_3, #insight_submit').on('click', function (a) {
        // console.log(a);
        mediaUpload(a);
     });
