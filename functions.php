@@ -8,6 +8,12 @@ function _themename_assets() {
     wp_enqueue_media();
     wp_enqueue_script( '_themename-bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js', array('jquery'), '5.2.0', true );
 	wp_enqueue_script( '_themename-scripts', get_template_directory_uri() . '/dist/js/bundle.js', array('jquery'), '1.0.0', true );
+
+	$ghs_obj = array(
+
+    );
+
+	wp_localize_script('_themename-scripts', 'ghs_obj', $ghs_obj);
 }
 
 function _themename_admin_assets() {
@@ -15,6 +21,13 @@ function _themename_admin_assets() {
 	wp_enqueue_script( 'media-upload');
     wp_enqueue_media();
     wp_enqueue_script( '_themename-admin-scripts', get_template_directory_uri() . '/dist/js/admin.js', array('jquery'), '1.0.0', false );
+
+    $ghs_obj = array(
+        'mediaPath' =>  get_stylesheet_directory_uri() . '/src/media/',
+        'featColumn' => get_option('featColumn')
+    );
+
+    wp_localize_script('_themename-admin-scripts', 'ghs_obj', $ghs_obj);
 }
 
 function _themename_after_theme(){}
@@ -450,13 +463,12 @@ function feat_columns_callback(){
             <li class="ghs_feat_column" >
 
                 <svg class="ghs_feat_column_preview" aria-hidden="true" focusable="false">
-                    <use
+                    <use href="<?php echo $featColumn['icon_'.$i] ?>"></use>
                 </svg>
-                <label for="featColumn[icon]">
-                    <select class="ghs_feat_column_select"></select>
+                <label for="featColumn[icon_<?php echo $i ?>]">
+                    <select class="ghs_feat_column_select_<?php echo $i ?> icon_select"></select>
                 </label>
-                <input value="" name="featColumn[icon]" type="text" class="ghs_feat_column_icon">
-                <input name="" value="">
+                <input value="<?php echo $featColumn['icon_'.$i] ?>" name="featColumn[icon_<?php echo $i ?>]" type="text" class="ghs_feat_column_icon">
 
             </li>
         <?php endfor; ?>

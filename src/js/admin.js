@@ -4,8 +4,12 @@ jQuery(document).ready( function($){
 
     var iconSelect = [
         {
-            name: 'GamePad',
-            value: 'lni-game'
+            name: 'Headphones',
+            value: ghs_obj.mediaPath + 'icons.svg#icon-headphones'
+        },
+        {
+            name: 'VR Helmet',
+            value: ghs_obj.mediaPath + 'icons.svg#icon-vr'
         }
     ]
 
@@ -43,18 +47,54 @@ jQuery(document).ready( function($){
         mediaUploader.open();
     }
 
+    function changeIcon(e){
+        var currentInput = $(e.currentTarget).val();
+        var preview = e.currentTarget.parentElement.parentElement.children[0].children[0];
+        let capture = e.currentTarget.parentElement.nextElementSibling;
+
+        $(preview).attr('href', currentInput);
+        $(capture).val(currentInput);
+
+    }
+
     $('#upload-button_1, #upload-button_2, #upload-button_3, #insight_submit').on('click', function (a) {
        // console.log(a);
        mediaUpload(a);
     });
 
-    if($('.ghs_feat_column_select').length > 0){
+    if($('.icon_select').length > 0){
+
+        let featColumn = [
+            {
+                icon: ghs_obj.featColumn.icon_1
+            },
+            {
+                icon: ghs_obj.featColumn.icon_2
+            },
+            {
+                icon: ghs_obj.featColumn.icon_3
+            },
+        ];
+
+        let key = 0;
+
         iconSelect.forEach((v)=>{
-            $('.ghs_feat_column_select').append(
-                `<option value="${v.value}">
-                                       ${v.name}
-                                  </option>`
-            );
+
+            if(v.value == featColumn[key].icon) {
+                $('.icon_select').append(
+                    `<option value="${v.value}" selected="selected">${v.name}</option>`
+                );
+            } else {
+                $('.icon_select').append(
+                    `<option value="${v.value}">${v.name}</option>`
+                );
+            }
+
+            key++;
+        });
+
+        $('.icon_select').on('change', function(b){
+            changeIcon(b);
         });
     }
 
