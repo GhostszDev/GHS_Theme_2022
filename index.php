@@ -2,13 +2,9 @@
 get_header();
 
 _themename_hero_banner();
-?>
+_themename_featured_posts();
+_themename_insight();
+_themename_feat_column();
 
-	<div class="container">
-		<?php _themename_featured_posts(); ?>
-	</div>
 
-    <?php  _themename_insight(); ?>
-
-<?php
 get_footer();

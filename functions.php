@@ -1,7 +1,6 @@
 <?php
 
 //Theme Functions
-
 function _themename_assets() {
 	wp_enqueue_style( '_themename-stylesheet', get_template_directory_uri() . '/dist/css/bundle.css', array(), '1.0.0', 'all' );
 	wp_enqueue_script( 'media-upload');
@@ -92,9 +91,7 @@ function _themename_theme_setup(){
 }
 
 
-
 //Theme Frontend
-
 function _themename_nav_bar(){ ?>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <div class="container-fluid">
@@ -195,45 +192,47 @@ function _themename_featured_posts(){
     $query = new WP_Query( $args );
 	$counter = 1; ?>
 
-    <h4 class="ghs_section_header mt-4">Latest News</h4>
+    <div class="container">
+        <h4 class="ghs_section_header mt-4">Latest News</h4>
 
-	<?php
-    if ( $query->have_posts() ):
-		while ( $query->have_posts() ) {
-			$query->the_post();
+        <?php
+        if ( $query->have_posts() ):
+            while ( $query->have_posts() ) {
+                $query->the_post();
 
-            if($counter%3 == 1): ?> <div class="row mt-4"> <?php endif; ?>
+                if($counter%3 == 1): ?> <div class="row mt-4"> <?php endif; ?>
 
-            <div class="col-12 col-lg-4 pb-4">
-                <div class="ghs_feat_post h-100 position-relative">
-                    <img class="ghs_feat_post_img w-100" src="<?php echo get_the_post_thumbnail_url(get_the_ID())?>" />
-                    <span class="ghs_feat_post_info btn btn-info btn-sm position-absolute"><?php echo strtoupper(get_post_type(get_the_ID())) ?></span>
-                    <div class="ghs_feat_post_text p-3">
-                        <h5 class="pb-3"><?php echo get_the_title() ?></h5>
-                        <p><?php echo get_the_excerpt() ?></p>
-                        <a href="<?php echo get_the_permalink(get_the_ID()) ?>" class="btn btn-primary btn-sm active mx-auto text-dark" role="button">Read More</a>
+                <div class="col-12 col-lg-4 pb-4">
+                    <div class="ghs_feat_post h-100 position-relative">
+                        <img class="ghs_feat_post_img w-100" src="<?php echo get_the_post_thumbnail_url(get_the_ID())?>" />
+                        <span class="ghs_feat_post_info btn btn-info btn-sm position-absolute"><?php echo strtoupper(get_post_type(get_the_ID())) ?></span>
+                        <div class="ghs_feat_post_text p-3">
+                            <h5 class="pb-3"><?php echo get_the_title() ?></h5>
+                            <p><?php echo get_the_excerpt() ?></p>
+                            <a href="<?php echo get_the_permalink(get_the_ID()) ?>" class="btn btn-primary btn-sm active mx-auto text-dark" role="button">Read More</a>
+                        </div>
                     </div>
                 </div>
+
+                <?php
+                if($counter%3 == 0): ?> </div> <?php endif;
+
+                $counter++;
+            }
+
+        else:
+            // no posts found
+            echo '';
+        endif;
+        /* Restore original Post Data */
+        wp_reset_postdata();
+
+        ?>
+
+        <div class="row">
+            <div class="d-flex justify-content-center align-items-center pb-2 pt-2">
+                <a href="#" class="btn btn-primary btn-lg active mx-auto text-dark" role="button" aria-pressed="true">Read More</a>
             </div>
-
-            <?php
-            if($counter%3 == 0): ?> </div> <?php endif;
-
-            $counter++;
-		}
-
-    else:
-		// no posts found
-        echo '';
-	endif;
-	/* Restore original Post Data */
-	wp_reset_postdata();
-
-    ?>
-
-    <div class="row">
-        <div class="d-flex justify-content-center align-items-center pb-2 pt-2">
-            <a href="#" class="btn btn-primary btn-lg active mx-auto text-dark" role="button" aria-pressed="true">Read More</a>
         </div>
     </div>
 <?php
@@ -261,20 +260,27 @@ function _themename_insight(){
     <?php
 }
 
-function _themename_feat_column_size(){
-    $featColumn = get_option('featColumnSize');
-    ?>
-
-    <?php
-}
-
 function _themename_feat_column(){
     $featColumn = get_option('featColumn');
+    $featSize = get_option('featColumnSize');
     ?>
+
+    <div class="container">
+        <div class="row">
+
+        <?php for ($i = 1; $i > $featSize; $i++): ?>
+
+        <div class="col-<?php $answer = 12/$featSize; echo $answer?>">
+            <?php echo $answer ?>
+        </div>
+
+        <?php endfor; ?>
+
+        </div>
+    </div>
 
     <?php
 }
-
 
 
 // Admin Settings
@@ -309,6 +315,13 @@ function _themename_admin_init(){
 	else:
 		$heroBanner = array();
         update_option('heroBanner', $heroBanner);
+	endif;
+
+    if(get_option('featColumn')):
+		$featColumn = get_option('featColumn');
+	else:
+		$featColumn = array();
+        update_option('featColumn', $featColumn);
 	endif;
 
 	add_settings_section(
@@ -456,6 +469,7 @@ function feat_columns_size_callback(){
 function feat_columns_callback(){
     $featColumnSize = get_option('featColumnSize');
     $featColumn = get_option('featColumn');
+    var_dump($featColumn);
     ?>
 
     <ul class="featColumn_list">
@@ -488,6 +502,7 @@ function _themename_admin_page(){
     );
 }
 
+//Actions
 add_action('wp_enqueue_scripts', '_themename_assets');
 add_action( 'admin_enqueue_scripts', '_themename_admin_assets' );
 add_action('after_setup_theme', '_themename_theme_setup');
@@ -495,5 +510,5 @@ add_action('after_setup_theme', '_themename_after_theme');
 add_action('admin_init', '_themename_admin_init');
 add_action('admin_menu', '_themename_admin_page');
 
-
+//Filters
 add_filter( 'show_admin_bar', '__return_false' );

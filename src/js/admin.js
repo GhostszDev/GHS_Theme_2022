@@ -10,6 +10,14 @@ jQuery(document).ready( function($){
         {
             name: 'VR Helmet',
             value: ghs_obj.mediaPath + 'icons.svg#icon-vr'
+        },
+        {
+            name: 'Gamepad',
+            value: ghs_obj.mediaPath + 'icons.svg#icon-gamepad'
+        },
+        {
+            name: 'Mobile Gaming',
+            value: ghs_obj.mediaPath + 'icons.svg#icon-icon-mobile-gaming'
         }
     ]
 
@@ -76,26 +84,41 @@ jQuery(document).ready( function($){
             },
         ];
 
-        let key = 0;
-
         iconSelect.forEach((v)=>{
 
-            if(v.value == featColumn[key].icon) {
-                $('.icon_select').append(
-                    `<option value="${v.value}" selected="selected">${v.name}</option>`
-                );
-            } else {
-                $('.icon_select').append(
-                    `<option value="${v.value}">${v.name}</option>`
-                );
-            }
+            $('.icon_select').append(
+                `<option value="${v.value}">${v.name}</option>`
+            );
 
-            key++;
         });
 
         $('.icon_select').on('change', function(b){
             changeIcon(b);
         });
     }
+
+    function loadIcon(name) {
+        var preview = $(name)[0].parentElement.parentElement.children[0].children[0];
+
+        switch(name) {
+            case '.ghs_feat_column_select_1':
+                $(preview).attr('href', ghs_obj.featColumn.icon_1);
+                $(name + ' option[value='+JSON.stringify(ghs_obj.featColumn.icon_1)+']').prop("selected", true)
+            break;
+            case '.ghs_feat_column_select_2':
+                $(preview).attr('href', ghs_obj.featColumn.icon_2);
+                $(name + ' option[value='+JSON.stringify(ghs_obj.featColumn.icon_2)+']').prop("selected", true)
+            break;
+            case '.ghs_feat_column_select_3':
+                $(preview).attr('href', ghs_obj.featColumn.icon_3);
+                $(name + ' option[value='+JSON.stringify(ghs_obj.featColumn.icon_3)+']').prop("selected", true)
+            break;
+        }
+        // $(capture).val(currentInput);
+    }
+
+    loadIcon('.ghs_feat_column_select_1');
+    loadIcon('.ghs_feat_column_select_2');
+    loadIcon('.ghs_feat_column_select_3');
 
 });
