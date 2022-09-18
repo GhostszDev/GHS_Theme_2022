@@ -6,11 +6,16 @@ $colour: #1f1f1f;
 $secondColor: rgba(0,0,0);
 $primaryColor: #977fff;
 $primaryColorBorder: #8771df;
-$primaryColorHover: #8771df;
-$primaryColorBorderHover: #705eb9;
+$primaryColorHover: #5c4d97;
+$primaryColorBorderHover: #473c74;
 
 body {
   background-color: $colour;
+}
+
+.ghs_primary_text_color{
+  color: $primaryColor;
+  fill: $primaryColor;
 }
 
 p, h1, h2, h3, h4, h5{
@@ -41,6 +46,15 @@ h1, h2, h3, h4, h5, .badge, .btn{
 .btn:hover:hover{
   background: $primaryColorHover !important;
   background: $primaryColorBorderHover !important;
+}
+
+.ghs_primary_link{
+  color: $primaryColor;
+  text-decoration: none;
+}
+
+.ghs_primary_link:hover{
+  color: $primaryColorHover;
 }
 
 .navbar{
@@ -113,6 +127,13 @@ h1, h2, h3, h4, h5, .badge, .btn{
 
 .ghs_insight_title{
   width: auto;
+}
+
+.ghs_feat_column_icon{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
 }
 
 @media screen and (max-width: 1200px) {

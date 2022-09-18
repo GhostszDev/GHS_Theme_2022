@@ -16,8 +16,16 @@ jQuery(document).ready( function($){
             value: ghs_obj.mediaPath + 'icons.svg#icon-gamepad'
         },
         {
+            name: 'Console',
+            value: ghs_obj.mediaPath + 'icons.svg#icon-console'
+        },
+        {
             name: 'Mobile Gaming',
-            value: ghs_obj.mediaPath + 'icons.svg#icon-icon-mobile-gaming'
+            value: ghs_obj.mediaPath + 'icons.svg#icon-mobile-gaming'
+        },
+        {
+            name: 'Coding',
+            value: ghs_obj.mediaPath + 'icons.svg#icon-coding'
         }
     ]
 

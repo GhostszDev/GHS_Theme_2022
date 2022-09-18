@@ -265,13 +265,24 @@ function _themename_feat_column(){
     $featSize = get_option('featColumnSize');
     ?>
 
-    <div class="container">
+    <div class="container mt-4 py-4 mb-5">
         <div class="row">
 
-        <?php for ($i = 1; $i > $featSize; $i++): ?>
+        <?php for ($i = 1; $i <= $featSize; $i++): ?>
 
-        <div class="col-<?php $answer = 12/$featSize; echo $answer?>">
-            <?php echo $answer ?>
+        <div class="col-12 col-lg-<?php echo 12/$featSize;?>">
+
+            <div class="ghs_feat_column_icon mb-1 ghs_primary_text_color">
+                <svg class="ghs_feat_column_preview mb-3" aria-hidden="true" focusable="false">
+                    <use href="<?php echo $featColumn['icon_'.$i] ?>"></use>
+                </svg>
+                <h5 class="ghs_primary_text_color"><?php echo $featColumn['title_'.$i] ?></h5>
+            </div>
+
+            <p><?php echo $featColumn['desc_'.$i] ?></p>
+
+            <a href="<?php echo $featColumn['link_'.$i] ?>" class="stretched-link ghs_primary_link"><?php echo $featColumn['link_text_'.$i] ?></a>
+
         </div>
 
         <?php endfor; ?>
@@ -469,7 +480,7 @@ function feat_columns_size_callback(){
 function feat_columns_callback(){
     $featColumnSize = get_option('featColumnSize');
     $featColumn = get_option('featColumn');
-    var_dump($featColumn);
+//    var_dump($featColumn);
     ?>
 
     <ul class="featColumn_list">
@@ -484,6 +495,13 @@ function feat_columns_callback(){
                 </label>
                 <input value="<?php echo $featColumn['icon_'.$i] ?>" name="featColumn[icon_<?php echo $i ?>]" type="text" class="ghs_feat_column_icon">
 
+                <input value="<?php echo $featColumn['title_'.$i] ?>" name="featColumn[title_<?php echo $i ?>]" type="text" class="ghs_feat_column_title" placeholder="Title">
+
+                <textarea name="featColumn[desc_<?php echo $i ?>]" placeholder="Description"><?php echo $featColumn['desc_'.$i] ?></textarea>
+
+                <input value="<?php echo $featColumn['link_text_'.$i] ?>" name="featColumn[link_text_<?php echo $i ?>]" type="text" class="ghs_feat_column_link_text" placeholder="Link Text">
+
+                <input value="<?php echo $featColumn['link_'.$i] ?>" name="featColumn[link_<?php echo $i ?>]" type="url" class="ghs_feat_column_link" placeholder="Link">
             </li>
         <?php endfor; ?>
     </ul>
