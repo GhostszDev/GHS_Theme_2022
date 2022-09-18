@@ -3,7 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@400;700&display=swap');
 
 $colour: #1f1f1f;
-$secondColor: rgba(0,0,0);
+$secondColor: #fff;
 $primaryColor: #977fff;
 $primaryColorBorder: #8771df;
 $primaryColorHover: #5c4d97;
@@ -19,7 +19,7 @@ body {
 }
 
 p, h1, h2, h3, h4, h5{
-  color: white;
+  color: $secondColor;
   font-family: 'Mulish', sans-serif;
 }
 
@@ -48,6 +48,11 @@ h1, h2, h3, h4, h5, .badge, .btn{
   background: $primaryColorBorderHover !important;
 }
 
+.btn-primary:hover,
+.ghs_feat_post_info:hover{
+  color: $secondColor !important;
+}
+
 .ghs_primary_link{
   color: $primaryColor;
   text-decoration: none;
@@ -62,7 +67,7 @@ h1, h2, h3, h4, h5, .badge, .btn{
 }
 
 .navbar-dark{
-  background: $secondColor !important;
+  background: $colour !important;
 }
 
 #carouselExampleCaptions{
@@ -134,6 +139,44 @@ h1, h2, h3, h4, h5, .badge, .btn{
   flex-direction: column;
   justify-content: center;
   text-align: center;
+}
+
+.ghs_border_bottom{
+  border-bottom: 1px grey solid;
+}
+
+.ghs_social_icons{
+  display: flex;
+  flex-direction: column;
+}
+
+.ghs_social_icons ul{
+  display: flex;
+  list-style: none;
+  padding-left: 0;
+}
+
+.ghs_social_icons ul>li{
+  margin-right: auto;
+}
+
+.ghs_social_icons svg{
+  fill: grey;
+  width:1.2em;
+  height:1.2em;
+}
+
+.ghs_social_icons svg:hover{
+  fill: $secondColor;
+}
+
+.ghs_social_icons a{
+  text-decoration: none;
+}
+
+.ghs_footer_list {
+  padding-left: 0;
+  list-style: none;
 }
 
 @media screen and (max-width: 1200px) {

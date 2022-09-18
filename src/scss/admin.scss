@@ -1,5 +1,9 @@
 @import url('https://cdn.lineicons.com/3.0/lineicons.css');
 
+textarea{
+  height: 150px;
+}
+
 .heroBanner_list,
 .featColumn_list{
   display: flex;
@@ -45,4 +49,13 @@
 
 .ghs_insight_wrapper{
   width: 50%;
+}
+
+.ghs_social{
+  display: flex;
+}
+
+.ghs_social input{
+  width: 80%;
+  margin-bottom: 1rem;
 }

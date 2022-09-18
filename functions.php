@@ -73,6 +73,9 @@ function _themename_get_current_url(){
 function _themename_theme_setup(){
 
 	register_nav_menu('navBar', __( 'Nav Bar', 'theme-slug' ) );
+	register_nav_menu('companyNav', __( 'Company Nav', 'theme-slug' ) );
+	register_nav_menu('contactNav', __( 'Contact Nav', 'theme-slug' ) );
+
 	add_theme_support( 'html5', array(
 			'comment-list', 'comment-form', 'search-form', 'gallery', 'caption' )
 	);
@@ -95,7 +98,11 @@ function _themename_theme_setup(){
 function _themename_nav_bar(){ ?>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <a class="navbar-brand" href="#">
+            <svg width="75px" height="75px" aria-hidden="true" focusable="false">
+                <use href="<?php echo get_stylesheet_directory_uri() . '/src/media/icons.svg#icon-logo' ?>"></use>
+            </svg>
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -293,6 +300,117 @@ function _themename_feat_column(){
     <?php
 }
 
+function _themename_newsletter(){
+    ?>
+
+    <div class="container py-4 my-4 ghs_border_bottom">
+        <div class="row pb-4">
+
+            <div class="col-12">
+                <h4 class="ghs_section_header mt-4">Join the Newsletter</h4>
+            </div>
+
+            <div class="col-12 col-lg-6">
+                <p><?php echo get_option('newsletter'); ?></p>
+            </div>
+
+            <div class="col-12 col-lg-6">
+                <div class="input-group mb-3">
+                    <input type="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="button-addon2">
+                    <button class="btn btn-primary text-dark" type="button" id="button-addon2">Sign Up</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <?php
+}
+
+function _themename_footer(){
+	$social = get_option('social');
+	_themename_newsletter();
+    ?>
+
+    <div class="container my-4 py-4">
+        <div class="row">
+
+            <div class="col-12 col-lg-3">
+                <svg width="120" height="120" aria-hidden="true" focusable="false">
+                    <use href="<?php echo get_stylesheet_directory_uri() . '/src/media/icons.svg#icon-logo' ?>"></use>
+                </svg>
+
+                <p class="my-3"><?php echo $social['text'] ?></p>
+
+                <div class="ghs_social_icons my-3">
+
+                    <ul>
+                        <?php foreach ($social['social'] as $s): ?>
+                            <?php if(!empty($s['url'])): ?>
+                                <li>
+                                    <a href="<?php echo $s['url'] ?>">
+                                        <svg aria-hidden="true" focusable="false">
+                                            <use href="<?php echo get_stylesheet_directory_uri() . '/src/media/icons.svg#icon-'.$s['name'] ?>"></use>
+                                        </svg>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </ul>
+
+                    <ul>
+                        <?php foreach ($social['company'] as $c): ?>
+                            <?php if(!empty($c['url'])): ?>
+                                <li>
+                                    <a href="<?php echo $c['url'] ?>">
+                                        <svg width="1em" height="1em" aria-hidden="true" focusable="false">
+                                            <use href="<?php echo get_stylesheet_directory_uri() . '/src/media/icons.svg#icon-'.$c['name'] ?>"></use>
+                                        </svg>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="col-12 col-lg-3">
+                <h5 class="ghs_footer_title mb-4">Our Games</h5>
+
+                <ul class="ghs_footer_list">
+
+
+
+                </ul>
+            </div>
+
+            <div class="col-12 col-lg-3">
+                <h5 class="ghs_footer_title mb-5">Company</h5>
+
+                <ul class="ghs_footer_list mt-5">
+	                <?php foreach (_themename_get_navigation('company nav') as $navItem):?>
+                    <li class="mb-3"><a class="ghs_primary_link" href="<?php echo $navItem['url'] ?>"><?php echo $navItem['title'] ?></a></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+
+            <div class="col-12 col-lg-3">
+                <h5 class="ghs_footer_title mb-4">Contacts</h5>
+
+                <ul class="ghs_footer_list mt-5">
+		            <?php foreach (_themename_get_navigation('contact nav') as $navItem):?>
+                        <li class="mb-3"><a class="ghs_primary_link" href="<?php echo $navItem['url'] ?>"><?php echo $navItem['title'] ?></a></li>
+		            <?php endforeach; ?>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+    <?php
+}
+
 
 // Admin Settings
 function _themename_admin_init(){
@@ -321,6 +439,16 @@ function _themename_admin_init(){
 		'featColumn'
 	);
 
+    register_setting(
+		'hero-option-group',
+		'newsletter'
+	);
+
+    register_setting(
+		'hero-option-group',
+		'social'
+	);
+
 	if(get_option('heroBanner')):
 		$heroBanner = get_option('heroBanner');
 	else:
@@ -333,6 +461,75 @@ function _themename_admin_init(){
 	else:
 		$featColumn = array();
         update_option('featColumn', $featColumn);
+	endif;
+
+    if(get_option('social')):
+		$social = get_option('social');
+	else:
+		$social = array(
+                'text' => '',
+                'social' => [
+                    'facebook' => [
+                        'name' => 'Facebook',
+                        'url' => ''
+                    ],
+                    'twitter' => [
+                        'name' => 'Twitter',
+                        'url' => ''
+                    ],
+                    'instagram' => [
+                        'name' => 'Instagram',
+                        'url' => ''
+                    ],
+                    'youtube' => [
+                        'name' => 'Youtube',
+                        'url' => ''
+                    ],
+                    'tiktok' => [
+                        'name' => 'Tiktok',
+                        'url' => ''
+                    ],
+                    'twitch' => [
+                        'name' => 'Twitch',
+                        'url' => ''
+                    ],
+                    'itch' => [
+                        'name' => 'Itch',
+                        'url' => ''
+                    ]
+                ],
+                'company' => [
+	                'nintendo' => [
+		                'name' => 'Nintendo',
+		                'url' => ''
+	                ],
+	                'playstation' => [
+		                'name' => 'Playstation',
+		                'url' => ''
+	                ],
+	                'xbox' => [
+		                'name' => 'Xbox',
+		                'url' => ''
+	                ],
+	                'Windows' => [
+		                'name' => 'Windows',
+		                'url' => ''
+	                ],
+	                'steam' => [
+		                'name' => 'Steam',
+		                'url' => ''
+	                ],
+	                'android' => [
+		                'name' => 'Android',
+		                'url' => ''
+	                ],
+	                'ios' => [
+		                'name' => 'IOS',
+		                'url' => ''
+	                ]
+                ]
+        );
+        update_option('social', $social);
 	endif;
 
 	add_settings_section(
@@ -378,6 +575,22 @@ function _themename_admin_init(){
 		'featColumn-items',
 		'Feat Columns',
 		'feat_columns_callback',
+		'theme-options',
+		'theme-index-options'
+	);
+
+    add_settings_field(
+		'newsletter-items',
+		'Newsletter',
+		'newsletter_callback',
+		'theme-options',
+		'theme-index-options'
+	);
+
+    add_settings_field(
+		'social-items',
+		'Social',
+		'social_callback',
 		'theme-options',
 		'theme-index-options'
 	);
@@ -480,7 +693,6 @@ function feat_columns_size_callback(){
 function feat_columns_callback(){
     $featColumnSize = get_option('featColumnSize');
     $featColumn = get_option('featColumn');
-//    var_dump($featColumn);
     ?>
 
     <ul class="featColumn_list">
@@ -506,6 +718,43 @@ function feat_columns_callback(){
         <?php endfor; ?>
     </ul>
 
+<?php }
+
+function newsletter_callback(){
+    $newsletter = get_option('newsletter');
+    ?>
+
+    <textarea style="width: 35%" name="newsletter" placeholder="Newletter CTA"><?php echo $newsletter?></textarea>
+
+<?php }
+
+function social_callback(){
+    $social = get_option('social');
+    ?>
+
+    <textarea name="social[text]" placeholder="Footer Blurb"><?php echo $social['text'] ?></textarea>
+
+    <div class="ghs_social">
+
+        <!-- Social Links -->
+        <div class="ghs_social_links">
+            <h5>Social Links</h5>
+            <?php foreach ($social['social'] as $s): ?>
+                <input hidden value="<?php echo $s['name'] ?>" name="social[social][<?php echo $s['name'] ?>][name]" type="text" placeholder="<?php echo $s['name'] ?>">
+                <input value="<?php echo $s['url'] ?>" name="social[social][<?php echo $s['name'] ?>][url]" type="url" placeholder="<?php echo $s['name'] ?>">
+            <?php endforeach; ?>
+        </div>
+
+        <!-- Company Links -->
+        <div class="ghs_company_links">
+            <h5>Company Links</h5>
+	        <?php foreach ($social['company'] as $c): ?>
+                <input hidden value="<?php echo $c['name'] ?>" name="social[company][<?php echo $c['name'] ?>][name]" type="text" placeholder="<?php echo $c['name'] ?>">
+                <input value="<?php echo $c['url'] ?>" name="social[company][<?php echo $c['name'] ?>][url]" type="url" placeholder="<?php echo $c['name'] ?>">
+	        <?php endforeach; ?>
+        </div>
+
+    </div>
 <?php }
 
 function _themename_admin_page(){
