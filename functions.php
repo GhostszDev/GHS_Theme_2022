@@ -453,8 +453,8 @@ function _themename_page_feat_image(){
         <div class="container">
             <div class="row">
                 <div class="col-12 col-lg-6">
-                    <h5 class="pt-3 ghs_insight_title"><?php echo get_the_title(get_the_ID()) ?></h5>
-                    <?php echo get_the_content() ?>
+                    <h5 class="pt-3 ghs_insight_title"><?php if(is_page()): echo get_the_title(get_the_ID()); else: echo single_cat_title(); endif; ?></h5>
+	                <?php if(is_page()): echo get_the_content(get_the_ID()); else: echo ''; endif; ?>
                 </div>
             </div>
         </div>
@@ -514,11 +514,19 @@ function _themename_page_blog_pagination(WP_Query $wp_query = null, $echo = true
 }
 
 function _themename_page_blog_content(){
-    $args = [
-            'post_type' => 'post',
-            'post_status' => 'publish',
-            'posts_per_page' => 6
-    ];
+	if(is_category()):
+		$args = [
+			'cat' => get_queried_object()->term_id,
+			'post_status' => 'publish',
+			'posts_per_page' => 6
+		];
+	else:
+		$args = [
+			'post_type' => 'post',
+			'post_status' => 'publish',
+			'posts_per_page' => 6
+		];
+	endif;
     $query = new WP_Query( $args );
 	$counter = 1; ?>
 
