@@ -263,18 +263,12 @@ function _themename_hero_banner(){
 	<?php
 }
 
-function _themename_featured_posts(){
-
-    $args = [
-            'post_type' => 'post',
-            'post_status' => 'publish',
-            'posts_per_page' => 6
-    ];
+function _themename_featured_posts($args, $title = 'Latest News'){
     $query = new WP_Query( $args );
 	$counter = 1; ?>
 
     <div class="container">
-        <h4 class="ghs_section_header mt-4">Latest News</h4>
+        <h4 class="ghs_section_header mt-4"><?php echo $title ?></h4>
 
         <?php
         if ( $query->have_posts() ):
@@ -290,7 +284,13 @@ function _themename_featured_posts(){
                         <div class="ghs_feat_post_text p-3">
                             <h5 class="pb-3"><?php echo get_the_title() ?></h5>
                             <p><?php echo get_the_excerpt() ?></p>
-                            <a href="<?php echo get_the_permalink(get_the_ID()) ?>" class="btn btn-primary btn-sm active mx-auto text-dark" role="button">Read More</a>
+                            <a href="<?php echo get_the_permalink(get_the_ID()) ?>" class="btn btn-primary btn-sm active mx-auto text-dark" role="button">
+                                <?php if(get_post_type(get_the_ID()) == 'post'): ?>
+                                Read More
+                                <?php elseif(get_post_type(get_the_ID()) == 'games'): ?>
+                                View Game
+                                <?php endif; ?>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -311,9 +311,9 @@ function _themename_featured_posts(){
         ?>
 
         <div class="row">
-            <div class="d-flex justify-content-center align-items-center pb-2 pt-2">
-                <a href="#" class="btn btn-primary btn-lg active mx-auto text-dark" role="button" aria-pressed="true">Read More</a>
-            </div>
+<!--            <div class="d-flex justify-content-center align-items-center pb-2 pt-2">-->
+<!--                <a href="#" class="btn btn-primary btn-lg active mx-auto text-dark" role="button" aria-pressed="true">Read More</a>-->
+<!--            </div>-->
         </div>
     </div>
 <?php
@@ -651,6 +651,10 @@ function _themename_page_blog_content(){
     </div>
 
     <?php
+}
+
+function _themename_page_game_content(){
+	_themename_featured_posts($args = [ 'post_type' => 'games', 'post_status' => 'publish' ], '');
 }
 
 
