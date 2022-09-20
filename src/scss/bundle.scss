@@ -121,6 +121,25 @@ h5 .ghs_primary_link:hover{
   border: rgba(181, 181, 181, 0.69) 1px solid;
 }
 
+.ghs_feat_post_post_data{
+  padding-left: 0;
+  color: $secondColor;
+  list-style-type: disc;
+}
+
+.ghs_feat_post_post_data > li{
+  margin-right: 2rem;
+}
+
+.ghs_feat_post_post_data p{
+  padding-top: 1rem;
+}
+
+.ghs_feat_post_post_data img{
+  margin-right: 1rem;
+  width: 2rem;
+}
+
 .ghs_feat_post_info{
   top: 1rem;
   right: 1rem;
@@ -215,10 +234,14 @@ h5 .ghs_primary_link:hover{
   height: auto;
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 992px) {
 
   .ghs_insight {
     background: none !important;
+  }
+
+  .ghs_feat_post_post_data{
+    list-style-type: none;
   }
 
 }

@@ -581,6 +581,8 @@ function _themename_page_blog_content(){
                 if ( $query->have_posts() ):
                     while ( $query->have_posts() ) {
                         $query->the_post();
+                        $author_ID = get_the_author_meta('ID');
+                        $author_name =  get_the_author_meta('first_name') . ' ' . get_the_author_meta('nickname') . ' ' . get_the_author_meta('last_name');
                         ?>
 
                         <div class="col-12 pb-4">
@@ -597,7 +599,24 @@ function _themename_page_blog_content(){
 
                                     <h5 class="pb-3"><a class="ghs_primary_link" href="<?php echo get_the_permalink(get_the_ID()) ?>"><?php echo get_the_title(get_the_ID()) ?></a></h5>
                                     <p><?php echo get_the_excerpt(get_the_ID()) ?></p>
-                                    <a href="<?php echo get_the_permalink(get_the_ID()) ?>" class="btn btn-primary btn-sm active mx-auto text-dark" role="button">Read More</a>
+
+                                    <ul class="d-flex flex-lg-row flex-column align-content-lg-center ghs_feat_post_post_data">
+                                        <li class="d-flex align-items-center"><img src="<?php echo get_avatar_url($author_ID); ?>" alt="user-image" class="rounded-circle"> <p>By <?php echo ucwords($author_name); ?></p></li>
+                                        <li><p><?php echo get_the_date('F j, Y'); ?></p></li>
+                                        <li>
+                                            <p>
+                                                <?php
+                                                $comment_num = get_comments_number();
+                                                if($comment_num == 1):
+                                                    echo $comment_num . ' comment';
+                                                else:
+	                                                echo $comment_num . ' comments';
+                                                endif;
+                                                ?>
+                                            </p>
+                                        </li>
+                                    </ul>
+
                                 </div>
                             </div>
                         </div>
