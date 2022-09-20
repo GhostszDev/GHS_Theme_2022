@@ -31,6 +31,29 @@ function _themename_admin_assets() {
 
 function _themename_after_theme(){}
 
+function _themename_custom_post_types(){
+
+    register_post_type('Games',
+		array(
+			'labels'      => array(
+				'name'          => __( 'Games', 'textdomain' ),
+				'singular_name' => __( 'Game', 'textdomain' ),
+			),
+			'supports'    => array(
+                'title',
+                'excerpt',
+                'thumbnail',
+                ),
+			'public'      => true,
+			'has_archive' => true,
+			'rewrite'     => array( 'slug' => 'games' ),
+			'exclude_from_search' => false,
+			'taxonomies'   => array( 'category' ),
+		)
+	);
+
+}
+
 function _themename_get_navigation($name = ''){
 	$menuItems = wp_get_nav_menu_items($name);
 	$data = [];
@@ -98,6 +121,16 @@ function _themename_random_posts($postType, $postAmount = 1){
 
 }
 
+function _themename_add_cats($cat_list){
+
+    foreach ($cat_list as $c):
+        if(term_exists($c) == 0):
+            wp_insert_term($c, 'category', []);
+        endif;
+    endforeach;
+
+}
+
 function _themename_theme_setup(){
 
     // Register Nav Menus
@@ -125,6 +158,13 @@ function _themename_theme_setup(){
 	_themename_check_for_page('Studio', 'page');
 	_themename_check_for_page('Contact', 'page');
 
+    // Create categories
+	_themename_add_cats(GHS_GAME_CATS);
+
+}
+
+function _themename_init(){
+	_themename_custom_post_types();
 }
 
 
@@ -972,15 +1012,33 @@ function _themename_admin_page(){
 }
 
 //Actions
-add_action('wp_enqueue_scripts', '_themename_assets');
-add_action( 'admin_enqueue_scripts', '_themename_admin_assets' );
-add_action('after_setup_theme', '_themename_theme_setup');
-add_action('after_setup_theme', '_themename_after_theme');
+add_action('init', '_themename_init', 0);
 add_action('admin_init', '_themename_admin_init');
 add_action('admin_menu', '_themename_admin_page');
+add_action('wp_enqueue_scripts', '_themename_assets');
+add_action('admin_enqueue_scripts', '_themename_admin_assets');
+add_action('after_setup_theme', '_themename_theme_setup');
+add_action('after_setup_theme', '_themename_after_theme');
 
 //Filters
 add_filter( 'show_admin_bar', '__return_false' );
+
+// Const
+const GHS_GAME_CATS = array(
+	0 => 'Action',
+	1 => 'Action-Adventure',
+	2 => 'Adventure',
+	3 => 'Arcade',
+	4 => 'Puzzle',
+	5 => 'FPS',
+	6 => 'Platformer',
+	7 => 'RPG',
+	8 => 'Simulation',
+	9 => 'Strategy',
+	10 => 'Sports',
+	11 => 'MMO',
+	12 => 'Open World',
+);
 
 // Defines
 // Includes
