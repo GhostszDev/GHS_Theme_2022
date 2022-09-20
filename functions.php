@@ -70,16 +70,45 @@ function _themename_get_current_url(){
 	return $current_url.'/';
 }
 
+function _themename_check_for_page($pageName, $postType){
+	$check = get_page_by_title($pageName);
+
+	if(empty($check->ID)):
+		$args = [
+			'post_title'=>$pageName,
+			'post_status'=>'publish',
+			'post_type'=>$postType
+		];
+		wp_insert_post($args);
+	endif;
+}
+
+function _themename_random_posts($postType, $postAmount = 1){
+
+    $args = [
+        'post_type' => $postType,
+        'post_status' => 'publish',
+        'numberposts' => $postAmount,
+        'orderby' => 'rand'
+    ];
+
+	$data = get_posts( $args );
+
+    return $data;
+
+}
+
 function _themename_theme_setup(){
 
+    // Register Nav Menus
 	register_nav_menu('navBar', __( 'Nav Bar', 'theme-slug' ) );
 	register_nav_menu('companyNav', __( 'Company Nav', 'theme-slug' ) );
 	register_nav_menu('contactNav', __( 'Contact Nav', 'theme-slug' ) );
 
+    // Adding Theme Supports
 	add_theme_support( 'html5', array(
 			'comment-list', 'comment-form', 'search-form', 'gallery', 'caption' )
 	);
-
 	add_theme_support('post-formats', array(
 		'aside',
 		'gallery',
@@ -87,9 +116,14 @@ function _themename_theme_setup(){
 		'video',
 		'audio'
 	));
-
 	add_theme_support( 'woocommerce' );
 	add_theme_support('post-thumbnails');
+
+    // Default Pages
+	_themename_check_for_page('Blog', 'page');
+	_themename_check_for_page('Games', 'page');
+	_themename_check_for_page('Studio', 'page');
+	_themename_check_for_page('Contact', 'page');
 
 }
 
@@ -403,6 +437,166 @@ function _themename_footer(){
                         <li class="mb-3"><a class="ghs_primary_link" href="<?php echo $navItem['url'] ?>"><?php echo $navItem['title'] ?></a></li>
 		            <?php endforeach; ?>
                 </ul>
+            </div>
+
+        </div>
+    </div>
+
+    <?php
+}
+
+function _themename_page_feat_image(){
+    ?>
+
+    <div class="w-100 mt-4 ghs_insight d-flex align-items-center" style="background: url(<?php echo esc_url(get_the_post_thumbnail_url(get_the_ID())); ?>)">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    <h5 class="pt-3 ghs_insight_title"><?php echo get_the_title(get_the_ID()) ?></h5>
+                    <?php echo get_the_content() ?>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <?php
+}
+
+function _themename_page_blog_pagination(WP_Query $wp_query = null, $echo = true, $params = [] ) {
+	if ( null === $wp_query ) {
+		global $wp_query;
+	}
+
+	$add_args = [];
+
+	//add query (GET) parameters to generated page URLs
+	/*if (isset($_GET[ 'sort' ])) {
+		$add_args[ 'sort' ] = (string)$_GET[ 'sort' ];
+	}*/
+
+	$pages = paginate_links( array_merge( [
+			'base'         => str_replace( 999999999, '%#%', esc_url( get_pagenum_link( 999999999 ) ) ),
+			'format'       => '?paged=%#%',
+			'current'      => max( 1, get_query_var( 'paged' ) ),
+			'total'        => $wp_query->max_num_pages,
+			'type'         => 'array',
+			'show_all'     => false,
+			'end_size'     => 3,
+			'mid_size'     => 1,
+			'prev_next'    => true,
+			'prev_text'    => __( '« Prev' ),
+			'next_text'    => __( 'Next »' ),
+			'add_args'     => $add_args,
+			'add_fragment' => ''
+		], $params )
+	);
+
+	if ( is_array( $pages ) ) {
+		//$current_page = ( get_query_var( 'paged' ) == 0 ) ? 1 : get_query_var( 'paged' );
+		$pagination = '<nav class="pagination d-flex justify-content-center"><ul class="pagination justify-content-center">';
+
+		foreach ( $pages as $page ) {
+			$pagination .= '<li class="page-item' . (strpos($page, 'current') !== false ? ' active' : '') . '"> ' . str_replace('page-numbers', 'page-link', $page) . '</li>';
+		}
+
+		$pagination .= '</ul></nav>';
+
+		if ( $echo ) {
+			echo $pagination;
+		} else {
+			return $pagination;
+		}
+	}
+
+	return null;
+}
+
+function _themename_page_blog_content(){
+    $args = [
+            'post_type' => 'post',
+            'post_status' => 'publish',
+            'posts_per_page' => 6
+    ];
+    $query = new WP_Query( $args );
+	$counter = 1; ?>
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-12 col-lg-8 my-4">
+
+                <div class="container">
+
+                <?php
+                if ( $query->have_posts() ):
+                    while ( $query->have_posts() ) {
+                        $query->the_post();
+                        ?>
+
+                        <div class="col-12 pb-4">
+                            <div class="ghs_feat_post h-100 position-relative">
+                                <img class="ghs_feat_post_img w-100" src="<?php echo get_the_post_thumbnail_url(get_the_ID())?>" />
+                                <div class="ghs_feat_post_text p-3">
+
+
+                                    <?php if(get_the_category(get_the_ID())[0]->term_id != 1): ?>
+                                        <a href="<?php echo get_category_link(get_the_category(get_the_ID())[0]->cat_ID) ?>"><span class="ghs_feat_post_info btn btn-info btn-sm my-4"><?php echo strtoupper(get_the_category(get_the_ID())[0]->name) ?></span></a>
+                                    <?php else: ?>
+                                        <a href="<?php echo home_url('/blog')?>"><span class="ghs_feat_post_info btn btn-info btn-sm my-4"><?php echo strtoupper('post') ?></span></a>
+                                    <?php endif; ?>
+
+                                    <h5 class="pb-3"><a class="ghs_primary_link" href="<?php echo get_the_permalink(get_the_ID()) ?>"><?php echo get_the_title(get_the_ID()) ?></a></h5>
+                                    <p><?php echo get_the_excerpt(get_the_ID()) ?></p>
+                                    <a href="<?php echo get_the_permalink(get_the_ID()) ?>" class="btn btn-primary btn-sm active mx-auto text-dark" role="button">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <?php
+                    }
+
+	                _themename_page_blog_pagination($query);
+
+                else:
+                    // no posts found
+                    echo '';
+                endif;
+                /* Restore original Post Data */
+                wp_reset_postdata();
+
+        ?>
+    </div>
+
+            </div>
+
+            <div class="col-12 col-lg-4 my-4">
+
+                <div class="ghs_side_card w-100 mb-4">
+                    <?php $recent = _themename_random_posts('post', 4); ?>
+                    <div class="ghs_side_card_title px-5 py-3">
+                        <h5>Recent Post</h5>
+                    </div>
+
+                    <ul class="px-5 py-3">
+                        <?php foreach ($recent as $r): ?>
+                            <li class="mb-3 pb-2"><a class="ghs_primary_link" href="<?php echo get_the_permalink($r->ID) ?>"><?php echo $r->post_title; ?></a></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+
+                <div class="ghs_side_card w-100 mb-4">
+                    <div class="ghs_side_card_title px-5 py-3">
+                        <h5>Sponsor</h5>
+                    </div>
+
+                    <div class="ghs_sponsor w-100">
+                        <?php the_ad_group(7); ?>
+                    </div>
+
+                </div>
+
             </div>
 
         </div>
@@ -779,3 +973,6 @@ add_action('admin_menu', '_themename_admin_page');
 
 //Filters
 add_filter( 'show_admin_bar', '__return_false' );
+
+// Defines
+// Includes

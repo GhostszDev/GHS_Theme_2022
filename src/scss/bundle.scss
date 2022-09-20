@@ -62,6 +62,14 @@ h1, h2, h3, h4, h5, .badge, .btn{
   color: $primaryColorHover;
 }
 
+h5 .ghs_primary_link{
+  color: $secondColor;
+}
+
+h5 .ghs_primary_link:hover{
+  color: $primaryColor;
+}
+
 .navbar{
   height: 6rem;
 }
@@ -122,12 +130,11 @@ h1, h2, h3, h4, h5, .badge, .btn{
   font-size: 2em;
 }
 
-.ghs_insight{
+.ghs_insight, .ghs_feat_page_image{
   min-height: 60vh;
   background-repeat: no-repeat !important;
   background-position: center !important;
   background-size: cover !important;
-  
 }
 
 .ghs_insight_title{
@@ -177,6 +184,35 @@ h1, h2, h3, h4, h5, .badge, .btn{
 .ghs_footer_list {
   padding-left: 0;
   list-style: none;
+}
+
+.pagination .page-link{
+  color: $colour;
+}
+
+.active .page-link{
+  color: $secondColor;
+  background-color: $primaryColor;
+  border-color: $primaryColor;
+}
+
+.ghs_side_card_title{
+  background-color: #646464;
+}
+
+.ghs_side_card ul{
+  background-color: #2a2a2a;
+  color: $secondColor;
+  list-style-type: disclosure-closed;
+}
+
+.ghs_side_card ul li{
+  border-bottom: grey 1px solid;
+}
+
+.ghs_sponsor img{
+  width: 100%;
+  height: auto;
 }
 
 @media screen and (max-width: 1200px) {
