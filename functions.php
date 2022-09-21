@@ -486,15 +486,47 @@ function _themename_footer(){
 }
 
 function _themename_page_feat_image(){
-    ?>
+	?>
 
     <div class="w-100 mt-4 ghs_insight d-flex align-items-center" style="background: url(<?php echo esc_url(get_the_post_thumbnail_url(get_the_ID())); ?>)">
 
         <div class="container">
             <div class="row">
                 <div class="col-12 col-lg-6">
-                    <h5 class="pt-3 ghs_insight_title"><?php if(is_page()): echo get_the_title(get_the_ID()); else: echo single_cat_title(); endif; ?></h5>
-	                <?php if(is_page()): echo get_the_content(get_the_ID()); else: echo ''; endif; ?>
+                    <?php if(is_single()): ?>
+
+	                    <?php if(get_the_category(get_the_ID())[0]->term_id != 1): ?>
+                            <a href="<?php echo get_category_link(get_the_category(get_the_ID())[0]->cat_ID) ?>"><span class="ghs_feat_post_info btn btn-info btn-sm my-4"><?php echo strtoupper(get_the_category(get_the_ID())[0]->name) ?></span></a>
+	                    <?php else: ?>
+                            <a href="<?php echo home_url('/blog')?>"><span class="ghs_feat_post_info btn btn-info btn-sm my-4"><?php echo strtoupper('post') ?></span></a>
+	                    <?php endif; ?>
+
+                    <?php endif; ?>
+                    <h5 class="pt-3 ghs_insight_title"><?php if(is_page() || is_single()): echo get_the_title(get_the_ID()); else: echo single_cat_title(); endif; ?></h5>
+	                <?php if(is_page()):
+                        echo get_the_content(get_the_ID());
+                    elseif(is_single()):
+	                    global $post;
+	                    $author_ID = $post->post_author;
+	                    $author_name =  get_the_author_meta('first_name', $author_ID) . ' ' . get_the_author_meta('nickname', $author_ID) . ' ' . get_the_author_meta('last_name', $author_ID);
+	                    ?>
+                        <ul class="d-flex flex-lg-row flex-column align-content-lg-center ghs_feat_post_post_data">
+                            <li class="d-flex align-items-center"><img src="<?php echo get_avatar_url($author_ID); ?>" alt="user-image" class="rounded-circle"> <p>By <?php echo ucwords($author_name); ?></p></li>
+                            <li><p><?php echo get_the_date('F j, Y'); ?></p></li>
+                            <li>
+                                <p>
+                                    <?php
+                                    $comment_num = get_comments_number();
+                                    if($comment_num == 1):
+                                        echo $comment_num . ' comment';
+                                    else:
+                                        echo $comment_num . ' comments';
+                                    endif;
+                                    ?>
+                                </p>
+                            </li>
+                        </ul>
+                    <?php else: echo ''; endif; ?>
                 </div>
             </div>
         </div>
@@ -674,6 +706,55 @@ function _themename_page_blog_content(){
 
 function _themename_page_game_content(){
 	_themename_featured_posts($args = [ 'post_type' => 'games', 'post_status' => 'publish' ], '');
+}
+
+function _themename_single_post(){
+    ?>
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-12 col-lg-8 ghs_single_post">
+                <?php echo get_the_content(); ?>
+            </div>
+
+            <div class="col-12 col-lg-4 my-4">
+
+                <div class="ghs_side_card w-100 mb-4">
+			        <?php $recent = _themename_random_posts('post', 4); ?>
+                    <div class="ghs_side_card_title px-5 py-3">
+                        <h5>Recent Post</h5>
+                    </div>
+
+                    <ul class="px-5 py-3">
+				        <?php foreach ($recent as $r): ?>
+                            <li class="mb-3 pb-2"><a class="ghs_primary_link" href="<?php echo get_the_permalink($r->ID) ?>"><?php echo $r->post_title; ?></a></li>
+				        <?php endforeach; ?>
+                    </ul>
+                </div>
+
+                <div class="ghs_side_card w-100 mb-4">
+                    <div class="ghs_side_card_title px-5 py-3">
+                        <h5>Sponsor</h5>
+                    </div>
+
+                    <div class="ghs_sponsor w-100">
+				        <?php the_ad_group(7); ?>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <?php
+	// If comments are open or we have at least one comment, load up the comment template.
+	if ( comments_open() || get_comments_number() ) :
+		comments_template();
+	endif;
 }
 
 

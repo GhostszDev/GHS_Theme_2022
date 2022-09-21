@@ -18,7 +18,7 @@ body {
   fill: $primaryColor;
 }
 
-p, h1, h2, h3, h4, h5{
+p, h1, h2, h3, h4, h5, .ghs_single_post{
   color: $secondColor;
   font-family: 'Mulish', sans-serif;
 }
@@ -53,12 +53,12 @@ h1, h2, h3, h4, h5, .badge, .btn{
   color: $secondColor !important;
 }
 
-.ghs_primary_link{
+.ghs_primary_link, .ghs_single_post a{
   color: $primaryColor;
   text-decoration: none;
 }
 
-.ghs_primary_link:hover{
+.ghs_primary_link:hover, .ghs_single_post a:hover{
   color: $primaryColorHover;
 }
 
@@ -232,6 +232,10 @@ h5 .ghs_primary_link:hover{
 .ghs_sponsor img{
   width: 100%;
   height: auto;
+}
+
+.ghs_comment_form .form-control{
+  height: 8rem;
 }
 
 @media screen and (max-width: 992px) {
