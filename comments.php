@@ -1,24 +1,26 @@
-<div class="container my-4">
+<?php
 
-	<div class="row">
+//if(post_password_required()):
+//    return;
+//endif;
 
-		<div class="col-12">
-			<?php comment_form([
-				'comment_field' =>
-                    '<div class="form-floating mb-3 ghs_comment_form">
-                        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
-                        <label for="floatingTextarea">Comments</label>
-                    </div>',
-                'fields' =>[
-                    'author'=>
-                        '<div class="form-floating">
-                            <input type="Name" class="form-control" id="floatingPassword" placeholder="name">
-                            <label for="floatingPassword">Name</label>
-                        </div>'
-                    ],
-			]); ?>
-		</div>
+?>
 
-	</div>
+<div id="comments" class="container">
+    <div class="row">
 
+        <ul class="comment-list">
+		    <?php
+		    wp_list_comments( array(
+			    'avatar_size' => 60,
+			    'max_depth'   => '',
+			    'style'       => 'li',
+			    'short_ping'  => true,
+			    'type'        => 'comment',
+			    'reverse_top_level' => true
+		    ) );
+		    ?>
+        </ul>
+
+    </div>
 </div>

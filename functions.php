@@ -690,9 +690,11 @@ function _themename_page_blog_content(){
                         <h5>Sponsor</h5>
                     </div>
 
-                    <div class="ghs_sponsor w-100">
-                        <?php the_ad_group(7); ?>
-                    </div>
+<!--                    --><?php //if(function_exists(the_ad_group())): ?>
+<!--                    <div class="ghs_sponsor w-100">-->
+<!--                        --><?php //the_ad_group(7); ?>
+<!--                    </div>-->
+<!--                    --><?php //endif; ?>
 
                 </div>
 
@@ -738,9 +740,11 @@ function _themename_single_post(){
                         <h5>Sponsor</h5>
                     </div>
 
-                    <div class="ghs_sponsor w-100">
-				        <?php the_ad_group(7); ?>
-                    </div>
+<!--	                --><?php //if(function_exists(the_ad_group())): ?>
+<!--                        <div class="ghs_sponsor w-100">-->
+<!--			                --><?php //the_ad_group(7); ?>
+<!--                        </div>-->
+<!--	                --><?php //endif; ?>
 
                 </div>
 
