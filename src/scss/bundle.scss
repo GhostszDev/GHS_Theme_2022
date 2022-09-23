@@ -234,12 +234,12 @@ h5 .ghs_primary_link:hover{
   height: auto;
 }
 
-.ghs_comment_form .form-control{
-  height: 8rem;
+.ghs_half_forms div{
+  width: 49%;
 }
 
-.ghs_comment_form_input{
-  width: 100%;
+.comments, label{
+  color: $secondColor;
 }
 
 @media screen and (max-width: 992px) {
