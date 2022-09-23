@@ -53,8 +53,8 @@
                     'cookies' => '
                         <div class="form-check mb-3">
                             <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                            <label class="form-check-label" for="flexCheckDefault">
-                               ' . $comment_cookies_1 . '<a href="' . get_privacy_policy_url() . '">' . $comment_cookies_2 . '</a>
+                            <label class="form-check-label ghs_white_text" for="flexCheckDefault">
+                               ' . $comment_cookies_1 . '<a class="ghs_primary_link" href="' . get_privacy_policy_url() . '">' . $comment_cookies_2 . '</a>
                             </label>
                         </div>
                         ',

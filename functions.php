@@ -157,6 +157,7 @@ function _themename_theme_setup(){
 	_themename_check_for_page('Games', 'page');
 	_themename_check_for_page('Studio', 'page');
 	_themename_check_for_page('Contact', 'page');
+	_themename_check_for_page('Privacy Policy', 'page');
 
     // Create categories
 	_themename_add_cats(GHS_GAME_CATS);

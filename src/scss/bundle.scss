@@ -18,7 +18,7 @@ body {
   fill: $primaryColor;
 }
 
-p, h1, h2, h3, h4, h5, .ghs_single_post{
+p, h1, h2, h3, h4, h5, .ghs_single_post, .ghs_white_text{
   color: $secondColor;
   font-family: 'Mulish', sans-serif;
 }
@@ -53,12 +53,12 @@ h1, h2, h3, h4, h5, .badge, .btn{
   color: $secondColor !important;
 }
 
-.ghs_primary_link, .ghs_single_post a{
+.ghs_primary_link, .ghs_single_post a, a{
   color: $primaryColor;
   text-decoration: none;
 }
 
-.ghs_primary_link:hover, .ghs_single_post a:hover{
+.ghs_primary_link:hover, .ghs_single_post a:hover, a:hover{
   color: $primaryColorHover;
 }
 
@@ -238,7 +238,7 @@ h5 .ghs_primary_link:hover{
   width: 49%;
 }
 
-.comments, label{
+.comments{
   color: $secondColor;
 }
 
