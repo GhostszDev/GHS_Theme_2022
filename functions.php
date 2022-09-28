@@ -170,6 +170,17 @@ function _themename_init(){
 	_themename_custom_post_types();
 }
 
+function _themename_findInArray($array, $id, $sKey, $displayKey){
+
+	foreach ($array as $key => $val) {
+		if ($val[$sKey] == $id) {
+			return $array[$key][$displayKey];
+		}
+	}
+	return false;
+
+}
+
 
 //Theme Frontend
 function _themename_nav_bar(){ ?>
@@ -731,6 +742,7 @@ function _themename_single_post(){
 
             <div class="col-12 col-lg-4 my-4">
 
+                <?php if(is_single() && get_post_type() != 'games'): ?>
                 <div class="ghs_side_card w-100 mb-4">
 			        <?php $recent = _themename_random_posts('post', 4); ?>
                     <div class="ghs_side_card_title px-5 py-3">
@@ -743,7 +755,39 @@ function _themename_single_post(){
 				        <?php endforeach; ?>
                     </ul>
                 </div>
+                <?php elseif (is_single() && get_post_type() == 'games'): ?>
 
+                <ul class="game_data p-0">
+                    <li class="mb-5">
+                        <h5>Released on</h5>
+                        <p><?php echo get_post_meta(get_the_ID(), 'game_release', true) ?></p>
+                    </li>
+
+                    <li class="mb-5">
+                        <h5>Publisher</h5>
+                        <p><?php echo get_post_meta(get_the_ID(), 'game_publisher', true) ?></p>
+                    </li>
+
+                    <li class="mb-5">
+                        <h5>ESRB Rating</h5>
+                        <p><?php $arr = _themename_findInArray(GHS_ESRB_RATINGS, get_post_meta(get_the_ID(), 'game_rating', true), 'Rating', 'Name');
+                        echo $arr;?></p>
+                    </li>
+
+                    <li class="mb-5">
+                        <h5>File Size</h5>
+                        <p><?php echo get_post_meta(get_the_ID(), 'game_size', true) ?></p>
+                    </li>
+
+                    <li class="mb-5">
+                        <h5>Platforms</h5>
+                        <ul class="d-flex p-0">
+
+                        </ul>
+                    </li>
+                </ul>
+
+                <?php endif; ?>
                 <div class="ghs_side_card w-100 mb-4">
                     <div class="ghs_side_card_title px-5 py-3">
                         <h5>Sponsor</h5>
@@ -1128,6 +1172,89 @@ function _themename_admin_page(){
     );
 }
 
+function _themename_save_postdata($post_id){
+    if(array_key_exists('game_rating_field', $_POST)){
+        update_post_meta(
+          $post_id,
+          'game_rating',
+          $_POST['game_rating_field']
+        );
+    }
+
+    if(array_key_exists('game_release_field', $_POST)){
+        update_post_meta(
+          $post_id,
+          'game_release',
+          $_POST['game_release_field']
+        );
+    }
+
+    if(array_key_exists('game_publisher_field', $_POST)){
+        update_post_meta(
+          $post_id,
+          'game_publisher',
+          $_POST['game_publisher_field']
+        );
+    }
+
+    if(array_key_exists('game_size_field', $_POST)){
+        update_post_meta(
+          $post_id,
+          'game_size',
+          $_POST['game_size_field']
+        );
+    }
+}
+
+function game_rating_meta_box($post){
+    $value = get_post_meta($post->ID, 'game_rating', true);
+    ?>
+
+    <select name="game_rating_field" id="game_rating_field" class="ghs_game_rating">
+        <?php foreach (GHS_ESRB_RATINGS as $rating): ?>
+        <option value="<?php echo $rating['Rating'] ?>" <?php selected($value, $rating['Rating']) ?>><?php echo $rating['Name'] ?></option>
+        <?php endforeach; ?>
+    </select>
+
+    <?php
+}
+
+function game_release_meta_box($post){
+    $value = get_post_meta($post->ID, 'game_release', true);
+    ?>
+
+    <input type="date" id="game_release_field" name="game_release_field" value="<?php echo $value ?>">
+
+    <?php
+}
+
+function game_publisher_meta_box($post){
+    $value = get_post_meta($post->ID, 'game_publisher', true);
+    ?>
+
+    <input type="text" name="game_publisher_field" id="game_publisher_field" value="<?php echo $value?>">
+
+    <?php
+}
+
+function game_side_meta_box($post){
+    $value = get_post_meta($post->ID, 'game_size', true);
+    ?>
+
+    <input type="text" name="game_size_field" id="game_size_field" value="<?php echo $value ?>">
+
+    <?php
+}
+
+function _themename_meta_boxes(){
+
+    add_meta_box('game_rating', 'Game Rating', 'game_rating_meta_box', 'games', 'side');
+    add_meta_box('game_release', 'Game Release', 'game_release_meta_box', 'games', 'side');
+    add_meta_box('game_publisher', 'Game Publisher', 'game_publisher_meta_box', 'games', 'side');
+    add_meta_box('game_size', 'Game Size', 'game_side_meta_box', 'games', 'side');
+
+}
+
 //Actions
 add_action('init', '_themename_init', 0);
 add_action('admin_init', '_themename_admin_init');
@@ -1137,6 +1264,7 @@ add_action('admin_enqueue_scripts', '_themename_admin_assets');
 add_action('after_setup_theme', '_themename_theme_setup');
 add_action('after_setup_theme', '_themename_after_theme');
 add_action('add_meta_boxes', '_themename_meta_boxes');
+add_action('save_post', '_themename_save_postdata');
 
 //Filters
 add_filter( 'show_admin_bar', '__return_false' );

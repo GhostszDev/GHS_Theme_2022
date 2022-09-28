@@ -135,9 +135,10 @@ h5 .ghs_primary_link:hover{
   padding-top: 1rem;
 }
 
-.ghs_feat_post_post_data img{
+.rounded-circle{
   margin-right: 1rem;
   width: 2rem;
+  height: 2rem;
 }
 
 .ghs_feat_post_info{
@@ -215,7 +216,7 @@ h5 .ghs_primary_link:hover{
   border-color: $primaryColor;
 }
 
-.ghs_side_card_title{
+.ghs_side_card_title, .card-header{
   background-color: #646464;
 }
 
@@ -240,6 +241,24 @@ h5 .ghs_primary_link:hover{
 
 .comments{
   color: $secondColor;
+}
+
+.comment-form-comment .form-control{
+  height: 10rem;
+}
+
+.ghs_comment_commenter_info p{
+  padding: 0;
+  margin: 0;
+}
+
+.ghs_comment_list .list-group-item{
+  background-color: #2a2a2a;
+  color: $secondColor;
+}
+
+.game_data{
+  list-style: none;
 }
 
 @media screen and (max-width: 992px) {
