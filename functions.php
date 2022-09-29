@@ -294,7 +294,13 @@ function _themename_featured_posts($args, $title = 'Latest News'){
                 <div class="col-12 col-lg-4 pb-4">
                     <div class="ghs_feat_post h-100 position-relative">
                         <img class="ghs_feat_post_img w-100" src="<?php echo get_the_post_thumbnail_url(get_the_ID())?>" />
-                        <span class="ghs_feat_post_info btn btn-info btn-sm position-absolute"><?php echo strtoupper(get_post_type(get_the_ID())) ?></span>
+
+	                    <?php if(get_the_category(get_the_ID())[0]->term_id != 1): ?>
+                            <a href="<?php echo get_category_link(get_the_category(get_the_ID())[0]->cat_ID) ?>"><span class="ghs_feat_post_info btn btn-info btn-sm my-4"><?php echo strtoupper(get_the_category(get_the_ID())[0]->name) ?></span></a>
+	                    <?php else: ?>
+                            <a href="<?php echo home_url('/blog')?>"><span class="ghs_feat_post_info btn btn-info btn-sm my-4"><?php echo strtoupper('post') ?></span></a>
+	                    <?php endif; ?>
+
                         <div class="ghs_feat_post_text p-3">
                             <h5 class="pb-3"><?php echo get_the_title() ?></h5>
                             <p><?php echo get_the_excerpt() ?></p>
@@ -314,6 +320,10 @@ function _themename_featured_posts($args, $title = 'Latest News'){
 
                 $counter++;
             }
+
+        if(is_page('games')):
+	        _themename_page_blog_pagination($query);
+        endif;
 
         else:
             // no posts found
@@ -727,7 +737,7 @@ function _themename_page_blog_content(){
 }
 
 function _themename_page_game_content(){
-	_themename_featured_posts($args = [ 'post_type' => 'games', 'post_status' => 'publish' ], '');
+	_themename_featured_posts($args = [ 'post_type' => 'games', 'post_status' => 'publish', 'posts_per_page' => 6 ], '');
 }
 
 function _themename_single_post(){
@@ -758,49 +768,80 @@ function _themename_single_post(){
                 <?php elseif (is_single() && get_post_type() == 'games'): ?>
 
                 <ul class="game_data p-0">
+		            <?php if(get_post_meta(get_the_ID(), 'game_release', true)): ?>
                     <li class="mb-5">
                         <h5>Released on</h5>
                         <p><?php echo get_post_meta(get_the_ID(), 'game_release', true) ?></p>
                     </li>
+                    <?php endif; ?>
 
+		            <?php if(get_post_meta(get_the_ID(), 'game_publisher', true)): ?>
                     <li class="mb-5">
                         <h5>Publisher</h5>
                         <p><?php echo get_post_meta(get_the_ID(), 'game_publisher', true) ?></p>
                     </li>
+                    <?php endif; ?>
 
+		            <?php if(get_post_meta(get_the_ID(), 'game_rating', true)): ?>
                     <li class="mb-5">
                         <h5>ESRB Rating</h5>
                         <p><?php $arr = _themename_findInArray(GHS_ESRB_RATINGS, get_post_meta(get_the_ID(), 'game_rating', true), 'Rating', 'Name');
                         echo $arr;?></p>
                     </li>
+                    <?php endif; ?>
 
+                    <?php if(get_post_meta(get_the_ID(), 'game_size', true)): ?>
                     <li class="mb-5">
                         <h5>File Size</h5>
                         <p><?php echo get_post_meta(get_the_ID(), 'game_size', true) ?></p>
                     </li>
+                    <?php endif; ?>
 
+                    <?php if(!empty(get_post_meta(get_the_ID(), 'game_platform', true))): ?>
                     <li class="mb-5">
                         <h5>Platforms</h5>
-                        <ul class="d-flex p-0">
 
-                        </ul>
+                        <div class="ghs_social_icons my-3 w-50">
+
+                            <ul>
+                                <?php foreach (get_post_meta(get_the_ID(), 'game_platform', true)['company'] as $c): ?>
+                                    <?php if(!empty($c['url'])): ?>
+                                        <li>
+                                            <a href="<?php echo $c['url'] ?>">
+                                                <svg width="1em" height="1em" aria-hidden="true" focusable="false">
+                                                    <use href="<?php echo get_stylesheet_directory_uri() . '/src/media/icons.svg#icon-'.$c['name'] ?>"></use>
+                                                </svg>
+                                            </a>
+                                        </li>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+
                     </li>
+                    <?php endif; ?>
                 </ul>
 
                 <?php endif; ?>
+
+
                 <div class="ghs_side_card w-100 mb-4">
                     <div class="ghs_side_card_title px-5 py-3">
                         <h5>Sponsor</h5>
                     </div>
 
-<!--	                --><?php //if(function_exists(the_ad_group())): ?>
-<!--                        <div class="ghs_sponsor w-100">-->
-<!--			                --><?php //the_ad_group(7); ?>
-<!--                        </div>-->
-<!--	                --><?php //endif; ?>
+	                <?php if(function_exists(the_ad_group())): ?>
+                        <div class="ghs_sponsor w-100">
+			                <?php the_ad_group(7); ?>
+                        </div>
+	                <?php endif; ?>
 
                 </div>
 
+            </div>
+
+            <div class="col-12">
+	            <?php _themename_featured_posts($args = [ 'post_type' => 'games', 'post_status' => 'publish', 'posts_per_page' => 3 ], 'More Releases'); ?>
             </div>
 
         </div>
@@ -1204,10 +1245,22 @@ function _themename_save_postdata($post_id){
           $_POST['game_size_field']
         );
     }
+
+    if(array_key_exists('game_platform', $_POST)){
+        update_post_meta(
+          $post_id,
+          'game_platform',
+          $_POST['game_platform']
+        );
+    }
 }
 
 function game_rating_meta_box($post){
-    $value = get_post_meta($post->ID, 'game_rating', true);
+    if(get_post_meta($post->ID, 'game_rating', true)):
+        $value = get_post_meta($post->ID, 'game_rating', true);
+    else:
+        $value = 'RP';
+    endif;
     ?>
 
     <select name="game_rating_field" id="game_rating_field" class="ghs_game_rating">
@@ -1237,7 +1290,7 @@ function game_publisher_meta_box($post){
     <?php
 }
 
-function game_side_meta_box($post){
+function game_size_meta_box($post){
     $value = get_post_meta($post->ID, 'game_size', true);
     ?>
 
@@ -1246,12 +1299,59 @@ function game_side_meta_box($post){
     <?php
 }
 
+function game_platform_meta_box($post){
+    if(get_post_meta($post->ID, 'game_platform', true)):
+        $value = get_post_meta($post->ID, 'game_platform', true);
+    else:
+        $value = [
+	        'company' => [
+		        'nintendo' => [
+			        'name' => 'Nintendo',
+			        'url' => ''
+		        ],
+		        'playstation' => [
+			        'name' => 'Playstation',
+			        'url' => ''
+		        ],
+		        'xbox' => [
+			        'name' => 'Xbox',
+			        'url' => ''
+		        ],
+		        'Windows' => [
+			        'name' => 'Windows',
+			        'url' => ''
+		        ],
+		        'steam' => [
+			        'name' => 'Steam',
+			        'url' => ''
+		        ],
+		        'android' => [
+			        'name' => 'Android',
+			        'url' => ''
+		        ],
+		        'ios' => [
+			        'name' => 'IOS',
+			        'url' => ''
+		        ]
+	        ]
+        ];
+    endif;
+
+    foreach ($value['company'] as $c):
+    ?>
+        <input hidden value="<?php echo $c['name'] ?>" name="game_platform[company][<?php echo $c['name'] ?>][name]" type="text" placeholder="<?php echo $c['name'] ?>">
+        <input style="margin-bottom: .5rem; width: 100%;" value="<?php echo $c['url'] ?>" name="game_platform[company][<?php echo $c['name'] ?>][url]" type="url" placeholder="<?php echo $c['name'] ?>">
+    <?php
+    endforeach;
+}
+
 function _themename_meta_boxes(){
 
     add_meta_box('game_rating', 'Game Rating', 'game_rating_meta_box', 'games', 'side');
     add_meta_box('game_release', 'Game Release', 'game_release_meta_box', 'games', 'side');
     add_meta_box('game_publisher', 'Game Publisher', 'game_publisher_meta_box', 'games', 'side');
-    add_meta_box('game_size', 'Game Size', 'game_side_meta_box', 'games', 'side');
+    add_meta_box('game_size', 'Game Size', 'game_size_meta_box', 'games', 'side');
+    add_meta_box('game_platform_links', 'Game Platforms', 'game_platform_meta_box', 'games', 'side');
 
 }
 
