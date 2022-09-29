@@ -185,58 +185,72 @@ function _themename_findInArray($array, $id, $sKey, $displayKey){
 //Theme Frontend
 function _themename_nav_bar(){ ?>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="<?php echo get_home_url() ?>">
             <svg width="75px" height="75px" aria-hidden="true" focusable="false">
                 <use href="<?php echo get_stylesheet_directory_uri() . '/src/media/icons.svg#icon-logo' ?>"></use>
             </svg>
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 mx-auto">
-                <?php foreach (_themename_get_navigation('Nav Bar') as $navItem): ?>
-                    <?php if(empty($navItem['submenu'])): ?>
-                        <li class="nav-item ">
-                            <a class="nav-link <?php if($navItem['url'] == _themename_get_current_url()): echo "active"; endif; ?>" aria-current="page" href="<?php echo $navItem['url'] ?>">
-                                <?php echo $navItem['title'] ?>
-                            </a>
-                        </li>
-                    <?php else: ?>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle"
-                                   href="#" role="button"
-                                   data-bs-toggle="dropdown"
-                                   aria-expanded="false">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 mx-lg-auto">
+                    <?php foreach (_themename_get_navigation('Nav Bar') as $navItem): ?>
+                        <?php if(empty($navItem['submenu'])): ?>
+                            <li class="nav-item ">
+                                <a class="nav-link <?php if($navItem['url'] == _themename_get_current_url()): echo "active"; endif; ?>" aria-current="page" href="<?php echo $navItem['url'] ?>">
                                     <?php echo $navItem['title'] ?>
                                 </a>
-                                <ul class="dropdown-menu">
-                                    <?php foreach ($navItem['submenu'] as $sub): ?>
-                                    <li>
-                                        <a class="dropdown-item"
-                                           href="<?php echo $sub['url'] ?>">
-                                            <?php echo $sub['title'] ?>
-                                        </a>
-                                    </li>
-                                    <?php endforeach; ?>
-                                </ul>
                             </li>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            </ul>
-            <ul class="navbar-nav justify-content-end">
-                <li class="nav-item">
-                    <?php if(is_user_logged_in()): ?>
-                        <a class="nav-link" aria-current="page" href="<?php echo wp_logout_url( home_url() ); ?>">Logout</a>
-                    <?php else: ?>
-                        <a class="nav-link" aria-current="page" href="<?php echo esc_url( wp_login_url( home_url() ) ); ?>" alt="<?php esc_attr_e( 'Login', 'textdomain' ); ?>">Sign In</a>
-                    <?php endif; ?>
-                </li>
-            </ul>
+                        <?php else: ?>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle"
+                                       href="#" role="button"
+                                       data-bs-toggle="dropdown"
+                                       aria-expanded="false">
+                                        <?php echo $navItem['title'] ?>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <?php foreach ($navItem['submenu'] as $sub): ?>
+                                        <li>
+                                            <a class="dropdown-item"
+                                               href="<?php echo $sub['url'] ?>">
+                                                <?php echo $sub['title'] ?>
+                                            </a>
+                                        </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </li>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </ul>
+                <ul class="navbar-nav justify-content-end">
+                    <li class="nav-item">
+                        <?php if(is_user_logged_in()): ?>
+    <!--                        <a class="nav-link" aria-current="page" href="--><?php //echo wp_logout_url( home_url() ); ?><!--">Logout</a>-->
+                        <li class="nav-item dropdown ghs_user_dropdown">
+                            <a class="nav-link dropdown-toggle d-flex" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="<?php echo get_avatar_url(get_current_user_id(0)) ?>" alt="user-image" class="rounded-circle">
+                                <p>Ghost</p>
+                            </a>
+                            <ul class="dropdown-menu">
+    <!--                            <li><a class="dropdown-item" href="#">Action</a></li>-->
+    <!--                            <li><hr class="dropdown-divider"></li>-->
+                                <li>
+                                    <a class="dropdown-item" href="<?php echo wp_logout_url( home_url() ); ?>">Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <?php else: ?>
+                            <a class="nav-link" aria-current="page" href="<?php echo esc_url( wp_login_url( home_url() ) ); ?>" alt="<?php esc_attr_e( 'Login', 'textdomain' ); ?>">Sign In</a>
+                        <?php endif; ?>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 <?php
 }
 
@@ -386,7 +400,7 @@ function _themename_feat_column(){
 
             <p><?php echo $featColumn['desc_'.$i] ?></p>
 
-            <a href="<?php echo $featColumn['link_'.$i] ?>" class="stretched-link ghs_primary_link"><?php echo $featColumn['link_text_'.$i] ?></a>
+            <a href="<?php echo $featColumn['link_'.$i] ?>" class="ghs_primary_link"><?php echo $featColumn['link_text_'.$i] ?></a>
 
         </div>
 

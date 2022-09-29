@@ -261,6 +261,24 @@ h5 .ghs_primary_link:hover{
   list-style: none;
 }
 
+.ghs_user_dropdown .dropdown-menu.show{
+  left: -2rem;
+}
+
+.ghs_user_dropdown p{
+  margin-bottom: 0;
+}
+
+.ghs_user_dropdown a *,
+.ghs_user_dropdown .dropdown-toggle::after{
+  align-self: flex-end;
+}
+
+.ghs_user_dropdown .dropdown-toggle::after{
+  margin-bottom: .3rem;
+  margin-left: .5rem;
+}
+
 @media screen and (max-width: 992px) {
 
   .ghs_insight {
@@ -269,6 +287,10 @@ h5 .ghs_primary_link:hover{
 
   .ghs_feat_post_post_data{
     list-style-type: none;
+  }
+
+  .ghs_user_dropdown .dropdown-menu.show{
+    left: 0rem;
   }
 
 }
