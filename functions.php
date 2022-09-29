@@ -502,7 +502,7 @@ function _themename_footer(){
             <div class="col-12 col-lg-3">
                 <h5 class="ghs_footer_title mb-5">Company</h5>
 
-                <ul class="ghs_footer_list mt-5">
+                <ul class="ghs_footer_list">
 	                <?php foreach (_themename_get_navigation('company nav') as $navItem):?>
                     <li class="mb-3"><a class="ghs_primary_link" href="<?php echo $navItem['url'] ?>"><?php echo $navItem['title'] ?></a></li>
                     <?php endforeach; ?>
@@ -512,7 +512,7 @@ function _themename_footer(){
             <div class="col-12 col-lg-3">
                 <h5 class="ghs_footer_title mb-4">Contacts</h5>
 
-                <ul class="ghs_footer_list mt-5">
+                <ul class="ghs_footer_list">
 		            <?php foreach (_themename_get_navigation('contact nav') as $navItem):?>
                         <li class="mb-3"><a class="ghs_primary_link" href="<?php echo $navItem['url'] ?>"><?php echo $navItem['title'] ?></a></li>
 		            <?php endforeach; ?>
