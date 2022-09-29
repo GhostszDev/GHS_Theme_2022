@@ -728,19 +728,20 @@ function _themename_page_blog_content(){
                         <?php endforeach; ?>
                     </ul>
                 </div>
-
+	            <?php if(function_exists('the_ad_group')): ?>
                 <div class="ghs_side_card w-100 mb-4">
                     <div class="ghs_side_card_title px-5 py-3">
                         <h5>Sponsor</h5>
                     </div>
 
-<!--                    --><?php //if(function_exists(the_ad_group())): ?>
-<!--                    <div class="ghs_sponsor w-100">-->
-<!--                        --><?php //the_ad_group(7); ?>
-<!--                    </div>-->
-<!--                    --><?php //endif; ?>
+
+                    <div class="ghs_sponsor w-100">
+                        <?php the_ad_group(get_option('side_ad_select')); ?>
+                    </div>
+
 
                 </div>
+                <?php endif; ?>
 
             </div>
 
@@ -838,19 +839,19 @@ function _themename_single_post(){
 
                 <?php endif; ?>
 
-
+	            <?php if(function_exists('the_ad_group')): ?>
                 <div class="ghs_side_card w-100 mb-4">
                     <div class="ghs_side_card_title px-5 py-3">
                         <h5>Sponsor</h5>
                     </div>
 
-	                <?php if(function_exists(the_ad_group())): ?>
+
                         <div class="ghs_sponsor w-100">
-			                <?php the_ad_group(7); ?>
+			                <?php the_ad_group(get_option('side_ad_select')); ?>
                         </div>
-	                <?php endif; ?>
 
                 </div>
+                <?php endif; ?>
 
             </div>
 
@@ -910,6 +911,13 @@ function _themename_admin_init(){
 		'hero-option-group',
 		'social'
 	);
+
+	if(function_exists('the_ad_group')):
+        register_setting(
+            'hero-option-group',
+            'side_ad_select'
+        );
+    endif;
 
 	if(get_option('heroBanner')):
 		$heroBanner = get_option('heroBanner');
@@ -1056,6 +1064,16 @@ function _themename_admin_init(){
 		'theme-options',
 		'theme-index-options'
 	);
+
+	if(function_exists('the_ad_group')):
+        add_settings_field(
+            'ad-side-select',
+            'Side Bar Ads',
+            'ad_side_select_callback',
+            'theme-options',
+            'theme-index-options'
+        );
+    endif;
 }
 
 function _themename_options_page(){ ?>
@@ -1217,6 +1235,22 @@ function social_callback(){
         </div>
 
     </div>
+<?php }
+
+function ad_side_select_callback(){
+	if(function_exists('the_ad_group')):
+	    $ads = Advanced_Ads_Shortcode_Creator::items_for_select()['groups'];
+    else:
+        $ads = [];
+    endif;
+	$selected_ad = get_option('side_ad_select');
+	?>
+
+    <select name="side_ad_select" style="width: 100%;">
+		<?php foreach($ads as $ad): ?>
+            <option value="<?php echo explode('_', array_search($ad, $ads))[1]; ?>" <?php selected( $selected_ad, $ad ); ?>><?php echo $ad; ?></option>
+		<?php endforeach; ?>
+    </select>
 <?php }
 
 function _themename_admin_page(){
