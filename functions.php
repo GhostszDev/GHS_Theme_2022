@@ -855,7 +855,11 @@ function _themename_single_post(){
             </div>
 
             <div class="col-12">
-	            <?php _themename_featured_posts($args = [ 'post_type' => 'games', 'post_status' => 'publish', 'posts_per_page' => 3 ], 'More Releases'); ?>
+	            <?php
+                if(is_single() && get_post_type() == 'games'):
+                    _themename_featured_posts($args = [ 'post_type' => 'games', 'post_status' => 'publish', 'posts_per_page' => 3 ], 'More Releases');
+                endif;
+                ?>
             </div>
 
         </div>
