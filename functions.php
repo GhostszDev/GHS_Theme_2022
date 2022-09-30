@@ -415,26 +415,26 @@ function _themename_feat_column(){
 function _themename_newsletter(){
     ?>
 
-    <div class="container py-4 my-4 ghs_border_bottom">
-        <div class="row pb-4">
-
-            <div class="col-12">
-                <h4 class="ghs_section_header mt-4">Join the Newsletter</h4>
-            </div>
-
-            <div class="col-12 col-lg-6">
-                <p><?php echo get_option('newsletter'); ?></p>
-            </div>
-
-            <div class="col-12 col-lg-6">
-                <div class="input-group mb-3">
-                    <input type="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="button-addon2">
-                    <button class="btn btn-primary text-dark" type="button" id="button-addon2">Sign Up</button>
-                </div>
-            </div>
-
-        </div>
-    </div>
+<!--    <div class="container py-4 my-4 ghs_border_bottom">-->
+<!--        <div class="row pb-4">-->
+<!---->
+<!--            <div class="col-12">-->
+<!--                <h4 class="ghs_section_header mt-4">Join the Newsletter</h4>-->
+<!--            </div>-->
+<!---->
+<!--            <div class="col-12 col-lg-6">-->
+<!--                <p>--><?php //echo get_option('newsletter'); ?><!--</p>-->
+<!--            </div>-->
+<!---->
+<!--            <div class="col-12 col-lg-6">-->
+<!--                <div class="input-group mb-3">-->
+<!--                    <input type="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="button-addon2">-->
+<!--                    <button class="btn btn-primary text-dark" type="button" id="button-addon2">Sign Up</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!---->
+<!--        </div>-->
+<!--    </div>-->
 
     <?php
 }
@@ -547,7 +547,7 @@ function _themename_page_feat_image(){
 
                     <?php endif; ?>
                     <h5 class="pt-3 ghs_insight_title"><?php if(is_page() || is_single()): echo get_the_title(get_the_ID()); else: echo single_cat_title(); endif; ?></h5>
-	                <?php if(is_page()):
+	                <?php if(is_page() && !is_privacy_policy()):
                         echo get_the_content(get_the_ID());
                     elseif(is_single() && get_post_type() != 'games'):
 	                    global $post;
@@ -761,7 +761,7 @@ function _themename_single_post(){
 
         <div class="row">
 
-            <div class="col-12 col-lg-8 ghs_single_post">
+            <div class="<?php if(!is_privacy_policy()): ?>col-12 col-lg-8 ghs_single_post <?php else: ?> col-12 ghs_single_post <?php endif; ?>">
                 <?php echo get_the_content(); ?>
             </div>
 
@@ -839,7 +839,7 @@ function _themename_single_post(){
 
                 <?php endif; ?>
 
-	            <?php if(function_exists('the_ad_group')): ?>
+	            <?php if(function_exists('the_ad_group') && !is_privacy_policy()): ?>
                 <div class="ghs_side_card w-100 mb-4">
                     <div class="ghs_side_card_title px-5 py-3">
                         <h5>Sponsor</h5>
@@ -1407,6 +1407,12 @@ function _themename_meta_boxes(){
 
 }
 
+
+
+//Rest API
+
+
+
 //Actions
 add_action('init', '_themename_init', 0);
 add_action('admin_init', '_themename_admin_init');
@@ -1418,8 +1424,10 @@ add_action('after_setup_theme', '_themename_after_theme');
 add_action('add_meta_boxes', '_themename_meta_boxes');
 add_action('save_post', '_themename_save_postdata');
 
+
 //Filters
 add_filter( 'show_admin_bar', '__return_false' );
+
 
 // Const
 const GHS_GAME_CATS = array(
@@ -1555,6 +1563,7 @@ const GHS_CERO_RATINGS = array(
 const GHS_AUSSIE_RATINGS = array();
 
 const GHS_UK_RATINGS = array();
+
 
 // Defines
 // Includes
