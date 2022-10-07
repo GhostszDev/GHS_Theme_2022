@@ -22,7 +22,7 @@ function _themename_admin_assets() {
     wp_enqueue_script( '_themename-admin-scripts', get_template_directory_uri() . '/dist/js/admin.js', array('jquery'), '1.0.0', false );
 
     $ghs_obj = array(
-        'mediaPath' =>  get_stylesheet_directory_uri() . '/src/media/',
+        'mediaPath' =>  get_stylesheet_directory_uri() . '/dist/media/',
         'featColumn' => get_option('featColumn')
     );
 
@@ -188,7 +188,7 @@ function _themename_nav_bar(){ ?>
         <div class="container-fluid">
             <a class="navbar-brand" href="<?php echo get_home_url() ?>">
             <svg width="75px" height="75px" aria-hidden="true" focusable="false">
-                <use href="<?php echo get_stylesheet_directory_uri() . '/src/media/icons.svg#icon-logo' ?>"></use>
+                <use href="<?php echo get_stylesheet_directory_uri() . '/dist/media/icons.svg#icon-logo' ?>"></use>
             </svg>
         </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -449,7 +449,7 @@ function _themename_footer(){
 
             <div class="col-12 col-lg-3">
                 <svg width="120" height="120" aria-hidden="true" focusable="false">
-                    <use href="<?php echo get_stylesheet_directory_uri() . '/src/media/icons.svg#icon-logo' ?>"></use>
+                    <use href="<?php echo get_stylesheet_directory_uri() . '/dist/media/icons.svg#icon-logo' ?>"></use>
                 </svg>
 
                 <p class="my-3"><?php echo $social['text'] ?></p>
@@ -462,7 +462,7 @@ function _themename_footer(){
                                 <li>
                                     <a href="<?php echo $s['url'] ?>">
                                         <svg aria-hidden="true" focusable="false">
-                                            <use href="<?php echo get_stylesheet_directory_uri() . '/src/media/icons.svg#icon-'.$s['name'] ?>"></use>
+                                            <use href="<?php echo get_stylesheet_directory_uri() . '/dist/media/icons.svg#icon-'.$s['name'] ?>"></use>
                                         </svg>
                                     </a>
                                 </li>
@@ -476,7 +476,7 @@ function _themename_footer(){
                                 <li>
                                     <a href="<?php echo $c['url'] ?>">
                                         <svg width="1em" height="1em" aria-hidden="true" focusable="false">
-                                            <use href="<?php echo get_stylesheet_directory_uri() . '/src/media/icons.svg#icon-'.$c['name'] ?>"></use>
+                                            <use href="<?php echo get_stylesheet_directory_uri() . '/dist/media/icons.svg#icon-'.$c['name'] ?>"></use>
                                         </svg>
                                     </a>
                                 </li>
@@ -824,7 +824,7 @@ function _themename_single_post(){
                                         <li>
                                             <a href="<?php echo $c['url'] ?>">
                                                 <svg width="1em" height="1em" aria-hidden="true" focusable="false">
-                                                    <use href="<?php echo get_stylesheet_directory_uri() . '/src/media/icons.svg#icon-'.$c['name'] ?>"></use>
+                                                    <use href="<?php echo get_stylesheet_directory_uri() . '/dist/media/icons.svg#icon-'.$c['name'] ?>"></use>
                                                 </svg>
                                             </a>
                                         </li>
