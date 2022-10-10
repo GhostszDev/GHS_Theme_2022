@@ -23,7 +23,8 @@ function _themename_admin_assets() {
 
     $ghs_obj = array(
         'mediaPath' =>  get_stylesheet_directory_uri() . '/dist/media/',
-        'featColumn' => get_option('featColumn')
+        'featColumn' => get_option('featColumn'),
+        'employees' => get_option('employee')
     );
 
     wp_localize_script('_themename-admin-scripts', 'ghs_obj', $ghs_obj);
@@ -235,8 +236,10 @@ function _themename_nav_bar(){ ?>
                                 <p>Ghost</p>
                             </a>
                             <ul class="dropdown-menu">
-    <!--                            <li><a class="dropdown-item" href="#">Action</a></li>-->
-    <!--                            <li><hr class="dropdown-divider"></li>-->
+                                <?php if ( current_user_can( 'manage_options' ) ): ?>
+                                    <li><a class="dropdown-item" href="<?php echo get_admin_url(); ?>">Admin</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                <?php endif; ?>
                                 <li>
                                     <a class="dropdown-item" href="<?php echo wp_logout_url( home_url() ); ?>">Logout</a>
                                 </li>
@@ -919,6 +922,11 @@ function _themename_admin_init(){
         );
     endif;
 
+	register_setting(
+		'company-option-group',
+		'employees'
+	);
+
 	if(get_option('heroBanner')):
 		$heroBanner = get_option('heroBanner');
 	else:
@@ -1002,11 +1010,34 @@ function _themename_admin_init(){
         update_option('social', $social);
 	endif;
 
+    if(get_option('employee')):
+		$employee = get_option('employee');
+	else:
+		$employee = array(
+            [
+                'image' => '',
+                'name' => '',
+                'position' => '',
+                'Description' => ''
+            ]
+        );
+        update_option('employee', $employee);
+	endif;
+
+
+
 	add_settings_section(
 		'theme-index-options',
 		'Hero Settings',
 		null,
 		'theme-options'
+	);
+
+    add_settings_section(
+		'theme-index-options',
+		'Company Setting',
+		null,
+		'company-options'
 	);
 
 	add_settings_field(
@@ -1074,6 +1105,14 @@ function _themename_admin_init(){
             'theme-index-options'
         );
     endif;
+
+	add_settings_field(
+		'employees',
+		'Employees',
+		'employee_callback',
+		'company-options',
+		'theme-index-options'
+	);
 }
 
 function _themename_options_page(){ ?>
@@ -1083,6 +1122,18 @@ function _themename_options_page(){ ?>
     <form action="options.php" method="POST">
     <?php settings_fields('hero-option-group'); ?>
     <?php do_settings_sections('theme-options'); ?>
+    <?php submit_button() ?>
+    </form>
+
+<?php }
+
+function _themename_options_company_page(){ ?>
+    <h1>Hero Settings</h1>
+    <?php settings_errors(); ?>
+
+    <form action="options.php" method="POST">
+    <?php settings_fields('company-option-group'); ?>
+    <?php do_settings_sections('company-options'); ?>
     <?php submit_button() ?>
     </form>
 
@@ -1253,6 +1304,38 @@ function ad_side_select_callback(){
     </select>
 <?php }
 
+function employee_callback() { ?>
+
+    <span class="ghs_add_button" onclick="addToEmployeeArray()">
+        &#43;
+    </span>
+
+    <ul class="ghs_employee_list">
+        <?php foreach(get_option('employee') as $key => $em): ?>
+            <li>
+                <label for="insight_bg">
+                    <img class="insight_img" src="<?php
+		            if(isset( $em[$key]['image'] )):
+			            if(wp_http_validate_url(esc_url(wp_get_attachment_url($em[$key]['image']), 'full', false, '' ))):
+				            echo esc_url(wp_get_attachment_url($em[$key]['image']), 'full', false, '' );
+			            else:
+				            echo esc_url('https://placehold.jp/1920x1080.png');
+			            endif;
+		            else:
+			            echo esc_url('https://placehold.jp/1920x1080.png');
+		            endif;?>" value="Upload Profile Picture" id="insight_submit" />
+                </label>
+                <input id="insight_bg" class="insight_bg" name="$em[$key][image]" value="<?php echo $em[$key]['image'] ?>" />
+
+                <input value="<?php echo $em[$key]['name'] ?>" type="text" placeholder="Name" />
+                <input value="<?php echo $em[$key]['position'] ?>" type="text" placeholder="Position" />
+                <textarea placeholder="Description"><?php echo $em[$key]['description'] ?></textarea>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+
+<?php }
+
 function _themename_admin_page(){
 	add_menu_page(
         'Home Page Settings',
@@ -1262,6 +1345,15 @@ function _themename_admin_page(){
         '_themename_options_page',
         'dashicons-admin-generic',
         100
+    );
+
+    add_submenu_page(
+        'theme-options',
+        'Company Page Settings',
+        'Company Page Settings',
+        'manage_options',
+        'company-options',
+        '_themename_options_company_page'
     );
 }
 

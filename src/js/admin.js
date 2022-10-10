@@ -29,6 +29,15 @@ jQuery(document).ready( function($){
         }
     ]
 
+    var employeeTemplate = {
+        'image': '',
+        'name': '',
+        'position': '',
+        'Description': ''
+    }
+
+    var employees = ghs_obj.employees;
+
     function mediaUpload(e){
         let capture = e.currentTarget.parentElement.nextElementSibling;
 
@@ -76,6 +85,11 @@ jQuery(document).ready( function($){
     $('#upload-button_1, #upload-button_2, #upload-button_3, #insight_submit').on('click', function (a) {
        // console.log(a);
        mediaUpload(a);
+    });
+
+    $('.ghs_add_button').on('click', function (a) {
+       // console.log(a);
+        addToEmployeeArray(a);
     });
 
     if($('.icon_select').length > 0){
@@ -128,5 +142,26 @@ jQuery(document).ready( function($){
     loadIcon('.ghs_feat_column_select_1');
     loadIcon('.ghs_feat_column_select_2');
     loadIcon('.ghs_feat_column_select_3');
+
+    function addToEmployeeArray(){
+        var appendable = $('.ghs_employee_list');
+        var listItem = "<li>" +
+            "<label for=\"insight_bg\">\n" +
+            "<img class=\"insight_img\" src='https://placehold.jp/1920x1080.png'>" +
+            "</label>\n" +
+            "<input id=\"insight_bg\" class=\"insight_bg\" name=\"$em[$key][image]\" value=\"<?php echo $em[$key]['image'] ?>\" />\n" +
+            "\n" +
+            "<input value=\"<?php echo $em[$key]['name'] ?>\" type=\"text\" placeholder=\"Name\" />\n" +
+            "<input value=\"<?php echo $em[$key]['position'] ?>\" type=\"text\" placeholder=\"Position\" />\n" +
+            "<textarea placeholder=\"Description\"></textarea>" +
+            "</li>";
+
+        if(appendable.length > 0){
+            appendable.append(listItem);
+        }
+
+        employees.push(employeeTemplate);
+
+    }
 
 });
