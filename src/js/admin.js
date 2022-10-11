@@ -82,11 +82,6 @@ jQuery(document).ready( function($){
 
     }
 
-    $('#upload-button_1, #upload-button_2, #upload-button_3, #insight_submit').on('click', function (a) {
-       // console.log(a);
-       mediaUpload(a);
-    });
-
     $('.ghs_add_button').on('click', function (a) {
        // console.log(a);
         addToEmployeeArray(a);
@@ -139,21 +134,29 @@ jQuery(document).ready( function($){
         // $(capture).val(currentInput);
     }
 
-    loadIcon('.ghs_feat_column_select_1');
-    loadIcon('.ghs_feat_column_select_2');
-    loadIcon('.ghs_feat_column_select_3');
+    if($('.ghs_feat_column_select_1').length > 0) {
+        loadIcon('.ghs_feat_column_select_1');
+    }
+
+    if($('.ghs_feat_column_select_2').length > 0) {
+        loadIcon('.ghs_feat_column_select_2');
+    }
+
+    if($('.ghs_feat_column_select_3').length > 0) {
+        loadIcon('.ghs_feat_column_select_3');
+    }
 
     function addToEmployeeArray(){
         var appendable = $('.ghs_employee_list');
         var listItem = "<li>" +
             "<label for=\"insight_bg\">\n" +
-            "<img class=\"insight_img\" src='https://placehold.jp/1920x1080.png'>" +
+            "<img class=\"insight_img\" src=\"https://placehold.jp/1920x1080.png\" " +
+            "value=\"Upload Profile Picture\" id=\"insight_submit\" />\n" +
             "</label>\n" +
-            "<input id=\"insight_bg\" class=\"insight_bg\" name=\"$em[$key][image]\" value=\"<?php echo $em[$key]['image'] ?>\" />\n" +
-            "\n" +
-            "<input value=\"<?php echo $em[$key]['name'] ?>\" type=\"text\" placeholder=\"Name\" />\n" +
-            "<input value=\"<?php echo $em[$key]['position'] ?>\" type=\"text\" placeholder=\"Position\" />\n" +
-            "<textarea placeholder=\"Description\"></textarea>" +
+            "<input id=\"insight_bg\" class=\"insight_bg\" name=\"employee["+employees.length+"][image]\" value=\"\" />\n" +
+            "<input type=\"text\"  name=\"employee["+employees.length+"][name]\" value=\"\" placeholder=\"Name\">\n" +
+            "<input type=\"text\"  name=\"employee["+employees.length+"][position]\" value=\"\" placeholder=\"Position\">\n" +
+            "<textarea placeholder=\"Description\" name=\"employee["+employees.length+"][description]\" ></textarea>" +
             "</li>";
 
         if(appendable.length > 0){
@@ -163,5 +166,10 @@ jQuery(document).ready( function($){
         employees.push(employeeTemplate);
 
     }
+
+    $(document).on('click', '#upload-button_1, #upload-button_2, #upload-button_3, #insight_submit', function (a) {
+        // console.log(a);
+        mediaUpload(a);
+    });
 
 });

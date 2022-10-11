@@ -924,7 +924,7 @@ function _themename_admin_init(){
 
 	register_setting(
 		'company-option-group',
-		'employees'
+		'employee'
 	);
 
 	if(get_option('heroBanner')):
@@ -1107,7 +1107,7 @@ function _themename_admin_init(){
     endif;
 
 	add_settings_field(
-		'employees',
+		'employee',
 		'Employees',
 		'employee_callback',
 		'company-options',
@@ -1304,33 +1304,36 @@ function ad_side_select_callback(){
     </select>
 <?php }
 
-function employee_callback() { ?>
+function employee_callback() {
+    $employees = get_option('employee');?>
 
     <span class="ghs_add_button" onclick="addToEmployeeArray()">
         &#43;
     </span>
 
     <ul class="ghs_employee_list">
-        <?php foreach(get_option('employee') as $key => $em): ?>
-            <li>
-                <label for="insight_bg">
-                    <img class="insight_img" src="<?php
-		            if(isset( $em[$key]['image'] )):
-			            if(wp_http_validate_url(esc_url(wp_get_attachment_url($em[$key]['image']), 'full', false, '' ))):
-				            echo esc_url(wp_get_attachment_url($em[$key]['image']), 'full', false, '' );
-			            else:
-				            echo esc_url('https://placehold.jp/1920x1080.png');
-			            endif;
-		            else:
-			            echo esc_url('https://placehold.jp/1920x1080.png');
-		            endif;?>" value="Upload Profile Picture" id="insight_submit" />
-                </label>
-                <input id="insight_bg" class="insight_bg" name="$em[$key][image]" value="<?php echo $em[$key]['image'] ?>" />
+	    <?php foreach ($employees as $key => $em): ?>
 
-                <input value="<?php echo $em[$key]['name'] ?>" type="text" placeholder="Name" />
-                <input value="<?php echo $em[$key]['position'] ?>" type="text" placeholder="Position" />
-                <textarea placeholder="Description"><?php echo $em[$key]['description'] ?></textarea>
-            </li>
+        <li>
+            <label for="insight_bg">
+                <img class="insight_img" src="<?php
+		        if(isset( $em['image'] )):
+			        if(wp_http_validate_url(esc_url(wp_get_attachment_url($em['image']), 'full', false, '' ))):
+				        echo esc_url(wp_get_attachment_url($em['image']), 'full', false, '' );
+			        else:
+				        echo esc_url('https://placehold.jp/1920x1080.png');
+			        endif;
+		        else:
+			        echo esc_url('https://placehold.jp/1920x1080.png');
+		        endif;?>" value="Upload Profile Picture" id="insight_submit" />
+            </label>
+            <input id="insight_bg" class="insight_bg" name="employee[<?php echo $key ?>][image]" value="<?php echo $em['image'] ?>" />
+
+            <input type="text"  name="employee[<?php echo $key ?>][name]" value="<?php echo $em['name'] ?>" placeholder="Name">
+            <input type="text"  name="employee[<?php echo $key ?>][position]" value="<?php echo $em['position'] ?>" placeholder="Position">
+            <textarea placeholder="Description" name="employee[<?php echo $key ?>][description]" ><?php echo $em['description'] ?></textarea>
+        </li>
+
         <?php endforeach; ?>
     </ul>
 

@@ -78,15 +78,17 @@ textarea{
 }
 
 .ghs_employee_list{
-  width: 100%;
+  width: 95%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
 }
 
 .ghs_employee_list li{
-  width: 45%;
+  width: 31%;
   display: flex;
   flex-direction: column;
+  margin-bottom: 2rem;
 }
 
 .ghs_employee_list li *{
