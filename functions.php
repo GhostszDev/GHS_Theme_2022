@@ -1406,6 +1406,7 @@ function employee_callback() {
             <input type="text"  name="employee[<?php echo $key ?>][name]" value="<?php echo $em['name'] ?>" placeholder="Name">
             <input type="text"  name="employee[<?php echo $key ?>][position]" value="<?php echo $em['position'] ?>" placeholder="Position">
             <textarea placeholder="Description" name="employee[<?php echo $key ?>][description]" ><?php echo $em['description'] ?></textarea>
+            <span class="ghs_delete_button ghs_employee_delete"> X </span>
         </li>
 
         <?php endforeach; ?>

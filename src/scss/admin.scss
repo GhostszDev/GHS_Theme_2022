@@ -89,9 +89,23 @@ textarea{
   display: flex;
   flex-direction: column;
   margin-bottom: 2rem;
+  align-items: center;
 }
 
 .ghs_employee_list li *{
   width: 100%;
   margin-bottom: .5rem;
+}
+
+.ghs_delete_button{
+  cursor: pointer;
+  width: 1.5rem !important;
+  height: 1.5rem;
+  border-radius: 2rem;
+  border: red .3em solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: red;
+  font-weight: bolder;
 }

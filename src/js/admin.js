@@ -82,10 +82,78 @@ jQuery(document).ready( function($){
 
     }
 
-    $('.ghs_add_button').on('click', function (a) {
-       // console.log(a);
+    function addToEmployeeArray(){
+        var appendable = $('.ghs_employee_list');
+        var listItem = "<li>" +
+            "<label for=\"insight_bg\">\n" +
+            "<img class=\"insight_img\" src=\"https://placehold.jp/1920x1080.png\" " +
+            "value=\"Upload Profile Picture\" id=\"insight_submit\" />\n" +
+            "</label>\n" +
+            "<input id=\"insight_bg\" class=\"insight_bg\" name=\"employee["+employees.length+"][image]\" value=\"\" />\n" +
+            "<input type=\"text\"  name=\"employee["+employees.length+"][name]\" value=\"\" placeholder=\"Name\">\n" +
+            "<input type=\"text\"  name=\"employee["+employees.length+"][position]\" value=\"\" placeholder=\"Position\">\n" +
+            "<textarea placeholder=\"Description\" name=\"employee["+employees.length+"][description]\" ></textarea>" +
+            "<span class=\"ghs_delete_button ghs_employee_delete\"> X </span>" +
+            "</li>";
+
+        if(appendable.length > 0){
+            appendable.append(listItem);
+        }
+
+        employees.push(employeeTemplate);
+
+    }
+
+    function deleteEmployeeArrayItem(e){
+        var listObj = e.currentTarget.parentElement;
+        listObj.remove();
+    }
+
+    function loadIcon(name) {
+        var preview = $(name)[0].parentElement.parentElement.children[0].children[0];
+
+        switch(name) {
+            case '.ghs_feat_column_select_1':
+                $(preview).attr('href', ghs_obj.featColumn.icon_1);
+                $(name + ' option[value='+JSON.stringify(ghs_obj.featColumn.icon_1)+']').prop("selected", true)
+            break;
+            case '.ghs_feat_column_select_2':
+                $(preview).attr('href', ghs_obj.featColumn.icon_2);
+                $(name + ' option[value='+JSON.stringify(ghs_obj.featColumn.icon_2)+']').prop("selected", true)
+            break;
+            case '.ghs_feat_column_select_3':
+                $(preview).attr('href', ghs_obj.featColumn.icon_3);
+                $(name + ' option[value='+JSON.stringify(ghs_obj.featColumn.icon_3)+']').prop("selected", true)
+            break;
+        }
+        // $(capture).val(currentInput);
+    }
+
+    $(document).on('click', '#upload-button_1, #upload-button_2, #upload-button_3, #insight_submit', function (a) {
+        // console.log(a);
+        mediaUpload(a);
+    });
+
+    $(document).on('click', '.ghs_delete_button', function(a){
+        deleteEmployeeArrayItem(a);
+    });
+
+    $(document).on('click', '.ghs_add_button',function (a) {
+        // console.log(a);
         addToEmployeeArray(a);
     });
+
+    if($('.ghs_feat_column_select_1').length > 0) {
+        loadIcon('.ghs_feat_column_select_1');
+    }
+
+    if($('.ghs_feat_column_select_2').length > 0) {
+        loadIcon('.ghs_feat_column_select_2');
+    }
+
+    if($('.ghs_feat_column_select_3').length > 0) {
+        loadIcon('.ghs_feat_column_select_3');
+    }
 
     if($('.icon_select').length > 0){
 
@@ -113,63 +181,5 @@ jQuery(document).ready( function($){
             changeIcon(b);
         });
     }
-
-    function loadIcon(name) {
-        var preview = $(name)[0].parentElement.parentElement.children[0].children[0];
-
-        switch(name) {
-            case '.ghs_feat_column_select_1':
-                $(preview).attr('href', ghs_obj.featColumn.icon_1);
-                $(name + ' option[value='+JSON.stringify(ghs_obj.featColumn.icon_1)+']').prop("selected", true)
-            break;
-            case '.ghs_feat_column_select_2':
-                $(preview).attr('href', ghs_obj.featColumn.icon_2);
-                $(name + ' option[value='+JSON.stringify(ghs_obj.featColumn.icon_2)+']').prop("selected", true)
-            break;
-            case '.ghs_feat_column_select_3':
-                $(preview).attr('href', ghs_obj.featColumn.icon_3);
-                $(name + ' option[value='+JSON.stringify(ghs_obj.featColumn.icon_3)+']').prop("selected", true)
-            break;
-        }
-        // $(capture).val(currentInput);
-    }
-
-    if($('.ghs_feat_column_select_1').length > 0) {
-        loadIcon('.ghs_feat_column_select_1');
-    }
-
-    if($('.ghs_feat_column_select_2').length > 0) {
-        loadIcon('.ghs_feat_column_select_2');
-    }
-
-    if($('.ghs_feat_column_select_3').length > 0) {
-        loadIcon('.ghs_feat_column_select_3');
-    }
-
-    function addToEmployeeArray(){
-        var appendable = $('.ghs_employee_list');
-        var listItem = "<li>" +
-            "<label for=\"insight_bg\">\n" +
-            "<img class=\"insight_img\" src=\"https://placehold.jp/1920x1080.png\" " +
-            "value=\"Upload Profile Picture\" id=\"insight_submit\" />\n" +
-            "</label>\n" +
-            "<input id=\"insight_bg\" class=\"insight_bg\" name=\"employee["+employees.length+"][image]\" value=\"\" />\n" +
-            "<input type=\"text\"  name=\"employee["+employees.length+"][name]\" value=\"\" placeholder=\"Name\">\n" +
-            "<input type=\"text\"  name=\"employee["+employees.length+"][position]\" value=\"\" placeholder=\"Position\">\n" +
-            "<textarea placeholder=\"Description\" name=\"employee["+employees.length+"][description]\" ></textarea>" +
-            "</li>";
-
-        if(appendable.length > 0){
-            appendable.append(listItem);
-        }
-
-        employees.push(employeeTemplate);
-
-    }
-
-    $(document).on('click', '#upload-button_1, #upload-button_2, #upload-button_3, #insight_submit', function (a) {
-        // console.log(a);
-        mediaUpload(a);
-    });
 
 });
