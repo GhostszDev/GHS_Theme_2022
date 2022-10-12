@@ -279,6 +279,40 @@ h5 .ghs_primary_link:hover{
   margin-left: .5rem;
 }
 
+.ghs_employee_team img{
+  width: 100%;
+  height: auto;
+}
+
+.ghs_employee_team:after{
+  position: absolute;
+  content: "";
+  height: 100%;
+  width: 100%;
+  top: 0.5rem;
+  left: 0.5rem;
+  background: linear-gradient(to bottom, rgba(255,0,0,0) 0%, $colour 100%);
+}
+
+.ghs_employee_team_text{
+  bottom: 1rem;
+  left: 1rem;
+  width: 87%;
+  z-index: 99999;
+}
+
+.ghs_employee_team_text p{
+  margin-bottom: 0;
+}
+
+.ghs_employee_team_name{
+  font-size: 2em;
+}
+
+.ghs_employee_team_pos{
+  font-size: 1.2em;
+}
+
 @media screen and (max-width: 992px) {
 
   .ghs_insight {
@@ -291,6 +325,16 @@ h5 .ghs_primary_link:hover{
 
   .ghs_user_dropdown .dropdown-menu.show{
     left: 0rem;
+  }
+
+  .ghs_employee_team:after{
+    position: absolute;
+    content: "";
+    height: 98%;
+    width: 97%;
+    top: 0.5rem;
+    left: 0.5rem;
+    background: linear-gradient(to bottom, rgba(255,0,0,0) 0%, $colour 100%);
   }
 
 }

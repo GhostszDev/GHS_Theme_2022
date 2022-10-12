@@ -362,7 +362,11 @@ function _themename_featured_posts($args, $title = 'Latest News'){
 }
 
 function _themename_insight(){
-    $insight = get_option('insight');
+    if(!is_page('studio')):
+        $insight = get_option('insight');
+    else:
+        $insight = get_option('insight_company');
+    endif;
     ?>
 
     <div class="w-100 mt-4 ghs_insight" style="background: url(<?php echo esc_url(wp_get_attachment_url($insight['img']), 'full', false, '' ); ?>)">
@@ -877,6 +881,38 @@ function _themename_single_post(){
 	endif;
 }
 
+function _themename_team(){
+    $employees = get_option('employee'); ?>
+
+    <div class="container">
+
+        <h4 class="ghs_section_header mt-4">Meet the team</h4>
+        <div class="row">
+
+
+
+            <?php foreach ($employees as $em): ?>
+
+                <div class="col-12 col-md-4 p-2 ghs_employee_team position-relative">
+                    <img src="<?php echo esc_url(wp_get_attachment_url($em['image']), 'full', false, '' ); ?>">
+                    <span class="position-absolute ghs_employee_team_text">
+                        <p class="ghs_employee_team_name"><?php echo $em['name'] ?></p>
+                        <p class="ghs_employee_team_pos ghs_primary_text_color"><?php echo $em['position'] ?></p>
+                    </span>
+                </div>
+
+            <?php endforeach; ?>
+
+        </div>
+    </div>
+
+    <?php
+}
+
+function _themename_focus_text(){}
+
+function _themename_spotlight(){}
+
 
 // Admin Settings
 function _themename_admin_init(){
@@ -925,6 +961,11 @@ function _themename_admin_init(){
 	register_setting(
 		'company-option-group',
 		'employee'
+	);
+
+	register_setting(
+		'company-option-group',
+		'insight_company'
 	);
 
 	if(get_option('heroBanner')):
@@ -1107,6 +1148,14 @@ function _themename_admin_init(){
     endif;
 
 	add_settings_field(
+		'insight_company',
+		'Insight',
+		'company_insight_callback',
+		'company-options',
+		'theme-index-options'
+	);
+
+	add_settings_field(
 		'employee',
 		'Employees',
 		'employee_callback',
@@ -1205,6 +1254,31 @@ function hero_insight_callback(){
         <input type="text"  name="insight[header]" value="<?php echo $insight['header'] ?>" placeholder="Header Title">
         <input type="text"  name="insight[title]" value="<?php echo $insight['title'] ?>" placeholder="Main Title">
         <textarea placeholder="Text Body" name="insight[body]" ><?php echo $insight['body'] ?></textarea>
+    </div>
+
+<?php }
+
+function company_insight_callback(){
+    $insight = get_option('insight_company');
+    ?>
+
+    <div class="ghs_insight_wrapper">
+        <label for="insight_bg">
+            <img class="insight_img" src="<?php
+            if(isset( $insight['img'] )):
+                if(wp_http_validate_url(esc_url(wp_get_attachment_url($insight['img']), 'full', false, '' ))):
+                    echo esc_url(wp_get_attachment_url($insight['img']), 'full', false, '' );
+                else:
+                    echo esc_url('https://placehold.jp/1920x1080.png');
+                endif;
+            else:
+                echo esc_url('https://placehold.jp/1920x1080.png');
+            endif;?>" value="Upload Profile Picture" id="insight_submit" />
+        </label>
+        <input id="insight_bg" class="insight_bg" name="insight_company[img]" value="<?php echo $insight['img'] ?>" />
+        <input type="text"  name="insight_company[header]" value="<?php echo $insight['header'] ?>" placeholder="Header Title">
+        <input type="text"  name="insight_company[title]" value="<?php echo $insight['title'] ?>" placeholder="Main Title">
+        <textarea placeholder="Text Body" name="insight_company[body]" ><?php echo $insight['body'] ?></textarea>
     </div>
 
 <?php }
