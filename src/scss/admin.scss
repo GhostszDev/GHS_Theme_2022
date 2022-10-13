@@ -77,14 +77,16 @@ textarea{
   border: solid .5rem grey;
 }
 
-.ghs_employee_list{
+.ghs_employee_list,
+.ghs_spotlight_list{
   width: 95%;
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
 }
 
-.ghs_employee_list li{
+.ghs_employee_list li,
+.ghs_spotlight_list li{
   width: 31%;
   display: flex;
   flex-direction: column;
@@ -92,7 +94,8 @@ textarea{
   align-items: center;
 }
 
-.ghs_employee_list li *{
+.ghs_employee_list li *,
+.ghs_spotlight_list li *{
   width: 100%;
   margin-bottom: .5rem;
 }

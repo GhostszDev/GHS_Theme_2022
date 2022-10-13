@@ -24,7 +24,8 @@ function _themename_admin_assets() {
     $ghs_obj = array(
         'mediaPath' =>  get_stylesheet_directory_uri() . '/dist/media/',
         'featColumn' => get_option('featColumn'),
-        'employees' => get_option('employee')
+        'employees' => get_option('employee'),
+        'spotlight' => get_option('spotlight')
     );
 
     wp_localize_script('_themename-admin-scripts', 'ghs_obj', $ghs_obj);
@@ -911,7 +912,42 @@ function _themename_team(){
 
 function _themename_focus_text(){}
 
-function _themename_spotlight(){}
+function _themename_spotlight(){
+    $spotlight = get_option('spotlight');
+
+    if($spotlight):?>
+
+    <div class="container">
+        <div class="row">
+
+            <?php foreach($spotlight as $key => $sl): ?>
+
+                <div class="col-12 col-md-4 my-2 <?php if(($key % 2) != 0): ?> order-md-2 <?php endif; ?>">
+                    <ul>
+                        <li><span class="ghs_white_text"><?php echo $key + 1 ?></span></li>
+                        <li><h5 class="ghs_primary_text_color"><?php echo $sl['topTitle'] ?></h5></li>
+                        <li><p><?php echo $sl['topDescription'] ?></p></li>
+                    </ul>
+
+                    <ul>
+                        <li><span class="ghs_white_text"><?php echo $key + 2 ?></span></li>
+                        <li><h5 class="ghs_primary_text_color"><?php echo $sl['bottomTitle'] ?></h5></li>
+                        <li><p><?php echo $sl['bottomDescription'] ?></p></li>
+                    </ul>
+                </div>
+
+                <div class="col-12 col-md-8 ghs_spotlight_image my-2 <?php if(($key % 2) != 0): ?> order-md-1 <?php endif; ?>">
+                    <img src="<?php echo esc_url(wp_get_attachment_url($sl['image']), 'full', false, '' ); ?>">
+                </div>
+
+            <?php endforeach; ?>
+
+        </div>
+    </div>
+
+    <?php
+    endif;
+}
 
 
 // Admin Settings
@@ -966,6 +1002,11 @@ function _themename_admin_init(){
 	register_setting(
 		'company-option-group',
 		'insight_company'
+	);
+
+    register_setting(
+		'company-option-group',
+		'spotlight'
 	);
 
 	if(get_option('heroBanner')):
@@ -1065,6 +1106,13 @@ function _themename_admin_init(){
         update_option('employee', $employee);
 	endif;
 
+    if(get_option('spotlight')):
+		$spotlight = get_option('spotlight');
+	else:
+		$spotlight = array();
+        update_option('spotlight', $spotlight);
+	endif;
+
 
 
 	add_settings_section(
@@ -1159,6 +1207,14 @@ function _themename_admin_init(){
 		'employee',
 		'Employees',
 		'employee_callback',
+		'company-options',
+		'theme-index-options'
+	);
+
+    add_settings_field(
+		'spotlight',
+		'Spotlight',
+		'spotlight_callback',
 		'company-options',
 		'theme-index-options'
 	);
@@ -1381,7 +1437,7 @@ function ad_side_select_callback(){
 function employee_callback() {
     $employees = get_option('employee');?>
 
-    <span class="ghs_add_button" onclick="addToEmployeeArray()">
+    <span class="ghs_add_button ghs_employee_add">
         &#43;
     </span>
 
@@ -1413,6 +1469,46 @@ function employee_callback() {
     </ul>
 
 <?php }
+
+function spotlight_callback(){
+    $spotlight = get_option('spotlight');
+    ?>
+
+    <span class="ghs_add_button ghs_spotlight_add">
+        &#43;
+    </span>
+
+    <ul class="ghs_spotlight_list">
+	    <?php foreach ($spotlight as $key => $em): ?>
+
+            <li>
+                <label for="insight_bg">
+                    <img class="insight_img" src="<?php
+				    if(isset( $em['image'] )):
+					    if(wp_http_validate_url(esc_url(wp_get_attachment_url($em['image']), 'full', false, '' ))):
+						    echo esc_url(wp_get_attachment_url($em['image']), 'full', false, '' );
+					    else:
+						    echo esc_url('https://placehold.jp/1920x1080.png');
+					    endif;
+				    else:
+					    echo esc_url('https://placehold.jp/1920x1080.png');
+				    endif;?>" value="Upload Profile Picture" id="insight_submit" />
+                </label>
+                <input id="insight_bg" class="insight_bg" name="spotlight[<?php echo $key ?>][image]" value="<?php echo $em['image'] ?>" />
+
+                <input type="text"  name="spotlight[<?php echo $key ?>][topTitle]" value="<?php echo $em['topTitle'] ?>" placeholder="Top Title">
+                <textarea placeholder="Description" name="spotlight[<?php echo $key ?>][topDescription]" ><?php echo $em['topDescription'] ?></textarea>
+
+                <input type="text"  name="spotlight[<?php echo $key ?>][bottomTitle]" value="<?php echo $em['bottomTitle'] ?>" placeholder="Bottom Title">
+                <textarea placeholder="Description" name="spotlight[<?php echo $key ?>][bottomDescription]" ><?php echo $em['bottomDescription'] ?></textarea>
+                <span class="ghs_delete_button ghs_employee_delete"> X </span>
+            </li>
+
+	    <?php endforeach; ?>
+    </ul>
+
+    <?php
+}
 
 function _themename_admin_page(){
 	add_menu_page(

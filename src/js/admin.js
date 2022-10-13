@@ -36,7 +36,17 @@ jQuery(document).ready( function($){
         'Description': ''
     }
 
+    var spotlightTemplate = {
+        'image': '',
+        'topTitle': '',
+        'topDescription': '',
+        'bottomTitle': '',
+        'bottomDescription': ''
+    }
+
     var employees = ghs_obj.employees;
+
+    var spotlight = ghs_obj.spotlight;
 
     function mediaUpload(e){
         let capture = e.currentTarget.parentElement.nextElementSibling;
@@ -104,6 +114,29 @@ jQuery(document).ready( function($){
 
     }
 
+    function addToSpotlightArray(){
+        console.log(spotlight);
+        var appendable = $('.ghs_spotlight_list');
+        var listItem = "<li>" +
+            "<label for=\"insight_bg\">\n" +
+            "<img class=\"insight_img\" src=\"https://placehold.jp/1920x1080.png\" value id=\"insight_submit\" />\n" +
+            "</label>\n" +
+            "<input id=\"insight_bg\" class=\"insight_bg\" name=\"spotlight["+spotlight.length+"][image]\" value />\n" +
+            "<input type=\"text\"  name=\"spotlight["+spotlight.length+"][topTitle]\" value placeholder=\"Top Title\">\n" +
+            "<textarea placeholder=\"Description\" name=\"spotlight["+spotlight.length+"][topDescription]\" ></textarea>\n" +
+            "<input type=\"text\"  name=\"spotlight["+spotlight.length+"][bottomTitle]\" value placeholder=\"Bottom Title\">\n" +
+            "<textarea placeholder=\"Description\" name=\"spotlight["+spotlight.length+"][bottomDescription]\" ></textarea>\n" +
+            "<span class=\"ghs_delete_button ghs_employee_delete\"> X </span>" +
+            "</li>";
+
+        if(appendable.length > 0){
+            appendable.append(listItem);
+        }
+
+        spotlight.push(spotlightTemplate);
+
+    }
+
     function deleteEmployeeArrayItem(e){
         var listObj = e.currentTarget.parentElement;
         listObj.remove();
@@ -138,9 +171,14 @@ jQuery(document).ready( function($){
         deleteEmployeeArrayItem(a);
     });
 
-    $(document).on('click', '.ghs_add_button',function (a) {
+    $(document).on('click', '.ghs_employee_add',function (a) {
         // console.log(a);
         addToEmployeeArray(a);
+    });
+
+    $(document).on('click', '.ghs_spotlight_add',function (a) {
+        // console.log(a);
+        addToSpotlightArray(a);
     });
 
     if($('.ghs_feat_column_select_1').length > 0) {
