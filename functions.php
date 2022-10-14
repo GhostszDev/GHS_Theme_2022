@@ -950,6 +950,22 @@ function _themename_spotlight(){
     endif;
 }
 
+function _themename_page_contact_info(){
+    $contact = get_option('contact')?>
+
+    <div class="container">
+        <div class="row">
+
+
+
+        </div>
+    </div>
+
+    <?php
+}
+
+function _themename_page_contact_form(){}
+
 
 // Admin Settings
 function _themename_admin_init(){
