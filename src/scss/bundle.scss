@@ -313,9 +313,29 @@ h5 .ghs_primary_link:hover{
   font-size: 1.2em;
 }
 
+.ghs_spotlight ul{
+  list-style: none;
+  padding: 0;
+}
+
+.ghs_spotlight li{
+  margin-bottom: 1rem;
+}
+
 .ghs_spotlight_image img{
   width: 100%;
   height: auto;
+}
+
+.ghs_spotlight_number{
+  width: 2rem !important;
+  height: 2rem;
+  border-radius: 2.5rem;
+  border: $primaryColor .2em solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bolder;
 }
 
 @media screen and (max-width: 992px) {

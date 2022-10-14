@@ -914,29 +914,30 @@ function _themename_focus_text(){}
 
 function _themename_spotlight(){
     $spotlight = get_option('spotlight');
+    $counter = 1;
 
     if($spotlight):?>
 
-    <div class="container">
+    <div class="container ghs_spotlight my-3">
         <div class="row">
 
             <?php foreach($spotlight as $key => $sl): ?>
 
                 <div class="col-12 col-md-4 my-2 <?php if(($key % 2) != 0): ?> order-md-2 <?php endif; ?>">
-                    <ul>
-                        <li><span class="ghs_white_text"><?php echo $key + 1 ?></span></li>
+                    <ul class="mb-5">
+                        <li><span class="ghs_white_text ghs_spotlight_number"><?php echo $counter; $counter++; ?></span></li>
                         <li><h5 class="ghs_primary_text_color"><?php echo $sl['topTitle'] ?></h5></li>
                         <li><p><?php echo $sl['topDescription'] ?></p></li>
                     </ul>
 
                     <ul>
-                        <li><span class="ghs_white_text"><?php echo $key + 2 ?></span></li>
+                        <li><span class="ghs_white_text ghs_spotlight_number"><?php echo $counter; $counter++; ?></span></li>
                         <li><h5 class="ghs_primary_text_color"><?php echo $sl['bottomTitle'] ?></h5></li>
                         <li><p><?php echo $sl['bottomDescription'] ?></p></li>
                     </ul>
                 </div>
 
-                <div class="col-12 col-md-8 ghs_spotlight_image my-2 <?php if(($key % 2) != 0): ?> order-md-1 <?php endif; ?>">
+                <div class="col-12 col-md-8 ghs_spotlight_image mt-2 mb-4 <?php if(($key % 2) != 0): ?> order-md-1 <?php endif; ?>">
                     <img src="<?php echo esc_url(wp_get_attachment_url($sl['image']), 'full', false, '' ); ?>">
                 </div>
 
