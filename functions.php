@@ -183,6 +183,16 @@ function _themename_findInArray($array, $id, $sKey, $displayKey){
 
 }
 
+function _themename_email($from, $subject, $body, $attachments){
+
+    if($from){
+        $headers = [
+                'FROM: ' . '<'.$from.'>'
+        ];
+        $mail = wp_mail('', $subject, $body, $headers, '');
+    }
+
+}
 
 //Theme Frontend
 function _themename_nav_bar(){ ?>
@@ -951,11 +961,56 @@ function _themename_spotlight(){
 }
 
 function _themename_page_contact_info(){
-    $contact = get_option('contact')?>
+    $contact = get_option('contact');
+	$social = get_option('social');?>
 
-    <div class="container">
+    <div class="container ghs_contact">
         <div class="row">
 
+            <div class="col-12 col-md-6">
+                <h5>General Inquiry</h5>
+                <p><a href="mailto: <?php echo $contact['general'] ?>"><?php echo $contact['general'] ?></a></p>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <h5>Headquarters</h5>
+                <p><?php echo $contact['address']['name'] .'<br />'. $contact['address']['address_1'] . ' ' . $contact['address']['address_2'] . ', ' . $contact['address']['city']  . ', ' . $contact['address']['state'] . ', ' . $contact['address']['zip'] ?></p>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <h5>Support Inquiry</h5>
+                <p><?php echo $contact['support'] ?></p>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <h5>Phone</h5>
+                <p><?php echo $contact['phone'] ?></p>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <h5>Career Inquiry</h5>
+                <p><?php echo $contact['career'] ?></p>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <h5>Social</h5>
+                <div class="ghs_social_icons my-3">
+                    <ul>
+                        <?php foreach ($social['social'] as $s): ?>
+                            <?php if(!empty($s['url'])): ?>
+                                <li>
+                                    <a href="<?php echo $s['url'] ?>">
+                                        <svg aria-hidden="true" focusable="false">
+                                            <use href="<?php echo get_stylesheet_directory_uri() . '/dist/media/icons.svg#icon-'.$s['name'] ?>"></use>
+                                        </svg>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+
+            </div>
 
 
         </div>
@@ -1024,6 +1079,11 @@ function _themename_admin_init(){
     register_setting(
 		'company-option-group',
 		'spotlight'
+	);
+
+    register_setting(
+		'contact-option-group',
+		'contact'
 	);
 
 	if(get_option('heroBanner')):
@@ -1130,6 +1190,13 @@ function _themename_admin_init(){
         update_option('spotlight', $spotlight);
 	endif;
 
+    if(get_option('contact')):
+		$contact = get_option('contact');
+	else:
+		$contact = array();
+        update_option('contact', $contact);
+	endif;
+
 
 
 	add_settings_section(
@@ -1144,6 +1211,13 @@ function _themename_admin_init(){
 		'Company Setting',
 		null,
 		'company-options'
+	);
+
+    add_settings_section(
+		'theme-index-options',
+		'Contact Setting',
+		null,
+		'contact-options'
 	);
 
 	add_settings_field(
@@ -1235,6 +1309,14 @@ function _themename_admin_init(){
 		'company-options',
 		'theme-index-options'
 	);
+
+    add_settings_field(
+		'contact',
+		'Contact',
+		'contact_callback',
+		'contact-options',
+		'theme-index-options'
+	);
 }
 
 function _themename_options_page(){ ?>
@@ -1250,12 +1332,24 @@ function _themename_options_page(){ ?>
 <?php }
 
 function _themename_options_company_page(){ ?>
-    <h1>Hero Settings</h1>
+    <h1>Company Settings</h1>
     <?php settings_errors(); ?>
 
     <form action="options.php" method="POST">
     <?php settings_fields('company-option-group'); ?>
     <?php do_settings_sections('company-options'); ?>
+    <?php submit_button() ?>
+    </form>
+
+<?php }
+
+function _themename_options_contact_page(){ ?>
+    <h1>Contact Settings</h1>
+    <?php settings_errors(); ?>
+
+    <form action="options.php" method="POST">
+    <?php settings_fields('contact-option-group'); ?>
+    <?php do_settings_sections('contact-options'); ?>
     <?php submit_button() ?>
     </form>
 
@@ -1527,6 +1621,32 @@ function spotlight_callback(){
     <?php
 }
 
+function contact_callback(){
+    $contact = get_option('contact');
+    ?>
+
+    <div class="contact-group">
+        <input type="email" name="contact[general]" value="<?php echo $contact['general'] ?>" placeholder="General Email">
+        <input type="email" name="contact[support]" value="<?php echo $contact['support'] ?>" placeholder="Support Email">
+        <input type="email" name="contact[career]" value="<?php echo $contact['career'] ?>" placeholder="Career Email">
+    </div>
+
+    <div class="contact-group">
+        <input type="text" name="contact[address][name]" value="<?php echo $contact['address']['name'] ?>" placeholder="Name">
+        <input type="text" name="contact[address][address_1]" value="<?php echo $contact['address']['address_1'] ?>" placeholder="Address">
+        <input type="text" name="contact[address][address_2]" value="<?php echo $contact['address']['address_2'] ?>" placeholder="Address 2">
+        <input type="text" name="contact[address][city]" value="<?php echo $contact['address']['city'] ?>" placeholder="City">
+        <input type="text" name="contact[address][state]" value="<?php echo $contact['address']['state'] ?>" placeholder="State">
+        <input type="text" name="contact[address][zip]" value="<?php echo $contact['address']['zip'] ?>" placeholder="Zip">
+    </div>
+
+    <div class="contact-group">
+        <input type="number" name="contact[phone]" value="<?php echo $contact['phone'] ?>" placeholder="Phone">
+    </div>
+
+    <?php
+}
+
 function _themename_admin_page(){
 	add_menu_page(
         'Home Page Settings',
@@ -1545,6 +1665,15 @@ function _themename_admin_page(){
         'manage_options',
         'company-options',
         '_themename_options_company_page'
+    );
+
+    add_submenu_page(
+        'theme-options',
+        'Contact Page Settings',
+        'Contact Page Settings',
+        'manage_options',
+        'contact-options',
+        '_themename_options_contact_page'
     );
 }
 

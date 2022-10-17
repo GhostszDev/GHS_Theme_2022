@@ -338,6 +338,27 @@ h5 .ghs_primary_link:hover{
   font-weight: bolder;
 }
 
+.ghs_contact .col-12{
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.ghs_contact .col-12:nth-child(odd){
+  border: 1px grey solid;
+}
+
+.ghs_contact h5{
+  color: $primaryColor;
+}
+
+.ghs_contact a{
+  color: $secondColor;
+}
+
+.ghs_contact a:hover{
+  color: $primaryColor;
+}
+
 @media screen and (max-width: 992px) {
 
   .ghs_insight {
