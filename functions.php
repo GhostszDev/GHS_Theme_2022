@@ -183,16 +183,36 @@ function _themename_findInArray($array, $id, $sKey, $displayKey){
 
 }
 
-function _themename_email($from, $subject, $body, $attachments){
+function _themename_form(){
+	$data = [];
 
-    if($from){
+    $formContact = [
+        'to' => sanitize_email($_REQUEST['to']),
+        'from' => sanitize_email($_REQUEST['from']),
+        'body' => sanitize_text_field($_REQUEST['body']),
+        'subject' => sanitize_text_field($_REQUEST['subject']),
+        'name' => sanitize_text_field($_REQUEST['firstName'] . ' '. $_REQUEST['lastName'])
+    ];
+
+    _themename_email($formContact);
+}
+
+function _themename_email($formData){
+
+    if($formData['from']){
         $headers = [
-                'FROM: ' . '<'.$from.'>'
+            'FROM: ' . $formData['name'] . ' <'.$formData['from'].'>',
+	        'Content-Type: text/html; charset=UTF-8'
         ];
-        $mail = wp_mail('', $subject, $body, $headers, '');
+        $mail = wp_mail($formData['to'], $formData['subject'], $formData['body'], $headers, '');
+
+        return $mail;
     }
 
+    return false;
+
 }
+
 
 //Theme Frontend
 function _themename_nav_bar(){ ?>
@@ -1019,7 +1039,50 @@ function _themename_page_contact_info(){
     <?php
 }
 
-function _themename_page_contact_form(){}
+function _themename_page_contact_form(){
+	$contact = get_option('contact');
+
+    $user = [];
+    if(is_user_logged_in()):
+	    $user = wp_get_current_user();
+    endif;
+    ?>
+
+    <div class="container">
+        <form class="row g-3 needs-validation" novalidate action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post" name="contact_form">
+
+            <div class="col-md-6 col-12">
+                <input type="name" id="firstName" name="firstName" value="<?php if(!empty($user)): echo $user->user_firstname; endif; ?>" required>
+            </div>
+
+            <div class="col-md-6 col-12">
+                <input type="email" id="from"  name="from" value="<?php if(!empty($user)): echo $user->user_lastname; endif; ?>" required>
+            </div>
+
+            <div class="col-12">
+                <select id="to" name="to" required>
+                    <option value="<?php echo $contact['general'] ?>">General Inquiry</option>
+                    <option value="<?php echo $contact['support'] ?>">Support Inquiry</option>
+                </select>
+            </div>
+
+            <div class="col-12">
+                <input type="email" id="subject"  name="subject">
+            </div>
+
+            <div class="col-12">
+                <textarea id="body" name="body" required></textarea>
+            </div>
+
+            <input type="hidden" name="action" value="contact_form">
+            <input type="submit" value="Send My Message">
+        </form>
+
+
+    </div>
+
+    <?php
+}
 
 
 // Admin Settings
@@ -1820,7 +1883,6 @@ function _themename_meta_boxes(){
 }
 
 
-
 //Rest API
 
 
@@ -1835,6 +1897,8 @@ add_action('after_setup_theme', '_themename_theme_setup');
 add_action('after_setup_theme', '_themename_after_theme');
 add_action('add_meta_boxes', '_themename_meta_boxes');
 add_action('save_post', '_themename_save_postdata');
+add_action('admin_post_nopriv_contact_form', '_themename_form');
+add_action('admin_post_contact_form', '_themename_form');
 
 
 //Filters
