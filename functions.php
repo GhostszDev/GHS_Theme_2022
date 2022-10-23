@@ -483,7 +483,7 @@ function _themename_featured_posts($args, $title = 'Latest News'){
                         <img class="ghs_feat_post_img w-100" src="<?php echo get_the_post_thumbnail_url(get_the_ID())?>" />
 
 	                    <?php if(get_the_category(get_the_ID())[0]->term_id != 1): ?>
-                            <a href="<?php echo get_category_link(get_the_category(get_the_ID())[0]->cat_ID) ?>"><span class="ghs_feat_post_info btn btn-info btn-sm my-4"><?php echo strtoupper(get_the_category(get_the_ID())[0]->name) ?></span></a>
+                            <a href="<?php echo get_category_link(get_the_category(get_the_ID())[0]->cat_ID) ?>"><span class="ghs_feat_post_info btn btn-info btn-sm my-4 position-absolute d-block"><?php echo strtoupper(get_the_category(get_the_ID())[0]->name) ?></span></a>
 	                    <?php else: ?>
                             <a href="<?php echo home_url('/blog')?>"><span class="ghs_feat_post_info btn btn-info btn-sm my-4"><?php echo strtoupper('post') ?></span></a>
 	                    <?php endif; ?>
