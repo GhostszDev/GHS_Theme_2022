@@ -1128,27 +1128,37 @@ function _themename_page_contact_info(){
 
             <div class="col-12 col-md-6">
                 <h5>General Inquiry</h5>
+	            <?php if($contact['general']): ?>
                 <p><a href="mailto: <?php echo $contact['general'] ?>"><?php echo $contact['general'] ?></a></p>
+                <?php endif; ?>
             </div>
 
             <div class="col-12 col-md-6">
                 <h5>Headquarters</h5>
-                <p><?php echo $contact['address']['name'] .'<br />'. $contact['address']['address_1'] . ' ' . $contact['address']['address_2'] . ', ' . $contact['address']['city']  . ', ' . $contact['address']['state'] . ', ' . $contact['address']['zip'] ?></p>
+                <?php if(!empty($contact['address']['address_1'])): ?>
+                <p><a href="http://maps.google.com/?q=<?php echo $contact['address']['address_1'] . ' ' . $contact['address']['address_2'] . ', ' . $contact['address']['city']  . ', ' . $contact['address']['state'] . ', ' . $contact['address']['zip'] ?>" target="_blank" rel="noopener"><?php echo $contact['address']['name'] .'<br />'. $contact['address']['address_1'] . ' ' . $contact['address']['address_2'] . ', ' . $contact['address']['city']  . ', ' . $contact['address']['state'] . ', ' . $contact['address']['zip'] ?></a></p>
+                <?php endif; ?>
             </div>
 
             <div class="col-12 col-md-6">
                 <h5>Support Inquiry</h5>
-                <p><?php echo $contact['support'] ?></p>
+                <?php if($contact['support']): ?>
+                <p><a href="mailto: <?php echo $contact['support'] ?>"><?php echo $contact['support'] ?></a></p>
+                <?php endif; ?>
             </div>
 
             <div class="col-12 col-md-6">
                 <h5>Phone</h5>
-                <p><?php echo $contact['phone'] ?></p>
+	            <?php if($contact['phone']): ?>
+                <p><a href="tel: <?php echo '+1'.$contact['phone'] ?>"><?php echo $contact['phone'] ?></a></p>
+                <?php endif; ?>
             </div>
 
             <div class="col-12 col-md-6">
                 <h5>Career Inquiry</h5>
-                <p><?php echo $contact['career'] ?></p>
+	            <?php if($contact['career']): ?>
+                <p><a href="mailto: <?php echo $contact['career'] ?>"><?php echo $contact['career'] ?></a></p>
+                <?php endif; ?>
             </div>
 
             <div class="col-12 col-md-6">
