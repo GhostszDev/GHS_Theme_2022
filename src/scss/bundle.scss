@@ -21,11 +21,13 @@ body {
 p, h1, h2, h3, h4, h5, .ghs_single_post, .ghs_white_text{
   color: $secondColor;
   font-family: 'Mulish', sans-serif;
+  word-break: normal !important;
 }
 
 h1, h2, h3, h4, h5, .badge, .btn{
   font-weight: bold;
   font-family: 'Roboto Slab', serif;
+  word-break: normal !important;
 }
 
 .badge{
