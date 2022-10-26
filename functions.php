@@ -637,7 +637,7 @@ function _themename_footer(){
                         <?php foreach ($social['social'] as $s): ?>
                             <?php if(!empty($s['url'])): ?>
                                 <li>
-                                    <a href="<?php echo $s['url'] ?>">
+                                    <a href="<?php echo $s['url'] ?>" target="_blank" rel="noopener external nofollow">
                                         <svg aria-hidden="true" focusable="false">
                                             <use href="<?php echo get_stylesheet_directory_uri() . '/dist/media/icons.svg#icon-'.$s['name'] ?>"></use>
                                         </svg>
@@ -651,7 +651,7 @@ function _themename_footer(){
                         <?php foreach ($social['company'] as $c): ?>
                             <?php if(!empty($c['url'])): ?>
                                 <li>
-                                    <a href="<?php echo $c['url'] ?>">
+                                    <a href="<?php echo $c['url'] ?>" target="_blank" rel="noopener external nofollow">
                                         <svg width="1em" height="1em" aria-hidden="true" focusable="false">
                                             <use href="<?php echo get_stylesheet_directory_uri() . '/dist/media/icons.svg#icon-'.$c['name'] ?>"></use>
                                         </svg>
@@ -999,7 +999,7 @@ function _themename_single_post(){
                                 <?php foreach (get_post_meta(get_the_ID(), 'game_platform', true)['company'] as $c): ?>
                                     <?php if(!empty($c['url'])): ?>
                                         <li>
-                                            <a href="<?php echo $c['url'] ?>">
+                                            <a href="<?php echo $c['url'] ?>" target="_blank" rel="noopener external nofollow">
                                                 <svg width="1em" height="1em" aria-hidden="true" focusable="false">
                                                     <use href="<?php echo get_stylesheet_directory_uri() . '/dist/media/icons.svg#icon-'.$c['name'] ?>"></use>
                                                 </svg>
@@ -1136,7 +1136,7 @@ function _themename_page_contact_info(){
             <div class="col-12 col-md-6">
                 <h5>Headquarters</h5>
                 <?php if(!empty($contact['address']['address_1'])): ?>
-                <p><a href="http://maps.google.com/?q=<?php echo $contact['address']['address_1'] . ' ' . $contact['address']['address_2'] . ', ' . $contact['address']['city']  . ', ' . $contact['address']['state'] . ', ' . $contact['address']['zip'] ?>" target="_blank" rel="noopener"><?php echo $contact['address']['name'] .'<br />'. $contact['address']['address_1'] . ' ' . $contact['address']['address_2'] . ', ' . $contact['address']['city']  . ', ' . $contact['address']['state'] . ', ' . $contact['address']['zip'] ?></a></p>
+                <p><a href="http://maps.google.com/?q=<?php echo $contact['address']['address_1'] . ' ' . $contact['address']['address_2'] . ', ' . $contact['address']['city']  . ', ' . $contact['address']['state'] . ', ' . $contact['address']['zip'] ?>" target="_blank" rel="noopener external nofollow"><?php echo $contact['address']['name'] .'<br />'. $contact['address']['address_1'] . ' ' . $contact['address']['address_2'] . ', ' . $contact['address']['city']  . ', ' . $contact['address']['state'] . ', ' . $contact['address']['zip'] ?></a></p>
                 <?php endif; ?>
             </div>
 
