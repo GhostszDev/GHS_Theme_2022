@@ -189,7 +189,10 @@ function _themename_custom_post_types(){
                 ),
 			'public'      => true,
 			'has_archive' => false,
-			'rewrite'     => array( 'slug' => 'games' ),
+			'rewrite'     => array(
+				'with_front' => false,
+                'slug' => 'games'
+            ),
 			'exclude_from_search' => false,
 			'taxonomies'   => array( 'category' ),
 		)
