@@ -1259,13 +1259,7 @@ function _themename_account_page(){
 
                         <div class="ghs_sponsor w-100">
 
-                            <ul>
-                                <il>Dashboard</il>
-                                <il>Orders</il>
-                                <il>Downloads</il>
-                                <il>Addresses</il>
-                                <il>Account Details</il>
-                            </ul>
+                            <?php woocommerce_account_navigation() ?>
 
                         </div>
 
