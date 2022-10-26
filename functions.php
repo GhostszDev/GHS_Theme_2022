@@ -304,6 +304,7 @@ function _themename_theme_setup(){
 	_themename_check_for_page('Studio', 'page');
 	_themename_check_for_page('Contact', 'page');
 	_themename_check_for_page('Privacy Policy', 'page');
+	_themename_check_for_page('My Account', 'page');
 
     // Create categories
 	_themename_add_cats(GHS_GAME_CATS);
@@ -409,12 +410,13 @@ function _themename_nav_bar(){ ?>
                                 <p>Ghost</p>
                             </a>
                             <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="<?php echo get_home_url(); ?>/my-account" rel="nofollow">Account</a></li>
                                 <?php if ( current_user_can( 'manage_options' ) ): ?>
                                     <li><a class="dropdown-item" href="<?php echo get_admin_url(); ?>">Admin</a></li>
-                                    <li><hr class="dropdown-divider"></li>
                                 <?php endif; ?>
+                                <li><hr class="dropdown-divider"></li>
                                 <li>
-                                    <a class="dropdown-item" href="<?php echo wp_logout_url( home_url() ); ?>">Logout</a>
+                                    <a class="dropdown-item" href="<?php echo wp_logout_url( home_url() ); ?>" rel="nofollow">Logout</a>
                                 </li>
                             </ul>
                         </li>
@@ -1230,6 +1232,48 @@ function _themename_page_contact_form(){
             </div>
         </form>
 
+
+    </div>
+
+    <?php
+}
+
+function _themename_account_page(){
+    ?>
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="<?php if(!is_privacy_policy()): ?>col-12 col-lg-8 ghs_single_post <?php else: ?> col-12 ghs_single_post <?php endif; ?>">
+                <?php echo woocommerce_account_content(); ?>
+            </div>
+
+            <div class="col-12 col-lg-4 my-4">
+
+                <div class="ghs_side_card w-100 mb-4">
+                    <div class="ghs_side_card_title px-5 py-3">
+                        <h5>Account Settings</h5>
+                    </div>
+
+
+                        <div class="ghs_sponsor w-100">
+
+                            <ul>
+                                <il>Dashboard</il>
+                                <il>Orders</il>
+                                <il>Downloads</il>
+                                <il>Addresses</il>
+                                <il>Account Details</il>
+                            </ul>
+
+                        </div>
+
+                </div>
+
+            </div>
+
+        </div>
 
     </div>
 
