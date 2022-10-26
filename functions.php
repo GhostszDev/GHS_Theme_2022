@@ -441,7 +441,7 @@ function _themename_hero_banner(){
         </div>
         <div class="carousel-inner">
 	        <?php foreach ($heroBanner as $key => $value): ?>
-                <div class="carousel-item <?php if($k === 0): echo 'active'; endif; ?>" style="background: url(<?php echo esc_url(wp_get_attachment_url($value['img']), 'full', false, '' ); ?>)">
+                <div class="carousel-item <?php if($k === 0): echo 'active'; endif; ?>" style="background: linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.5)), url(<?php echo esc_url(wp_get_attachment_url($value['img']), 'full', false, '' ); ?>)">
 <!--                    <img class="d-block img-fluid" src="--><?php //echo esc_url(wp_get_attachment_url($value['img']), 'full', false, '' ); ?><!--" alt="">-->
 
                     <div class="carousel-caption d-none d-md-block">
@@ -539,7 +539,7 @@ function _themename_insight(){
     endif;
     ?>
 
-    <div class="w-100 mt-4 ghs_insight" style="background: url(<?php echo esc_url(wp_get_attachment_url($insight['img']), 'full', false, '' ); ?>)">
+    <div class="w-100 mt-4 ghs_insight" style="background: linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.5)), url(<?php echo esc_url(wp_get_attachment_url($insight['img']), 'full', false, '' ); ?>)">
 
         <div class="container">
             <div class="row">
@@ -705,7 +705,7 @@ function _themename_footer(){
 function _themename_page_feat_image(){
 	?>
 
-    <div class="w-100 mt-4 ghs_insight d-flex align-items-center mb-3" style="background: url(<?php echo esc_url(get_the_post_thumbnail_url(get_the_ID())); ?>)">
+    <div class="w-100 mt-4 ghs_insight d-flex align-items-center mb-3" style="background: linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.5)), url(<?php echo esc_url(get_the_post_thumbnail_url(get_the_ID())); ?>)">
 
         <div class="container">
             <div class="row">
