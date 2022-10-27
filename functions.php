@@ -1245,7 +1245,7 @@ function _themename_account_page(){
 
         <div class="row">
 
-            <div class="<?php if(!is_privacy_policy()): ?>col-12 col-lg-8 ghs_single_post <?php else: ?> col-12 ghs_single_post <?php endif; ?>">
+            <div class="col-12 col-lg-8 ghs_single_post my-4 ghs_woocommerce_content">
                 <?php echo woocommerce_account_content(); ?>
             </div>
 
@@ -1256,13 +1256,11 @@ function _themename_account_page(){
                         <h5>Account Settings</h5>
                     </div>
 
-
-                        <div class="ghs_sponsor w-100">
-
-                            <?php woocommerce_account_navigation() ?>
-
-                        </div>
-
+                    <ul class="px-5 py-3">
+			            <?php foreach (wc_get_account_menu_items() as $endpoint => $label): ?>
+                            <li class="mb-3 pb-2"><a class="ghs_primary_link" href="<?php echo esc_url( wc_get_account_endpoint_url( $endpoint ) ); ?>"><?php echo esc_html( $label ); ?></a></li>
+			            <?php endforeach; ?>
+                    </ul>
                 </div>
 
             </div>

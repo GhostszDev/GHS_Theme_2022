@@ -361,6 +361,17 @@ h5 .ghs_primary_link:hover{
   color: $primaryColor;
 }
 
+.woocommerce-Address-title{
+  display: flex;
+  justify-content: space-between;
+  padding-right: 2rem;
+  margin-bottom: 1rem;
+}
+
+.woocommerce-Address{
+  margin-bottom: 5rem;
+}
+
 @media screen and (max-width: 992px) {
 
   .ghs_insight {
