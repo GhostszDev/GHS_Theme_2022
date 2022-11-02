@@ -395,6 +395,10 @@ h5 .ghs_primary_link:hover{
   color: $primaryColor;
 }
 
+.ghs_woocommerce_content .required{
+  color: $primaryColor;
+}
+
 @media screen and (max-width: 992px) {
 
   .ghs_insight {
