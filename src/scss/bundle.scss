@@ -372,6 +372,29 @@ h5 .ghs_primary_link:hover{
   margin-bottom: 5rem;
 }
 
+.alert-primary{
+  background: #977fff;
+  border: #8771df;
+  color: $secondColor;
+}
+
+.ghs_woocommerce_content .woocommerce-info::before{
+  content: "" !important;
+}
+
+.ghs_woocommerce_content .woocommerce-Button{
+  color: $secondColor;
+  font-weight: bold;
+}
+
+.ghs_woocommerce_content .woocommerce-Button:hover{
+  color: $colour;
+}
+
+.ghs_woocommerce_content em{
+  color: $primaryColor;
+}
+
 @media screen and (max-width: 992px) {
 
   .ghs_insight {
