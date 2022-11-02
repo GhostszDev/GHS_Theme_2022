@@ -305,6 +305,7 @@ function _themename_theme_setup(){
 	_themename_check_for_page('Contact', 'page');
 	_themename_check_for_page('Privacy Policy', 'page');
 	_themename_check_for_page('My Account', 'page');
+	_themename_check_for_page('Profile', 'page');
 
     // Create categories
 	_themename_add_cats(GHS_GAME_CATS);
@@ -358,7 +359,9 @@ function _themename_email($formData){
 
 
 //Theme Frontend
-function _themename_nav_bar(){ ?>
+function _themename_nav_bar(){
+	$user = wp_get_current_user();
+    ?>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="<?php echo get_home_url() ?>">
@@ -403,13 +406,13 @@ function _themename_nav_bar(){ ?>
                 <ul class="navbar-nav justify-content-end">
                     <li class="nav-item">
                         <?php if(is_user_logged_in()): ?>
-    <!--                        <a class="nav-link" aria-current="page" href="--><?php //echo wp_logout_url( home_url() ); ?><!--">Logout</a>-->
                         <li class="nav-item dropdown ghs_user_dropdown">
                             <a class="nav-link dropdown-toggle d-flex" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="<?php echo get_avatar_url(get_current_user_id(0)) ?>" alt="user-image" class="rounded-circle">
-                                <p>Ghost</p>
+                                <img src="<?php echo get_avatar_url(get_current_user_id($user->ID)) ?>" alt="user-image" class="rounded-circle">
+                                <p><?php echo $user->display_name ?></p>
                             </a>
                             <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="<?php echo get_home_url(); ?>/profile" rel="nofollow">Profile</a></li>
                                 <li><a class="dropdown-item" href="<?php echo get_home_url(); ?>/my-account" rel="nofollow">Account</a></li>
                                 <?php if ( current_user_can( 'manage_options' ) ): ?>
                                     <li><a class="dropdown-item" href="<?php echo get_admin_url(); ?>">Admin</a></li>
@@ -1265,6 +1268,28 @@ function _themename_account_page(){
 
             </div>
 
+        </div>
+
+    </div>
+
+    <?php
+}
+
+function _themename_page_profile_image(){
+	$user = wp_get_current_user();
+    ?>
+
+    <div class="w-100 mt-4 ghs_insight d-flex align-items-center mb-3" style="background: linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.5)), url(<?php echo esc_url(get_the_post_thumbnail_url(get_the_ID())); ?>)">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    <h5 class="pt-3 ghs_insight_title"><?php echo $user->display_name; ?></h5>
+                    <ul>
+                        <li></li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
     </div>
