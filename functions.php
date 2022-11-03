@@ -357,6 +357,11 @@ function _themename_email($formData){
 
 }
 
+function reset_pass_url() {
+	$siteURL = get_option('siteurl');
+	return "{$siteURL}/wp-login.php?action=lostpassword";
+}
+
 
 //Theme Frontend
 function _themename_nav_bar(){
@@ -2112,3 +2117,4 @@ add_action('admin_post_contact_form', '_themename_form');
 
 //Filters
 add_filter( 'show_admin_bar', '__return_false' );
+add_filter( 'lostpassword_url', 'reset_pass_url', 10, 2 );
