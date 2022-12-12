@@ -419,17 +419,17 @@ function _themename_permissions(){
 function _themename_nav_bar(){
 	$user = wp_get_current_user();
     ?>
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-        <div class="container-fluid">
+	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <div class="container-fluid navbar-dark bg-dark">
             <a class="navbar-brand" href="<?php echo get_home_url() ?>">
-            <svg width="75px" height="75px" aria-hidden="true" focusable="false">
-                <use href="<?php echo get_stylesheet_directory_uri() . '/dist/media/icons.svg#icon-logo' ?>"></use>
-            </svg>
-        </a>
+                <svg width="75px" height="75px" aria-hidden="true" focusable="false">
+                    <use href="<?php echo get_stylesheet_directory_uri() . '/dist/media/icons.svg#icon-logo' ?>"></use>
+                </svg>
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="navbar-collapse collapse" id="navbarSupportedContent">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 mx-lg-auto">
                     <?php foreach (_themename_get_navigation('Nav Bar') as $navItem): ?>
                         <?php if(empty($navItem['submenu'])): ?>
@@ -1301,7 +1301,7 @@ function _themename_page_contact_form(){
 function _themename_account_page(){
     ?>
 
-    <div class="container">
+    <div class="container ghs_content_top">
 
         <div class="row">
 
