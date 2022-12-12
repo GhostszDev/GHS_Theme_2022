@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "type": "module",
+  "restroute": "ghs_api",
+  "restroute_vesion": "v1",
   "scripts": {
     "start": "gulp --prod=false",
     "build": "gulp build --prod=true"

@@ -139,6 +139,50 @@ const GHS_UK_RATINGS = array();
 
 
 //Rest API
+function _themename_restapi_schema(){
+    $schema = [
+        '$schema' => "http://json-schema.org/draft-04/schema#",
+        'title' => '',
+        'type' => 'object',
+        'property' => [
+        ]
+    ];
+
+    return $schema;
+}
+
+function _themename_rest_api_init(){
+    register_rest_route('_restroute', 'test', [
+        'methods' => 'POST',
+        'callback' => '_themename_restapi_test',
+        'permission_callback' => '_themename_permissions',
+        'args' => [
+                'args1' => [
+                    'required'          => true,
+                    'default'           => "test",
+                    'validate_callback' => function($param, $request, $key){
+                        return !is_numeric($param);
+                    }
+                ]
+        ],
+        'schema' => '_themename_restapi_schema'
+    ]);
+}
+
+// Rest EndPoint Functions
+function _themename_restapi_test(WP_REST_Request $request){
+    if(!empty($request->get_param('args1'))):
+        return rest_ensure_response(['data' => 'test']);
+    else:
+        return new WP_Error('ghs_test_404', 'No data found!',
+            [
+                'status' => 404,
+                'test' => 'test'
+            ]);
+    endif;
+}
+
+
 //Theme Functions
 function _themename_assets() {
 	wp_enqueue_style( '_themename-stylesheet', get_template_directory_uri() . '/dist/css/bundle.css', array(), '1.0.0', 'all' );
@@ -360,6 +404,14 @@ function _themename_email($formData){
 function reset_pass_url() {
 	$siteURL = get_option('siteurl');
 	return "{$siteURL}/wp-login.php?action=lostpassword";
+}
+
+function _themename_permissions(){
+    if(is_user_logged_in() && current_user_can( 'manage_options' )):
+        return true;
+    else:
+        return false;
+    endif;
 }
 
 
@@ -2113,6 +2165,7 @@ add_action('add_meta_boxes', '_themename_meta_boxes');
 add_action('save_post', '_themename_save_postdata');
 add_action('admin_post_nopriv_contact_form', '_themename_form');
 add_action('admin_post_contact_form', '_themename_form');
+add_action('rest_api_init', '_themename_rest_api_init');
 
 
 //Filters

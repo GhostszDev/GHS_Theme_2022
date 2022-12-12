@@ -115,7 +115,7 @@ export const compress = () => {
     ])
         .pipe(gulpif(
             file => file.relative.split(".").pop() !== "zip",
-            replace("_themename", info.name)
+            replace("_themename", info.name), replace("_restroute", info.restroute + '/' + info.restroute_vesion)
             ))
         .pipe(zip(`${info.name}.zip`))
         .pipe(gulp.dest('bundled'));
