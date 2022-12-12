@@ -1249,7 +1249,7 @@ function _themename_page_contact_form(){
 function _themename_account_page(){
     ?>
 
-    <div class="container">
+    <div class="container ghs_content_top">
 
         <div class="row">
 
