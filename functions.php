@@ -419,7 +419,7 @@ function _themename_permissions(){
 function _themename_nav_bar(){
 	$user = wp_get_current_user();
     ?>
-	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+	<nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
         <div class="container-fluid navbar-dark bg-dark">
             <a class="navbar-brand" href="<?php echo get_home_url() ?>">
                 <svg width="75px" height="75px" aria-hidden="true" focusable="false">
