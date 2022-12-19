@@ -674,8 +674,9 @@ function game_lock_callback(){
 				echo esc_url('https://placehold.jp/1920x1080.png');
 			endif;?>" value="Upload Profile Picture" id="insight_submit" />
 		</label>
+        <input id="insight_bg" class="insight_bg" name="game_lock_icon" value="<?php echo $game_icon ?>" />
 	</div>
-    <input id="insight_bg" class="insight_bg" name="game_lock_icon" value="<?php echo $game_icon ?>" />
+
 
 	<?php
 }
