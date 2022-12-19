@@ -49,6 +49,7 @@ jQuery(document).ready( function($){
     var spotlight = ghs_obj.spotlight;
 
     function mediaUpload(e){
+        console.log(e.currentTarget)
         let capture = e.currentTarget.parentElement.nextElementSibling;
 
         e.preventDefault();
