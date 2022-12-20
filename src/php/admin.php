@@ -315,6 +315,14 @@ function _themename_admin_init(){
 		'other-options',
 		'theme-index-options'
 	);
+
+	add_settings_field(
+		'friends_list_init',
+		'Friends List Init',
+		'init_friends_list_button_callback',
+		'other-options',
+		'theme-index-options'
+	);
 }
 
 function _themename_options_page(){ ?>
@@ -661,7 +669,7 @@ function game_lock_callback(){
 	$game_icon = get_option('game_lock_icon');
 	?>
 
-	<div class="ghs_insight_wrapper">
+	<div class="ghs_insight_wrapper game_lock_icon_wrapper">
 		<label for="insight_bg">
 			<img class="insight_img" src="<?php
 			if(isset( $game_icon )):
@@ -679,6 +687,13 @@ function game_lock_callback(){
 
 
 	<?php
+}
+
+function init_friends_list_button_callback(){ ?>
+
+    <button>Run</button>
+
+    <?php
 }
 
 function _themename_admin_page(){
@@ -860,4 +875,7 @@ function _themename_meta_boxes(){
 	add_meta_box('game_size', 'Game Size', 'game_size_meta_box', 'games', 'side');
 	add_meta_box('game_platform_links', 'Game Platforms', 'game_platform_meta_box', 'games', 'side');
 
+}
+
+function _themename_admin_init_friends_list(){
 }

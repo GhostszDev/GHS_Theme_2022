@@ -176,6 +176,7 @@ function _themename_theme_setup(){
 function _themename_init(){
 	_themename_custom_post_types();
 	_themename_rewrites();
+	_themename_needed_DB();
 }
 
 function _themename_findInArray($array, $id, $sKey, $displayKey){
@@ -240,4 +241,24 @@ function _themename_rewrites(){
 function _themename_custom_query_vars($query_vars){
 	$query_vars[] = 'profile';
 	return $query_vars;
+}
+
+function _themename_needed_DB(){
+	global $wpdb;
+
+	$table_name = $wpdb->prefix . "friendsDB";
+
+	$sql = "CREATE TABLE IF NOT EXISTS $table_name (
+      		`ID` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  			`user_id` int NOT NULL,
+  			`friends_list` json NULL);";
+
+	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+	dbDelta($sql);
+
+}
+
+function _themename_user_friendslist(){
+	global $wpdb;
+
 }

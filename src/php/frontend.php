@@ -919,6 +919,7 @@ function _themename_account_page(){
 
 function _themename_page_profile_image(){
 	$user = get_user_by('slug', get_query_var('profile'));
+    $currentUser = get_user_by('id', get_current_user_id());;
 	?>
 
     <div class="w-100 mt-4 ghs_insight d-flex align-items-center mb-3" style="background: linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.5)), url(<?php echo esc_url(get_the_post_thumbnail_url(get_the_ID())); ?>)">
@@ -928,7 +929,7 @@ function _themename_page_profile_image(){
                 <div class="col-12 col-lg-6">
                     <h5 class="pt-3 ghs_insight_title"><?php if($user->display_name): echo ucwords($user->display_name); else: echo ucwords($user->first_name . ' ' . $user->last_name); endif; ?></h5>
                     <ul class="ghs_bottom_icons_list">
-                        <?php if($user->display_name == get_current_user()->display_name):?>
+                        <?php if($user->user_login != $currentUser->user_login):?>
                         <li>
                             <a href="#">
                                 <svg class="ghs_profile_icons" aria-hidden="true" focusable="false">
@@ -962,5 +963,8 @@ function _themename_page_profile_image(){
 
     </div>
 
+
 	<?php
+	var_dump($user->user_login);
+	var_dump($currentUser->user_login);
 }
