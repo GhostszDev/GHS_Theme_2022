@@ -691,7 +691,9 @@ function game_lock_callback(){
 
 function init_friends_list_button_callback(){ ?>
 
-    <button>Run</button>
+    <div class="ghs_button">
+        Run
+    </div>
 
     <?php
 }

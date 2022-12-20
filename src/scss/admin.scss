@@ -1,5 +1,12 @@
 @import url('https://cdn.lineicons.com/3.0/lineicons.css');
 
+$colour: #1f1f1f;
+$secondColor: #fff;
+$primaryColor: #977fff;
+$primaryColorBorder: #8771df;
+$primaryColorHover: #5c4d97;
+$primaryColorBorderHover: #473c74;
+
 textarea{
   height: 150px;
 }
@@ -175,4 +182,21 @@ textarea{
 .contact-group *{
   width: 100%;
   margin-bottom: .5rem;
+}
+
+.ghs_button{
+  width: 4rem;
+  height: 2rem;
+  color: white;
+  background: $primaryColor;
+  border-radius: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.ghs_button:hover{
+  cursor: pointer;
+  background: $primaryColorHover;
 }

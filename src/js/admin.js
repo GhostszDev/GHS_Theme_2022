@@ -48,6 +48,45 @@ jQuery(document).ready( function($){
 
     var spotlight = ghs_obj.spotlight;
 
+    var globals = getCookie(document.cookie, 'globals');
+
+    console.log(globals);
+
+    function getCookie(cookie, cname){
+
+        let name = cname + "=";
+        let decodedCookie = decodeURIComponent(cookie);
+        let ca = decodedCookie.split(';');
+        for(let i = 0; i <ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    function runFriendsListInit(e){
+        $.ajax({
+            type: "POST",
+            url: ghs_obj.rest_api + '/friends_list_init',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            data: JSON.stringify({}),
+            contentType: "application/json",
+            success: (result) => {
+                console.log(result);
+            },
+            error: (result, status) => {
+                console.log(result);
+            }
+        });
+    }
+
     function mediaUpload(e){
         let capture = e.currentTarget.parentElement.nextElementSibling;
 
@@ -179,6 +218,11 @@ jQuery(document).ready( function($){
     $(document).on('click', '.ghs_spotlight_add',function (a) {
         // console.log(a);
         addToSpotlightArray(a);
+    });
+
+    $(document).on('click', '.ghs_friends_list_btn',function (a) {
+        // console.log(a);
+        runFriendsListInit(a);
     });
 
     if($('.ghs_feat_column_select_1').length > 0) {

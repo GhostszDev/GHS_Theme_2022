@@ -1,11 +1,11 @@
 <?php
 
 // Includes
-require_once get_theme_file_path( '/src/php/admin.php' );;
-require_once get_theme_file_path( '/src/php/frontend.php' );;
-require_once get_theme_file_path( '/src/php/other.php' );;
-require_once get_theme_file_path( '/src/php/rest_api.php' );;
-require_once get_theme_file_path( '/src/php/theme.php' );;
+require_once get_theme_file_path( '/src/php/admin.php' );
+require_once get_theme_file_path( '/src/php/frontend.php' );
+require_once get_theme_file_path( '/src/php/other.php' );
+require_once get_theme_file_path( '/src/php/rest_api.php' );
+require_once get_theme_file_path( '/src/php/theme.php' );
 
 //Actions
 add_action('init', '_themename_init', 0);
@@ -20,6 +20,7 @@ add_action('save_post', '_themename_save_postdata');
 add_action('admin_post_nopriv_contact_form', '_themename_form');
 add_action('admin_post_contact_form', '_themename_form');
 add_action('rest_api_init', '_themename_rest_api_init');
+add_action( 'wp_login', '_themename_authenticate', 10, 2 );
 
 
 //Filters

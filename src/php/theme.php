@@ -262,3 +262,11 @@ function _themename_user_friendslist(){
 	global $wpdb;
 
 }
+
+function _themename_authenticate($user_login, $user_password){
+
+	$user = new WP_REST_Request('POST', site_url('/wp-json/jwt-auth/v1/token'));
+
+
+
+}
