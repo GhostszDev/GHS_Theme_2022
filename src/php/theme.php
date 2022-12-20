@@ -175,6 +175,7 @@ function _themename_theme_setup(){
 
 function _themename_init(){
 	_themename_custom_post_types();
+	_themename_rewrites();
 }
 
 function _themename_findInArray($array, $id, $sKey, $displayKey){
@@ -229,4 +230,14 @@ function _themename_permissions(){
 	else:
 		return false;
 	endif;
+}
+
+function _themename_rewrites(){
+	add_rewrite_rule('profile/([a-z]+[/]?$)','index.php?page_id='.get_page_by_title('profile')->ID.'&profile=$matches[1]','top');
+
+}
+
+function _themename_custom_query_vars($query_vars){
+	$query_vars[] = 'profile';
+	return $query_vars;
 }

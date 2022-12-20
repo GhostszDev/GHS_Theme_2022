@@ -21,6 +21,17 @@ import wpPot from "gulp-wp-pot";
 import info from "./package.json" assert {type: 'json'};
 
 console.log(PRODUCTION);
+const jsFiles = [
+    'src/js/all.js',
+    'src/js/bundle.js',
+    'src/js/admin.js'
+];
+
+const cssFiles = [
+    'src/scss/all.css',
+    'src/scss/bundle.scss',
+    'src/scss/admin.scss'
+];
 
 //BrowserSync
 const server = browserSync.create();
@@ -37,7 +48,7 @@ export const reload = done => {
 
 //Bundles Sass
 export const styles = () => {
-    return gulp.src(['src/scss/bundle.scss', 'src/scss/admin.scss'])
+    return gulp.src(cssFiles)
         .pipe(gulpif(!PRODUCTION, sourcemaps.init()))
         .pipe(sass().on('error', sass.logError))
         .pipe(gulpif(PRODUCTION, postcss([ autoprefixer ])))
@@ -56,7 +67,7 @@ export const images = () => {
 
 //Minify scripts
 export const scripts = () => {
-    return gulp.src(['src/js/bundle.js','src/js/admin.js'])
+    return gulp.src(jsFiles)
         .pipe(named())
         .pipe(webpack({
             module: {

@@ -54,7 +54,7 @@ function _themename_nav_bar(){
 							<p><?php echo $user->display_name ?></p>
 						</a>
 						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="<?php echo get_home_url(); ?>/profile" rel="nofollow">Profile</a></li>
+							<li><a class="dropdown-item" href="<?php echo get_home_url(); ?>/profile/<?php echo $user->user_login ?>" rel="nofollow">Profile</a></li>
 							<li><a class="dropdown-item" href="<?php echo get_home_url(); ?>/my-account" rel="nofollow">Account</a></li>
 							<?php if ( current_user_can( 'manage_options' ) ): ?>
 								<li><a class="dropdown-item" href="<?php echo get_admin_url(); ?>">Admin</a></li>
@@ -918,23 +918,49 @@ function _themename_account_page(){
 }
 
 function _themename_page_profile_image(){
-	$user = wp_get_current_user();
+	$user = get_user_by('slug', get_query_var('profile'));
 	?>
 
-	<div class="w-100 mt-4 ghs_insight d-flex align-items-center mb-3" style="background: linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.5)), url(<?php echo esc_url(get_the_post_thumbnail_url(get_the_ID())); ?>)">
+    <div class="w-100 mt-4 ghs_insight d-flex align-items-center mb-3" style="background: linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.5)), url(<?php echo esc_url(get_the_post_thumbnail_url(get_the_ID())); ?>)">
 
-		<div class="container">
-			<div class="row">
-				<div class="col-12 col-lg-6">
-					<h5 class="pt-3 ghs_insight_title"><?php echo $user->display_name; ?></h5>
-					<ul>
-						<li></li>
-					</ul>
-				</div>
-			</div>
-		</div>
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    <h5 class="pt-3 ghs_insight_title"><?php if($user->display_name): echo ucwords($user->display_name); else: echo ucwords($user->first_name . ' ' . $user->last_name); endif; ?></h5>
+                    <ul class="ghs_bottom_icons_list">
+                        <?php if($user->display_name == get_current_user()->display_name):?>
+                        <li>
+                            <a href="#">
+                                <svg class="ghs_profile_icons" aria-hidden="true" focusable="false">
+                                    <use href="<?php echo get_stylesheet_directory_uri() . '/dist/media/icons.svg#icon-add-friend'?>"></use>
+                                </svg>
+                                Add Friend
+                            </a>
+                        </li>
+                        <?php endif; ?>
+                        <li>
+                            <a href="#">
+                                <svg class="ghs_profile_icons" aria-hidden="true" focusable="false">
+                                    <use href="<?php echo get_stylesheet_directory_uri() . '/dist/media/icons.svg#icon-badge'?>"></use>
+                                </svg>
+                                Badges
+                            </a>
+                        </li>
 
-	</div>
+                        <li>
+                            <a href="#">
+                                <svg class="ghs_profile_icons" aria-hidden="true" focusable="false">
+                                    <use href="<?php echo get_stylesheet_directory_uri() . '/dist/media/icons.svg#icon-friends'?>"></use>
+                                </svg>
+                                Friends
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
 
 	<?php
 }

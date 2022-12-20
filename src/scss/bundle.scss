@@ -315,12 +315,12 @@ h5 .ghs_primary_link:hover{
   font-size: 1.2em;
 }
 
-.ghs_spotlight ul{
+.ghs_spotlight ul, .ghs_bottom_icons_list{
   list-style: none;
   padding: 0;
 }
 
-.ghs_spotlight li{
+.ghs_spotlight li, .ghs_bottom_icons_list li{
   margin-bottom: 1rem;
 }
 
@@ -401,6 +401,25 @@ h5 .ghs_primary_link:hover{
 
 .ghs_content_top{
   padding-top: 7rem !important;
+}
+
+.ghs_profile_icons{
+  width: 1.3rem;
+  height: 1.3rem;
+  fill: $primaryColor;
+  margin-top: -0.3rem;
+}
+
+a:hover .ghs_profile_icons{
+  fill: $primaryColorHover;
+}
+
+.ghs_bottom_icons_list{
+  display:flex;
+}
+
+.ghs_bottom_icons_list li{
+  padding-right: 1em;
 }
 
 @media screen and (max-width: 992px) {

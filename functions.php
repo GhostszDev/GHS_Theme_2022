@@ -25,3 +25,4 @@ add_action('rest_api_init', '_themename_rest_api_init');
 //Filters
 add_filter( 'show_admin_bar', '__return_false' );
 add_filter( 'lostpassword_url', 'reset_pass_url', 10, 2 );
+add_filter('query_vars', '_themename_custom_query_vars');
