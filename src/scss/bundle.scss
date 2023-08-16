@@ -30,6 +30,10 @@ h1, h2, h3, h4, h5, .badge, .btn{
   word-break: normal !important;
 }
 
+..ghs_single_post iframe{
+  width: 100% !important;
+}
+
 .badge{
   background: $primaryColor;
   border: $primaryColorBorder;

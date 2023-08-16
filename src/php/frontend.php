@@ -464,10 +464,15 @@ function _themename_page_blog_content(){
 			'posts_per_page' => 6
 		];
 	else:
+        if ( get_query_var('paged') ) { $paged = get_query_var('paged'); }
+        elseif ( get_query_var('page') ) { $paged = get_query_var('page'); }
+        else { $paged = 1; }
+
 		$args = [
 			'post_type' => 'post',
 			'post_status' => 'publish',
-			'posts_per_page' => 6
+			'posts_per_page' => 6,
+            'paged' => $paged,
 		];
 	endif;
 	$query = new WP_Query( $args );
@@ -589,7 +594,7 @@ function _themename_single_post(){
 		<div class="row">
 
 			<div class="<?php if(!is_privacy_policy()): ?>col-12 col-lg-8 ghs_single_post <?php else: ?> col-12 ghs_single_post <?php endif; ?>">
-				<?php echo get_the_content(); ?>
+				<?php the_content(); ?>
 			</div>
 
 			<div class="col-12 col-lg-4 my-4">
