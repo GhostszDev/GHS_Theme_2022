@@ -72,10 +72,7 @@ jQuery(document).ready( function($){
     function runFriendsListInit(e){
         $.ajax({
             type: "POST",
-            url: ghs_obj.rest_api + '/friends_list_init',
-            headers: {
-                'Authorization': 'Bearer ' + token
-            },
+            url: ghs_obj.ghs_endpoint + '/friends-list-init',
             data: JSON.stringify({}),
             contentType: "application/json",
             success: (result) => {
@@ -220,7 +217,7 @@ jQuery(document).ready( function($){
         addToSpotlightArray(a);
     });
 
-    $(document).on('click', '.ghs_friends_list_btn',function (a) {
+    $(document).on('click', '.ghs_friends_list_btn', function(a){
         // console.log(a);
         runFriendsListInit(a);
     });

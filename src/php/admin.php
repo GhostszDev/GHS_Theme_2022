@@ -76,12 +76,18 @@ function _themename_admin_init(){
 		update_option('heroBanner', $heroBanner);
 	endif;
 
-	if(get_option('featColumn')):
-		$featColumn = get_option('featColumn');
-	else:
-		$featColumn = array();
-		update_option('featColumn', $featColumn);
-	endif;
+    if(get_option('featColumn')):
+        $featColumn = get_option('featColumn');
+    else:
+        $featColumn = array(
+                "icon_1" => "",
+                "title_1" => "",
+                "desc_1" => "",
+                "link_text_1" => "",
+                "link_1" => ""
+        );
+        update_option('featColumn', $featColumn);
+    endif;
 
 	if(get_option('social')):
 		$social = get_option('social');
@@ -335,7 +341,8 @@ function _themename_options_page(){ ?>
 		<?php submit_button() ?>
 	</form>
 
-<?php }
+<?php
+}
 
 function _themename_options_company_page(){ ?>
 	<h1>Company Settings</h1>
@@ -481,32 +488,32 @@ function feat_columns_size_callback(){
 <?php }
 
 function feat_columns_callback(){
-	$featColumnSize = get_option('featColumnSize');
-	$featColumn = get_option('featColumn');
-	?>
+    $featColumnSize = get_option('featColumnSize');
+    $featColumn = get_option('featColumn');
+    ?>
 
-	<ul class="featColumn_list">
-		<?php for($i = 1; $i <= $featColumnSize; $i++): ?>
-			<li class="ghs_feat_column" >
+    <ul class="featColumn_list">
+        <?php for($i = 1; $i <= $featColumnSize; $i++): ?>
+            <li class="ghs_feat_column" >
 
-				<svg class="ghs_feat_column_preview" aria-hidden="true" focusable="false">
-					<use href="<?php echo $featColumn['icon_'.$i] ?>"></use>
-				</svg>
-				<label for="featColumn[icon_<?php echo $i ?>]">
-					<select class="ghs_feat_column_select_<?php echo $i ?> icon_select"></select>
-				</label>
-				<input value="<?php echo $featColumn['icon_'.$i] ?>" name="featColumn[icon_<?php echo $i ?>]" type="text" class="ghs_feat_column_icon">
+                <svg class="ghs_feat_column_preview" aria-hidden="true" focusable="false">
+                    <use href="<?php echo $featColumn['icon_'.$i] ?>"></use>
+                </svg>
+                <label for="featColumn[icon_<?php echo $i ?>]">
+                    <select class="ghs_feat_column_select_<?php echo $i ?> icon_select"></select>
+                </label>
+                <input value="<?php echo $featColumn['icon_'.$i] ?>" name="featColumn[icon_<?php echo $i ?>]" type="text" class="ghs_feat_column_icon">
 
-				<input value="<?php echo $featColumn['title_'.$i] ?>" name="featColumn[title_<?php echo $i ?>]" type="text" class="ghs_feat_column_title" placeholder="Title">
+                <input value="<?php echo $featColumn['title_'.$i] ?>" name="featColumn[title_<?php echo $i ?>]" type="text" class="ghs_feat_column_title" placeholder="Title">
 
-				<textarea name="featColumn[desc_<?php echo $i ?>]" placeholder="Description"><?php echo $featColumn['desc_'.$i] ?></textarea>
+                <textarea name="featColumn[desc_<?php echo $i ?>]" placeholder="Description"><?php echo $featColumn['desc_'.$i] ?></textarea>
 
-				<input value="<?php echo $featColumn['link_text_'.$i] ?>" name="featColumn[link_text_<?php echo $i ?>]" type="text" class="ghs_feat_column_link_text" placeholder="Link Text">
+                <input value="<?php echo $featColumn['link_text_'.$i] ?>" name="featColumn[link_text_<?php echo $i ?>]" type="text" class="ghs_feat_column_link_text" placeholder="Link Text">
 
-				<input value="<?php echo $featColumn['link_'.$i] ?>" name="featColumn[link_<?php echo $i ?>]" type="url" class="ghs_feat_column_link" placeholder="Link">
-			</li>
-		<?php endfor; ?>
-	</ul>
+                <input value="<?php echo $featColumn['link_'.$i] ?>" name="featColumn[link_<?php echo $i ?>]" type="url" class="ghs_feat_column_link" placeholder="Link">
+            </li>
+        <?php endfor; ?>
+    </ul>
 
 <?php }
 
@@ -691,7 +698,7 @@ function game_lock_callback(){
 
 function init_friends_list_button_callback(){ ?>
 
-    <div class="ghs_button">
+    <div class="ghs_button ghs_friends_list_btn">
         Run
     </div>
 
@@ -775,6 +782,22 @@ function _themename_save_postdata($post_id){
 			$post_id,
 			'game_platform',
 			$_POST['game_platform']
+		);
+	}
+
+    if(array_key_exists('project_uri_field', $_POST)){
+		update_post_meta(
+			$post_id,
+			'project_uri',
+			$_POST['project_uri_field']
+		);
+	}
+
+	if(array_key_exists('project_iframe_scrollable', $_POST)){
+		update_post_meta(
+			$post_id,
+			'project_iframe_scrollable',
+			$_POST['project_iframe_scrollable']
 		);
 	}
 }
@@ -869,6 +892,31 @@ function game_platform_meta_box($post){
 	endforeach;
 }
 
+function project_uri_meta_box($post){
+	$value = get_post_meta($post->ID, 'project_uri', true);
+	?>
+
+    <input type="text" name="project_uri_field" id="project_uri_field" value="<?php echo $value?>">
+
+	<?php
+}
+
+function project_iframe_scrollable_meta_box($post){
+	if(get_post_meta($post->ID, 'project_iframe_scrollable', true)):
+		$value = get_post_meta($post->ID, 'project_iframe_scrollable', true);
+	else:
+		$value = 'false';
+	endif;
+	?>
+
+    <select name="project_iframe_scrollable" id="project_iframe_scrollable" class="project_iframe_scrollable">
+        <option value="false" <?php selected($value, false) ?>>False</option>
+        <option value="true" <?php selected($value, true) ?>>True</option>
+    </select>
+
+	<?php
+}
+
 function _themename_meta_boxes(){
 
 	add_meta_box('game_rating', 'Game Rating', 'game_rating_meta_box', 'games', 'side');
@@ -876,6 +924,9 @@ function _themename_meta_boxes(){
 	add_meta_box('game_publisher', 'Game Publisher', 'game_publisher_meta_box', 'games', 'side');
 	add_meta_box('game_size', 'Game Size', 'game_size_meta_box', 'games', 'side');
 	add_meta_box('game_platform_links', 'Game Platforms', 'game_platform_meta_box', 'games', 'side');
+
+	add_meta_box('project_uri_links', 'Project Url', 'project_uri_meta_box', 'projects', 'side');
+	add_meta_box('project_iframe_scrollable', 'Is Iframe Scrollable?', 'project_iframe_scrollable_meta_box', 'projects', 'side');
 
 }
 

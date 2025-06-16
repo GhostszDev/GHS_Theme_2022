@@ -6,7 +6,7 @@
   "type": "module",
   "restroute": "ghs_api",
   "restroute_vesion": "v1",
-  "friendslistDB": "friends_list",
+  "friendslistDB": "wp_friendsdb",
   "scripts": {
     "start": "gulp --prod=false",
     "build": "gulp build --prod=true"

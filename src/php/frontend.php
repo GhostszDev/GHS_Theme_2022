@@ -54,7 +54,7 @@ function _themename_nav_bar(){
 							<p><?php echo $user->display_name ?></p>
 						</a>
 						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="<?php echo get_home_url(); ?>/profile/<?php echo $user->user_login ?>" rel="nofollow">Profile</a></li>
+<!--							<li><a class="dropdown-item" href="--><?php //echo get_home_url(); ?><!--/profile/--><?php //echo $user->user_login ?><!--" rel="nofollow">Profile</a></li>-->
 							<li><a class="dropdown-item" href="<?php echo get_home_url(); ?>/my-account" rel="nofollow">Account</a></li>
 							<?php if ( current_user_can( 'manage_options' ) ): ?>
 								<li><a class="dropdown-item" href="<?php echo get_admin_url(); ?>">Admin</a></li>
@@ -146,6 +146,8 @@ function _themename_featured_posts($args, $title = 'Latest News'){
 									Read More
 								<?php elseif(get_post_type(get_the_ID()) == 'games'): ?>
 									View Game
+								<?php elseif(get_post_type(get_the_ID()) == 'projects'): ?>
+                                    View Project
 								<?php endif; ?>
 							</a>
 						</div>
@@ -583,21 +585,33 @@ function _themename_page_blog_content(){
 	<?php
 }
 
-function _themename_page_game_content(){
-	_themename_featured_posts($args = [ 'post_type' => 'games', 'post_status' => 'publish', 'posts_per_page' => 6 ], '');
+function _themename_page_content($postType){
+	_themename_featured_posts($args = [ 'post_type' => $postType, 'post_status' => 'publish', 'posts_per_page' => 6 ], '');
 }
 
 function _themename_single_post(){
 	?>
-	<div class="container">
+	<div class="container ghs_single_post_container">
 
 		<div class="row">
 
 			<div class="<?php if(!is_privacy_policy()): ?>col-12 col-lg-8 ghs_single_post <?php else: ?> col-12 ghs_single_post <?php endif; ?>">
+
+                <?php if(is_single() && get_post_type() == 'projects'): ?>
+		            <?php if(get_post_meta(get_the_ID(), 'project_uri', true)): ?>
+                        <div class="ghs-projects-frame">
+                            <iframe loading="lazy" class="ghs-projects-iframe <?php if(get_post_meta(get_the_ID(), 'project_iframe_scrollable', true)): echo 'ghs_iFrame_scrollable'; endif; ?>" src="<?php echo get_post_meta(get_the_ID(), 'project_uri', true) ?>" scrolling="no" allowfullscreen></iframe>
+                            <button class="fullscreenBtn">
+                                <i class="fa fa-arrows-alt" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    <?php endif; ?>
+                <?php endif; ?>
+
 				<?php the_content(); ?>
 			</div>
 
-			<div class="col-12 col-lg-4 my-4">
+			<div class="col-12 col-lg-4">
 
 				<?php if(is_single() && get_post_type() != 'games'): ?>
 					<div class="ghs_side_card w-100 mb-4">
@@ -612,6 +626,7 @@ function _themename_single_post(){
 							<?php endforeach; ?>
 						</ul>
 					</div>
+
 				<?php elseif (is_single() && get_post_type() == 'games'): ?>
 
 					<ul class="game_data p-0">
@@ -888,6 +903,67 @@ function _themename_page_contact_form(){
 	<?php
 }
 
+function _themename_account_page_delete_account_button($button_text = '')
+{
+	// Bail if user is logged out
+	if ( ! is_user_logged_in() ) {
+		return;
+	}
+
+	// Bail to prevent administrators from deleting their own accounts
+	if ( current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
+	// Defauly button text
+	if ( $button_text == '' ) {
+		$button_text = __( 'Delete My Account', 'wp-delete-user-accounts' );
+	}
+
+	// Button
+	printf( '<div class="container mt-5"> 
+                        <section>
+                            <p>This will delete your account. <b>(Pssh.. This will Thanos you Account)</b></p>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">%s</button> 
+                        </section>
+                    </div>', $button_text );
+
+    ?>
+
+    <!-- The Modal -->
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Account Deletion</h4>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    You're getting ready to delete your account. Just keep in mind that when you confirm,this permanently delete this account. No account that is deleted can be recovered.
+                    <label class="mt-3 mb-1">To confirm the deletion of your account, type "<b>Confirm</b>"</label>
+                    <input class="ghs_delete_button_confirm" type="text" placeholder="Type confirm to delete" value="">
+
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger ghs_button_danager ghs_confirm_delete_acc">Delete Account</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <?php
+}
+
 function _themename_account_page(){
 	?>
 
@@ -922,9 +998,10 @@ function _themename_account_page(){
 	<?php
 }
 
-function _themename_page_profile_image(){
+function _themename_page_profile_image($profile_url){
 	$user = get_user_by('slug', get_query_var('profile'));
-    $currentUser = get_user_by('id', get_current_user_id());;
+    $currentUser = get_user_by('id', get_current_user_id());
+
 	?>
 
     <div class="w-100 mt-4 ghs_insight d-flex align-items-center mb-3" style="background: linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.5)), url(<?php echo esc_url(get_the_post_thumbnail_url(get_the_ID())); ?>)">
@@ -934,9 +1011,10 @@ function _themename_page_profile_image(){
                 <div class="col-12 col-lg-6">
                     <h5 class="pt-3 ghs_insight_title"><?php if($user->display_name): echo ucwords($user->display_name); else: echo ucwords($user->first_name . ' ' . $user->last_name); endif; ?></h5>
                     <ul class="ghs_bottom_icons_list">
+                        <?php if(is_user_logged_in()): ?>
                         <?php if($user->user_login != $currentUser->user_login):?>
                         <li>
-                            <a href="#">
+                            <a class="ghs_add_friend_btn">
                                 <svg class="ghs_profile_icons" aria-hidden="true" focusable="false">
                                     <use href="<?php echo get_stylesheet_directory_uri() . '/dist/media/icons.svg#icon-add-friend'?>"></use>
                                 </svg>
@@ -944,8 +1022,9 @@ function _themename_page_profile_image(){
                             </a>
                         </li>
                         <?php endif; ?>
+                        <?php endif; ?>
                         <li>
-                            <a href="#">
+                            <a href="<?php echo $profile_url.'/badges' ?>">
                                 <svg class="ghs_profile_icons" aria-hidden="true" focusable="false">
                                     <use href="<?php echo get_stylesheet_directory_uri() . '/dist/media/icons.svg#icon-badge'?>"></use>
                                 </svg>
@@ -954,7 +1033,7 @@ function _themename_page_profile_image(){
                         </li>
 
                         <li>
-                            <a href="#">
+                            <a href="<?php echo $profile_url.'/friends' ?>">
                                 <svg class="ghs_profile_icons" aria-hidden="true" focusable="false">
                                     <use href="<?php echo get_stylesheet_directory_uri() . '/dist/media/icons.svg#icon-friends'?>"></use>
                                 </svg>
@@ -970,6 +1049,61 @@ function _themename_page_profile_image(){
 
 
 	<?php
-	var_dump($user->user_login);
-	var_dump($currentUser->user_login);
+}
+
+function _themename_delete_account(){
+
+}
+
+function _themename_get_users_friends($user){
+    $user_id = $user;
+	global $wpdb;
+	$db_table = $wpdb->prefix . friends_DB;
+    $counter = 1;
+
+	$result = $wpdb->get_results(
+			"SELECT `friends_list` FROM $db_table WHERE `user_id` = ".$user_id." LIMIT 50"
+		);
+
+    if(!empty($result)):
+        $friends = json_decode($result[0]->friends_list);
+    else:
+        $friends = [];
+    endif;
+    ?>
+
+    <div class="container">
+        <h4 class="ghs_section_header mt-4">Friends</h4>
+
+		<?php
+		if(!empty($friends) && count($friends->friends) != 0):
+		    foreach ($friends->friends as $friend):
+
+				if($counter%3 == 1): ?> <div class="row mt-4"> <?php endif; ?>
+
+                <div class="col-12 col-lg-4 pb-4">
+                    <div class="ghs_feat_post h-100 position-relative">
+                        <a href="<?php echo profileBase_URI . get_user_by('ID', $friend->ID)->user_login ?>">
+                            <img class="ghs_feat_post_img w-100" src="<?php echo get_avatar_url($friend->ID, ['size' => '200'])?>" />
+                        </a>
+
+                        <div class="ghs_feat_post_text p-3">
+                            <h5 class="pb-3"><?php echo ucwords(get_user_by("ID", $friend->ID)->user_login) ?></h5>
+                            <p></p>
+
+                        </div>
+                    </div>
+                </div>
+
+				<?php
+				if($counter%3 == 0): ?> </div> <?php endif;
+
+				$counter++;
+
+		endforeach;
+        else:
+            echo '<p>Add friends to your list.</p>';
+        endif;
+
+    $wpdb->flush();
 }

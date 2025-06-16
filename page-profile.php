@@ -1,13 +1,28 @@
 <?php
 
-if(empty(get_query_var('profile')) || !get_user_by('slug', get_query_var('profile'))):
-	wp_redirect(site_url('not_found'));
+
+$gamesList = [];
+$subpages = ['', 'friends', 'badges'];
+$current_uri = profileBase_URI .get_query_var('profile');
+
+if(empty(get_query_var('profile'))
+   || !get_user_by('slug', get_query_var('profile'))
+   || !in_array(get_query_var('subpage'), $subpages)):
+	wp_redirect(site_url('404'));
 else:
 
-get_header();
+	get_header();
 
-_themename_page_profile_image();
+	_themename_page_profile_image($current_uri);
 
-get_footer();
+	if(get_query_var('subpage') == "friends"):
+		_themename_get_users_friends(get_user_by('login',get_query_var('profile'))->ID);
+
+	elseif (get_query_var('subpage') == "badges"):
+		echo "<p>Badge Page</p>";
+
+	endif;
+
+	get_footer();
 
 endif;

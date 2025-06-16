@@ -135,3 +135,7 @@ const GHS_CERO_RATINGS = array(
 const GHS_AUSSIE_RATINGS = array();
 
 const GHS_UK_RATINGS = array();
+
+const friends_DB = "friendsDB";
+
+define( "profileBase_URI", home_url( '/profile/' ) );

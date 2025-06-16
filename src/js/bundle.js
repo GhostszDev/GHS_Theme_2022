@@ -7,6 +7,12 @@ jQuery(document).ready( function($) {
 
     var ghs_woo_edit_acc = $('.ghs_woocommerce_content .woocommerce-EditAccountForm');
 
+    var ghs_delete_acc_btn = $('#myModal');
+    var ghs_confirm_delete_acc = $('.ghs_confirm_delete_acc');
+    var ghs_delete_button_confirm = $('.ghs_delete_button_confirm');
+
+    var ghs_add_friend_btn = $('.ghs_add_friend_btn')
+
     if(ghs_woo_addy.length > 0) {
         ghs_woo_addy.removeClass('col-1');
         ghs_woo_addy.removeClass('col-2');
@@ -33,5 +39,21 @@ jQuery(document).ready( function($) {
         $('.ghs_woocommerce_content button').addClass('btn btn-primary');
         $('.woocommerce-form__input').addClass('me-3');
     }
+
+    if(ghs_delete_acc_btn.length > 0){
+        ghs_delete_acc_btn.on('shown.bs.modal', function () {
+            $('#myInput').trigger('focus')
+        })
+    }
+
+    if(ghs_confirm_delete_acc.length > 0 && ghs_delete_button_confirm.length > 0){
+        ghs_confirm_delete_acc.click(() => {
+            
+        });
+    }
+
+    $(document).on('click', 'a.ghs_add_friend_btn', function(a){
+        // console.log(ghs_obj.send_friend_request);
+    });
 
 })

@@ -30,7 +30,7 @@ h1, h2, h3, h4, h5, .badge, .btn{
   word-break: normal !important;
 }
 
-..ghs_single_post iframe{
+.ghs_single_post iframe{
   width: 100% !important;
 }
 
@@ -425,6 +425,83 @@ a:hover .ghs_profile_icons{
 .ghs_bottom_icons_list li{
   padding-right: 1em;
 }
+
+.modal-content{
+  background: #2f2f2f;
+}
+
+.ghs_button_danager{
+  background: #9a3333 !important;
+}
+
+.ghs_button_danager:hover:hover{
+  background: #792929 !important;
+}
+
+.ghs_add_friend_btn:hover{
+  cursor: pointer;
+}
+
+.ghs-noScroll{
+  overflow: hidden;
+  position: relative;
+}
+
+.ghs-projects-iframe{
+  height:30rem;
+  position: relative;
+
+  &.fullScreen{
+    position: absolute;
+    top: 0;
+    left:0rem;
+    width: 100vw !important;
+    height: 100vh !important;
+    overflow: hidden;
+    z-index: 9999;
+  }
+}
+
+.ghs-projects-frame{
+  position: relative;
+  margin-bottom: 1rem;
+
+
+  &.fullScreen{
+    position:absolute;
+
+  }
+
+}
+
+.fullscreenBtn{
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  top: calc(30rem - 3rem);
+  right: 1rem;
+  background-color: #f8f9fa96;
+  border: none;
+  border-radius: .5rem;
+  font-size: 1em;
+}
+
+.ghs-fullScreenedBtn{
+  width: 3rem;
+  height: 3rem;
+  top: calc(100vh - 65px);
+  right: calc(-97vw - 25px);
+  font-size: 1.5em;
+  z-index: 99999999;
+}
+
+.ghs-NoPadding{
+  padding: 0;
+  margin: 0;
+  position: absolute;
+}
+
+
 
 @media screen and (max-width: 992px) {
 

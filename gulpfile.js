@@ -18,13 +18,14 @@ import browserSync from "browser-sync";
 import zip from "gulp-zip";
 import replace from "gulp-replace";
 import wpPot from "gulp-wp-pot";
-import info from "./package.json" assert {type: 'json'};
+import info from "./package.json" with {type: 'json'};
 
 console.log(PRODUCTION);
 const jsFiles = [
     'src/js/all.js',
     'src/js/bundle.js',
-    'src/js/admin.js'
+    'src/js/admin.js',
+    'src/js/projectJS.js'
 ];
 
 const cssFiles = [
@@ -128,7 +129,6 @@ export const compress = () => {
             file => file.relative.split(".").pop() !== "zip",
             replace("_themename", info.name),
             replace("_restroute", info.restroute + '/' + info.restroute_vesion),
-            replace( "friendsDB", info.friendslistDB)
             ))
         .pipe(zip(`${info.name}.zip`))
         .pipe(gulp.dest('bundled'));
