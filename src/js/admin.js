@@ -198,7 +198,7 @@ jQuery(document).ready( function($){
         // $(capture).val(currentInput);
     }
 
-    $(document).on('click', '#upload-button_1, #upload-button_2, #upload-button_3, #insight_submit', function (a) {
+    $(document).on('click', '#upload-button_1, #upload-button_2, #upload-button_3, #insight_submit, #game_badge_list_submit', function (a) {
         // console.log(a);
         mediaUpload(a);
     });

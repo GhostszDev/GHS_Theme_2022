@@ -7,6 +7,8 @@
   "restroute": "ghs_api",
   "restroute_vesion": "v1",
   "friendslistDB": "wp_friendsdb",
+  "gamesDB": "wp_gamesdb",
+  "userBadgeDB": "wp_userBadgedb",
   "scripts": {
     "start": "gulp --prod=false",
     "build": "gulp build --prod=true"

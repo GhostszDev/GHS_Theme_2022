@@ -137,5 +137,7 @@ const GHS_AUSSIE_RATINGS = array();
 const GHS_UK_RATINGS = array();
 
 const friends_DB = "friendsDB";
+const games_DB = "gamesDB";
+const user_badge_DB = "userBadgeDB";
 
 define( "profileBase_URI", home_url( '/profile/' ) );

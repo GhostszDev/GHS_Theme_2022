@@ -208,6 +208,8 @@ function _themename_init(){
 	_themename_custom_post_types();
 	_themename_rewrites();
 	_themename_needed_DB(friends_DB);
+	_themename_games_DB(games_DB);
+	_themename_user_badge_DB(user_badge_DB);
 }
 
 function _themename_head(){
@@ -292,6 +294,45 @@ function _themename_custom_query_vars($query_vars){
 	$query_vars[] = 'profile';
 	$query_vars[] = 'subpage';
 	return $query_vars;
+}
+
+function _themename_games_DB($DB_name = "gamesDB"){
+	if($DB_name != "") {
+		global $wpdb;
+
+		$table_name = $wpdb->prefix . $DB_name;
+
+		$sql = "CREATE TABLE IF NOT EXISTS $table_name (
+      		`ID` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  			`game_ID` int NOT NULL,
+  			`badge_list` json NULL);";
+
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		dbDelta( $sql );
+	} else {
+		return new WP_Error("Error: 1562", __("Database Failed to be Created!", "my_textdomain"));
+	}
+
+}
+
+function _themename_user_badge_DB($DB_name = "userBadgeDB"){
+	if($DB_name != "") {
+		global $wpdb;
+
+		$table_name = $wpdb->prefix . $DB_name;
+
+		$sql = "CREATE TABLE IF NOT EXISTS $table_name (
+      		`ID` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  			`user_id` int NOT NULL,
+  			`game_ID` int NOT NULL,
+  			`badge_list` json NULL);";
+
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		dbDelta( $sql );
+	} else {
+		return new WP_Error("Error: 1562", __("Database Failed to be Created!", "my_textdomain"));
+	}
+
 }
 
 function _themename_needed_DB($DB_name = ""){

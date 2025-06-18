@@ -28,6 +28,10 @@ textarea{
   width: 100%;
 }
 
+.game_badge_list_img{
+  height: 250px;
+}
+
 .heroBanner_listItem,
 .ghs_insight_wrapper,
 .ghs_feat_column{
@@ -199,4 +203,28 @@ textarea{
 .ghs_button:hover{
   cursor: pointer;
   background: $primaryColorHover;
+}
+
+.game_badge_list_input, .game_badge_list_textbox, .game_badge_list_input_hidden{
+  width: 98%;
+  margin-top: 1rem;
+}
+
+.game_badge_list_div{
+  display: flex;
+}
+
+.project_iframe_scrollable, .game_has_badges,
+#game_release_field, #game_rating_field,
+#game_publisher_field, #game_size_field{
+  width: 98%;
+}
+
+.game_badge_list_input_hidden, .game_badge_list_input_points{
+  width: 48%;
+  margin-right: 1rem;
+}
+
+.game_badge_list{
+  margin-top: 3rem;
 }

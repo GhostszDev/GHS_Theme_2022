@@ -54,7 +54,7 @@ function _themename_nav_bar(){
 							<p><?php echo $user->display_name ?></p>
 						</a>
 						<ul class="dropdown-menu">
-<!--							<li><a class="dropdown-item" href="--><?php //echo get_home_url(); ?><!--/profile/--><?php //echo $user->user_login ?><!--" rel="nofollow">Profile</a></li>-->
+							<li><a class="dropdown-item" href="<?php echo get_home_url(); ?>/profile/<?php echo $user->user_login ?>" rel="nofollow">Profile</a></li>
 							<li><a class="dropdown-item" href="<?php echo get_home_url(); ?>/my-account" rel="nofollow">Account</a></li>
 							<?php if ( current_user_can( 'manage_options' ) ): ?>
 								<li><a class="dropdown-item" href="<?php echo get_admin_url(); ?>">Admin</a></li>
@@ -1024,7 +1024,7 @@ function _themename_page_profile_image($profile_url){
                         <?php endif; ?>
                         <?php endif; ?>
                         <li>
-                            <a href="<?php echo $profile_url.'/badges' ?>">
+                            <a href="<?php echo $profile_url.'/badges-list' ?>">
                                 <svg class="ghs_profile_icons" aria-hidden="true" focusable="false">
                                     <use href="<?php echo get_stylesheet_directory_uri() . '/dist/media/icons.svg#icon-badge'?>"></use>
                                 </svg>
@@ -1106,4 +1106,31 @@ function _themename_get_users_friends($user){
         endif;
 
     $wpdb->flush();
+}
+
+function _themename_get_users_played_game_list($user){
+?>
+	<div class="container">
+        <h4 class="ghs_section_header mt-4">Games List</h4>
+
+        <div class="col-12 col-lg-4 pb-4">
+            <div class="ghs_feat_post h-100 position-relative">
+                <a href="#">
+                    <img class="ghs_feat_post_img w-100" src="#" />
+                </a>
+
+                <div class="ghs_feat_post_text p-3">
+                    <h5 class="pb-3">#</h5>
+                    <p></p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <?php
+}
+
+function _themename_get_users_badges($user, $game){
+
 }

@@ -186,7 +186,12 @@ function _themename_admin_init(){
 		update_option('contact', $contact);
 	endif;
 
-
+	if(get_option('game_badge_list')):
+		$game_list = get_option('game_badge_list');
+	else:
+		$game_list = array();
+		update_option('game_badge_list', $game_list);
+	endif;
 
 	add_settings_section(
 		'theme-index-options',
@@ -785,6 +790,22 @@ function _themename_save_postdata($post_id){
 		);
 	}
 
+	if(array_key_exists('game_has_badges', $_POST)){
+		update_post_meta(
+			$post_id,
+			'game_has_badges',
+			$_POST['game_has_badges']
+		);
+	}
+
+    if(array_key_exists('game_badge_list', $_POST)){
+		update_post_meta(
+			$post_id,
+			'game_badge_list',
+			$_POST['game_badge_list']
+		);
+	}
+
     if(array_key_exists('project_uri_field', $_POST)){
 		update_post_meta(
 			$post_id,
@@ -800,6 +821,7 @@ function _themename_save_postdata($post_id){
 			$_POST['project_iframe_scrollable']
 		);
 	}
+
 }
 
 function game_rating_meta_box($post){
@@ -892,6 +914,116 @@ function game_platform_meta_box($post){
 	endforeach;
 }
 
+
+function game_has_badge_meta_box($post){
+	if(get_post_meta($post->ID, 'game_has_badges', true)):
+		$value = get_post_meta($post->ID, 'game_has_badges', true);
+	else:
+		$value = 'false';
+	endif; ?>
+
+    <select name="game_has_badges" id="game_has_badges" class="game_has_badges">
+        <option value="false" <?php selected($value, 'false') ?>>False</option>
+        <option value="true" <?php selected($value, 'true') ?>>True</option>
+    </select>
+
+	<?php
+}
+
+function game_badge_list_meta_box($post){
+
+    $game_badge_list = get_post_meta($post->ID, 'game_badge_list', true);
+
+    if(get_post_meta($post->ID, 'game_has_badges', true) == "true"): ?>
+
+	    <span class="ghs_add_button ghs_badge_add">&#43;</span>
+
+        <?php if($game_badge_list == ""):
+		    $game_badge_list = [];
+            $game_badge_list['game_ID'] = base64_encode($post->ID);
+            $game_badge_list['hidden_badge_icon'] = '';
+            $game_badge_list['badges'][0] = [
+	            'point' => '',
+	            'image'=> '',
+	            'description' => '',
+	            'hidden' => false,
+                'hidden_description' => '',
+	            'title' => '',
+                'unlocked' => false,
+                'unlocked_date' => ''
+            ];
+            ?>
+
+	    <?php endif; ?>
+
+        <span class="game_badge_list_count" hidden="hidden"><?php echo count($game_badge_list['badges']); ?></span>
+
+        <input hidden="hidden" type="text" name="game_badge_list[game_ID]" class="game_badge_list_input" placeholder="Game ID" value="<?php echo $game_badge_list['game_ID']; ?>">
+
+        <label for="game_badge_list_bg">
+            <img class="game_badge_list_img" src="<?php
+		    if(isset( $game_badge_list['hidden_badge_icon'] )):
+			    if(wp_http_validate_url(esc_url(wp_get_attachment_url($game_badge_list['hidden_badge_icon']), 'full', false, '' ))):
+				    echo esc_url(wp_get_attachment_url($game_badge_list['hidden_badge_icon']), 'full', false, '' );
+			    else:
+				    echo esc_url('https://placehold.jp/1920x1080.png');
+			    endif;
+		    else:
+			    echo esc_url('https://placehold.jp/1920x1080.png');
+		    endif;?>" value="Upload Profile Picture" id="game_badge_list_submit" />
+        </label>
+
+        <input hidden="hidden" id="game_badge_list_bg" class="game_badge_list_bg" name="game_badge_list[hidden_badge_icon]" value="<?php echo $game_badge_list['hidden_badge_icon'] ?>" />
+
+
+
+            <ul>
+            <?php foreach ($game_badge_list['badges'] as $key => $gbl): ?>
+                <li class="game_badge_list">
+                    <h4>Badge <?php echo $key +1 ?></h4>
+
+                    <label for="game_badge_list_bg">
+                        <img class="game_badge_list_img" src="<?php
+		                if(isset( $gbl['image'] )):
+			                if(wp_http_validate_url(esc_url(wp_get_attachment_url($gbl['image']), 'full', false, '' ))):
+				                echo esc_url(wp_get_attachment_url($gbl['image']), 'full', false, '' );
+			                else:
+				                echo esc_url('https://placehold.jp/1920x1080.png');
+			                endif;
+		                else:
+			                echo esc_url('https://placehold.jp/1920x1080.png');
+		                endif;?>" value="Upload Profile Picture" id="game_badge_list_submit" />
+                    </label>
+
+                    <input hidden="hidden" id="game_badge_list_bg" class="game_badge_list_bg" name="game_badge_list[badges][<?php echo $key ?>][image]" value="<?php echo $gbl['image'] ?>" />
+
+                    <input type="text" name="game_badge_list[badges][<?php echo $key ?>][title]" class="game_badge_list_input game_badge_list_input_title" placeholder="Title" value="<?php echo $gbl['title']; ?>">
+
+                    <div class="game_badge_list_div">
+                        <input type="text" name="game_badge_list[badges][<?php echo $key ?>][point]" class="game_badge_list_input game_badge_list_input_points" placeholder="Point" value="<?php echo $gbl['point']; ?>">
+
+                        <select name="game_badge_list[badges][<?php echo $key ?>][hidden]" class="project_iframe_scrollable game_badge_list_input_hidden">
+                            <option value="false" <?php selected($gbl['hidden'], 'false') ?>>False</option>
+                            <option value="true" <?php selected($gbl['hidden'], 'true') ?>>True</option>
+                        </select>
+                    </div>
+
+                    <textarea name="game_badge_list[badges][<?php echo $key ?>][description]" class="game_badge_list_textbox" placeholder="Description"><?php echo $gbl['description']; ?></textarea>
+                </li>
+            <?php endforeach; ?>
+            </ul>
+
+        <?php else: ?>
+
+
+        <div class="">
+            <p>No Badge Enabled</p>
+        </div>
+
+    <?php endif;
+
+}
+
 function project_uri_meta_box($post){
 	$value = get_post_meta($post->ID, 'project_uri', true);
 	?>
@@ -910,8 +1042,8 @@ function project_iframe_scrollable_meta_box($post){
 	?>
 
     <select name="project_iframe_scrollable" id="project_iframe_scrollable" class="project_iframe_scrollable">
-        <option value="false" <?php selected($value, false) ?>>False</option>
-        <option value="true" <?php selected($value, true) ?>>True</option>
+        <option value="false" <?php selected($value, 'false') ?>>False</option>
+        <option value="true" <?php selected($value, 'true') ?>>True</option>
     </select>
 
 	<?php
@@ -924,6 +1056,8 @@ function _themename_meta_boxes(){
 	add_meta_box('game_publisher', 'Game Publisher', 'game_publisher_meta_box', 'games', 'side');
 	add_meta_box('game_size', 'Game Size', 'game_size_meta_box', 'games', 'side');
 	add_meta_box('game_platform_links', 'Game Platforms', 'game_platform_meta_box', 'games', 'side');
+	add_meta_box('game_has_badges', 'Game Badges', 'game_has_badge_meta_box', 'games', 'side');
+	add_meta_box('game_badge_list', 'Game Badge List', 'game_badge_list_meta_box', 'games', 'normal');
 
 	add_meta_box('project_uri_links', 'Project Url', 'project_uri_meta_box', 'projects', 'side');
 	add_meta_box('project_iframe_scrollable', 'Is Iframe Scrollable?', 'project_iframe_scrollable_meta_box', 'projects', 'side');
